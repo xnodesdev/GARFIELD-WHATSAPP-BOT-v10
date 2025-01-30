@@ -29,7 +29,6 @@
     "fluent-ffmpeg": "^2.1.2",
     "form-data": "^4.0.0",
     "google-tts-api": "^2.0.2",
-    "path": "^0.12.7",
     "node-fetch": "^2.6.7",
     "btch-downloader": "^2.2.9",
     "megajs": "^1.1.1",
@@ -46,7 +45,10 @@
     "api-dylux": "^1.8.5",
     "@mrnima/tiktok-downloader": "^1.0.0",
     "@mrnima/facebook-downloader": "^1.0.0",
-    "mrnima-moviedl": "^1.0.0"
+    "mrnima-moviedl": "^1.0.0",
+    "@npmcli/fs": "^1.1.2",
+    "@eslint/config-array": "^2.0.0",
+    "@eslint/object-schema": "^2.1.1"
   },
   "engines": {
     "node": ">=18.0.0"
