@@ -258,7 +258,7 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sen
                     forwardingScore: 999,
                     isForwarded: true,
                     forwardedNewsletterMessageInfo: {
-                        newsletterJid: '120363358310754973@newsletter',
+                        newsletterJid: '120363376871871901@newsletter',
                         newsletterName: '𝖦Λ𝖱𝖥𝖨Ξ𝖫𝖣 𝖡𝖮Т',
                         serverMessageId: 143
                     }

@@ -3,7 +3,7 @@ const fg = require('api-dylux')
 const yts = require('yt-search')
 
 cmd({
-    pattern: "play4",
+    pattern: "audio",
     alias: ["ytmp3","audio3"],
     desc: "download songs",
     category: "download",
@@ -17,22 +17,13 @@ const search = await yts(q)
 const data = search.videos[0]
 const url = data.url
 
-let desc = `╭━━━〔 *𝐒𝐇𝐀𝐁𝐀𝐍-𝐒𝐎𝐁𝐗-𝐌𝐃* 〕━━━┈⊷
-┃▸╭───────────
-┃▸┃๏ *𝐌𝐔𝐒𝐈𝐂 𝐃𝐎𝐖𝐍𝐋𝐎𝐀𝐃𝐄𝐑*
-┃▸└───────────···๏
-╰────────────────┈⊷
-╭━❮ *Download Audio* ❯━┈⊷
-┃▸╭─────────────·๏
-┃▸┃๏ *Tital* - ${data.title}
-┃▸┃๏ *Views* - ${data.views}
-┃▸┃๏ *Description* - ${data.description}
-┃▸┃๏ *Duration:* ${data.timestamp}}
-┃▸┃๏ *Link* - ${data.url}
-┃▸┃๏ *Ago* - ${data.ago}
-┃▸└────────────┈⊷
-╰━━━━━━━━━━━━━━━⪼
-> *© Pᴏᴡᴇʀᴇᴅ Bʏ Mʀ Sʜᴀʙᴀɴ ♡*`
+let desc = `
+🎥 *MUSIC 𝖣𝖮𝖶𝖭𝖫𝖮𝖠𝖣𝖤𝖱*
+🎬 *Title* -  ${yts.title}
+⏳ *Duration* - ${yts.timestamp}
+👁️ *Views* -  ${yts.views}
+👤 *Author* -  ${yts.author.name}
+🔗 *Link* -  ${yts.url}`
 await conn.sendMessage(from,{image:{url: data.thumbnail},caption:desc},{quoted:mek});
 
 //download audio
@@ -42,7 +33,7 @@ let downloadUrl = down.dl_url
 
 //send audio
 await conn.sendMessage(from,{audio:{url: downloadUrl},mimetype:"audio/mpeg"},{quoted:mek})
-await conn.sendMessage(from,{document:{url: downloadUrl},mimetype:"audio/mpeg",fileName:data.title + "mp3",caption:"©ᴘᴏᴡᴇʀᴇᴅ ʙʏ Mʀ Sʜᴀʙᴀɴ"},{quoted:mek})
+await conn.sendMessage(from,{document:{url: downloadUrl},mimetype:"audio/mpeg",fileName:data.title + "mp3",caption:"ＧＡＲＦＩＥＬＤ ＢＯＴ ｖ10 🧬"},{quoted:mek})
 }catch(e){
 reply(`${e}`)
 }
@@ -51,7 +42,7 @@ reply(`${e}`)
 //===========darama-dl===========
 
 cmd({
-    pattern: "darama",
+    pattern: "yt",
     alias: ["video4","ytmp4"],    
     desc: "download video",
     category: "download",
@@ -65,22 +56,12 @@ const search = await yts(q)
 const data = search.videos[0]
 const url = data.url
 
-let des = `╭━━━〔 *𝐒𝐇𝐀𝐁𝐀𝐍-𝐒𝐎𝐁𝐗-𝐌𝐃* 〕━━━┈⊷
-┃▸╭───────────
-┃▸┃๏ *𝐕𝐈𝐃𝐄𝐎 𝐃𝐎𝐖𝐍𝐋𝐎𝐀𝐃𝐄𝐑*
-┃▸└───────────···๏
-╰────────────────┈⊷
-╭━❮ *Download Audio* ❯━┈⊷
-┃▸╭─────────────·๏
-┃▸┃๏ *Tital* - ${data.title}
-┃▸┃๏ *Views* - ${data.views}
-┃▸┃๏ *Description* - ${data.description}
-┃▸┃๏ *Duration:* ${data.timestamp}}
-┃▸┃๏ *Link* - ${data.url}
-┃▸┃๏ *Ago* - ${data.ago}
-┃▸└────────────┈⊷
-╰━━━━━━━━━━━━━━━⪼
-> *© Pᴏᴡᴇʀᴇᴅ Bʏ Mʀ Sʜᴀʙᴀɴ ♡*`
+let des = `🎥 *𝖵𝖨𝖣𝖤𝖮 𝖣𝖮𝖶𝖭𝖫𝖮𝖠𝖣𝖤𝖱*
+🎬 *Title* -  ${yts.title}
+⏳ *Duration* - ${yts.timestamp}
+👁️ *Views* -  ${yts.views}
+👤 *Author* -  ${yts.author.name}
+🔗 *Link* -  ${yts.url}`
 await conn.sendMessage(from,{image:{url: data.thumbnail},caption:des},{quoted:mek});
 
 //download video
@@ -90,7 +71,7 @@ let downloadUrl = down.dl_url
 
 //send video
 await conn.sendMessage(from,{video:{url: downloadUrl},mimetype:"video/mp4"},{quoted:mek})
-await conn.sendMessage(from,{document:{url: downloadUrl},mimetype:"video/mp4",fileName:data.title + "mp4",caption:"©ᴘᴏᴡᴇʀᴇᴅ ʙʏ Mʀ Sʜᴀʙᴀɴ"},{quoted:mek})
+await conn.sendMessage(from,{document:{url: downloadUrl},mimetype:"video/mp4",fileName:data.title + "mp4",caption:"ＧＡＲＦＩＥＬＤ ＢＯＴ ｖ10 🧬"},{quoted:mek})
     
 }catch(a){
 reply(`${a}`)
