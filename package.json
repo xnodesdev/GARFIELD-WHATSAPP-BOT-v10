@@ -9,7 +9,7 @@
     "restart": "pm2 restart GARFIELD-WHATSAPP-BOT-v10"
   },
   "dependencies": {
-  "@whiskeysockets/baileys": "6.7.9",
+  "@whiskeysockets/baileys": "6.6.0",
     "@adiwajshing/keyed-db": "^0.2.4",
     "@dark-yasiya/yt-dl.js": "1.0.5",
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
@@ -49,9 +49,6 @@
     "@mrnima/tiktok-downloader":"1.0.0",
     "@mrnima/facebook-downloader":"1.0.0",
     "mrnima-moviedl":"1.0.0"
-  }, 
-  "engines": {
-    "node": ">=20.0.0"
   }
   
 }
