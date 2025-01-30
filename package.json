@@ -23,7 +23,6 @@
     "crypto-js": "^4.1.1",
     "file_size_url": "^1.0.4",
     "fs-extra": "^11.1.0",
-    "fs": "^0.0.1-security",
     "ffmpeg": "^0.0.4",
     "file-type": "^16.5.3",
     "fluent-ffmpeg": "^2.1.2",
@@ -45,10 +44,7 @@
     "api-dylux": "^1.8.5",
     "@mrnima/tiktok-downloader": "^1.0.0",
     "@mrnima/facebook-downloader": "^1.0.0",
-    "mrnima-moviedl": "^1.0.0",
-    "@npmcli/fs": "^1.1.2",
-    "@eslint/config-array": "^2.0.0",
-    "@eslint/object-schema": "^2.1.1"
+    "mrnima-moviedl": "^1.0.0"
   },
   "engines": {
     "node": ">=18.0.0"
