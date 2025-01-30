@@ -1,0 +1,15 @@
+name: GARFIELD-WHATSAPP-BOT-v10
+services:
+  - name: GARFIELD-WHATSAPP-BOT-v10-service
+    type: web
+    ports:
+      - 5000
+    routes:
+      - path: "/"
+    build:
+      type: docker
+      dockerfile: ./Dockerfile
+    regions:
+      - fra
+      - sin
+      
