@@ -18,7 +18,7 @@
     "@whiskeysockets/baileys": "6.6.0",
     "api-dylux": "1.8.5",
     "axios": "^1.2.5",
-    "btch-downloader": "^2.2.9",
+    "btch-downloader": "2.8.4",
     "cheerio": "^1.0.0-rc.12",
     "crypto-digest-sync": "^1.0.0",
     "crypto-js": "latest",
