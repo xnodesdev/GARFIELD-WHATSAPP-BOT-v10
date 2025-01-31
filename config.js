@@ -5,7 +5,7 @@ function convertToBool(text, fault = 'true') {
 }
 
 module.exports = {
-    SESSION_ID: "Xnodes~M4xSCLiB#M6ERaAna_ZE-3fYz_gmN8M2EVNs-iuVT1iEVA7AgK1M", // add your Session Id  
+    SESSION_ID: "Xnodes~IwJAwJ6b#9Rwpk7VmszoUEy-Hwxth_3a-kZTrt0EwNP48KmBo9i8", // add your Session Id  
     AUTO_STATUS_SEEN: true,  // set to true or false for auto-seeing status
     AUTO_STATUS_REPLY: false,  // set to true if you want auto-reply on status
     AUTO_STATUS_REACT: true,  // set to true if you want auto-react on status
