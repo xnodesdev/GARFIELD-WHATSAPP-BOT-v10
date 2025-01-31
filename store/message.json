@@ -1,0 +1,89 @@
+[
+  {
+    "id": "BAE50BE2998AB48E",
+    "jid": "94711502119@s.whatsapp.net",
+    "message": {
+      "key": {
+        "remoteJid": "94711502119@s.whatsapp.net",
+        "fromMe": true,
+        "id": "BAE50BE2998AB48E"
+      },
+      "message": {
+        "extendedTextMessage": {
+          "text": "`Garfield is searching for the song... 🎵`",
+          "contextInfo": {
+            "stanzaId": "0245C47EE4177E48EED9263B6A456AF3",
+            "participant": "94711502119@s.whatsapp.net",
+            "quotedMessage": {
+              "conversation": ".play niyarata"
+            }
+          }
+        }
+      },
+      "messageTimestamp": "1738313753",
+      "status": "PENDING"
+    },
+    "timestamp": 1738313753000
+  },
+  {
+    "id": "BAE56009475C83C5",
+    "jid": "94711502119@s.whatsapp.net",
+    "message": {
+      "key": {
+        "remoteJid": "94711502119@s.whatsapp.net",
+        "fromMe": true,
+        "id": "BAE56009475C83C5"
+      },
+      "message": {
+        "audioMessage": {
+          "url": "https://mmg.whatsapp.net/v/t62.7114-24/12100912_575186501998978_783948997813575745_n.enc?ccb=11-4&oh=01_Q5AaIHq9iO_790ncrc-XEjkcOIbU2qsc3MTRb2Fzx8fWwhx-&oe=67C3FB41&_nc_sid=5e03e0&mms3=true",
+          "mimetype": "audio/mp4",
+          "fileSha256": "Wfi3hgO7+5OEinml91d6ShZKFN9neHIN+95iy9lNqVs=",
+          "fileLength": "10245782",
+          "seconds": 247,
+          "ptt": false,
+          "mediaKey": "0fR9SUjqyZgH/ShDBhtRfMdGwD5JOshcL9GbG7JaGc8=",
+          "fileEncSha256": "PBD2t8DPHy7A5s6cdE3cFbIU/dPWMQ5oOQJQVo9kd7w=",
+          "directPath": "/v/t62.7114-24/12100912_575186501998978_783948997813575745_n.enc?ccb=11-4&oh=01_Q5AaIHq9iO_790ncrc-XEjkcOIbU2qsc3MTRb2Fzx8fWwhx-&oe=67C3FB41&_nc_sid=5e03e0",
+          "mediaKeyTimestamp": "1738313767",
+          "contextInfo": {
+            "stanzaId": "0245C47EE4177E48EED9263B6A456AF3",
+            "participant": "94711502119@s.whatsapp.net",
+            "quotedMessage": {
+              "conversation": ".play niyarata"
+            }
+          }
+        }
+      },
+      "messageTimestamp": "1738313767",
+      "status": "PENDING"
+    },
+    "timestamp": 1738313767000
+  },
+  {
+    "id": "BAE533EA021BB549",
+    "jid": "94711502119@s.whatsapp.net",
+    "message": {
+      "key": {
+        "remoteJid": "94711502119@s.whatsapp.net",
+        "fromMe": true,
+        "id": "BAE533EA021BB549"
+      },
+      "message": {
+        "extendedTextMessage": {
+          "text": "✅ *SANUKA - Saragaye (සරාගයේ) Official Music Video* has been downloaded successfully!",
+          "contextInfo": {
+            "stanzaId": "0245C47EE4177E48EED9263B6A456AF3",
+            "participant": "94711502119@s.whatsapp.net",
+            "quotedMessage": {
+              "conversation": ".play niyarata"
+            }
+          }
+        }
+      },
+      "messageTimestamp": "1738313767",
+      "status": "PENDING"
+    },
+    "timestamp": 1738313767000
+  }
+]

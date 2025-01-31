@@ -1,3 +1,4 @@
+const config = require('../config')
 const { cmd, commands } = require('../command');
 const os = require("os");
 const { runtime } = require('../lib/functions');
@@ -36,7 +37,7 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sen
    *▓  Cmenu - Convert Menu* 🔄
    *▓  Fmenu - Fun Menu* 🎉
    *▓  Logo <text>* 🖌️
-   
+
 ▎ ️ＧＡＲＦＩＥＬＤ ＢＯＴ  Created by ${config.OWNER_NAME}  🪁
 ▎ ᴘᴏᴡᴇʀᴇᴅ ʙʏ 𝖦Λ𝖱𝖥𝖨Ξ𝖫𝖣 𝖡𝖮Т v10 and 
 ▎ 𝖭Ξ𝖴𝖱Λ𝖫 ΛＩ v1.00             
@@ -59,7 +60,7 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sen
                 forwardingScore: 999,
                 isForwarded: true,
                 forwardedNewsletterMessageInfo: {
-                    newsletterJid: '120363358310754973@newsletter',
+                    newsletterJid: '120363376871871901@newsletter',
                     newsletterName: 'GARFIELD-WHATSAPP-BOT-v10',
                     serverMessageId: 143
                 }

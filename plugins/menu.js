@@ -1,6 +1,7 @@
 const config = require('../config');
 const { cmd, commands } = require('../command');
 const os = require("os");
+const fs = require('fs');
 const { runtime } = require('../lib/functions');
 const axios = require('axios');
 
@@ -67,7 +68,7 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sen
    *▓  Funmenu*
    *▓  Databasemenu*
    *▓  Gamemenu*
-   
+
 ▎ ️ＧＡＲＦＩＥＬＤ ＢＯＴ  Created by ${config.OWNER_NAME} 🪁
 ▎ ᴘᴏᴡᴇʀᴇᴅ ʙʏ 𝖦Λ𝖱𝖥𝖨Ξ𝖫𝖣 𝖡𝖮Т v10 and 
 ▎ 𝖭Ξ𝖴𝖱Λ𝖫 ΛＩ v1.00             
@@ -104,7 +105,7 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sen
             { quoted: mek }
         );
 
-        
+
     } catch (e) {
         console.log(e);
         reply(`${e}`);
@@ -121,9 +122,9 @@ cmd({
     react: "⤵️",
     filename: __filename
 }, 
-async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
+async (conn, mek, m, { from, quoted, reply }) => {
     try {
-        let dec = `░░░ *ＤＯＷＮＬＯＡＤ ＭＥＮＵ* ░░░
+        const menu = `░░░ *ＤＯＷＮＬＯＡＤ ＭＥＮＵ* ░░░
 
 ◦ *Facebook* 📘  
    _Example:_ facebook [Query]  
@@ -147,12 +148,12 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sen
    _Example:_ img [Query]  
 ◦ *img* 🌠  
    _Example:_ img [Query]  
-   *song* 🎧  
+◦ *song* 🎧  
    _Example:_ spotify [Query]  
 ◦ *Spotify* 🎧  
-   _Example:_ video [Query]  
-◦ *vid* 🎬  
    _Example:_ spotify [Query]  
+◦ *vid* 🎬  
+   _Example:_ video [Query]  
 ◦ *Play* 🎮  
    _Example:_ play [Query]  
 ◦ *play2* ⚡  
@@ -178,33 +179,29 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sen
 ◦ *gdrive* 📁  
    _Example:_ gdrive [Query]  
 ✦
-░░░ n${config.BOT_NAME} ░░░
+░░░ ${config.BOT_NAME} ░░░
 > ᴘᴏᴡᴇʀᴇᴅ ʙʏ ɢᴀʀꜰɪᴇʟᴅ ʙᴏᴛ`;
 
-        await conn.sendMessage(
-            from,
-            {
-                image: { url: `${config.ALIVE_IMG}` },
-                caption: dec,
-                contextInfo: {
-                    mentionedJid: [m.sender],
-                    forwardingScore: 999,
-                    isForwarded: false,
-                    forwardedNewsletterMessageInfo: {
-                        newsletterJid: '120363376871871901@newsletter',             newsletterName: 'ᴄᴏᴅᴇᴅ ʙʏ ᴛʜᴀʀɪɴᴅᴜ ʟɪʏᴀɴᴀɢᴇ',
-                        serverMessageId: 143
-                    }
+        await conn.sendMessage(from, {
+            image: { url: config.ALIVE_IMG },
+            caption: menu,
+            contextInfo: {
+                mentionedJid: [m.sender],
+                forwardingScore: 999,
+                isForwarded: false,
+                forwardedNewsletterMessageInfo: {
+                    newsletterJid: '120363376871871901@newsletter',
+                    newsletterName: 'ᴄᴏᴅᴇᴅ ʙʏ ᴛʜᴀʀɪɴᴅᴜ ʟɪʏᴀɴᴀɢᴇ',
+                    serverMessageId: 143
                 }
-            },
-            { quoted: mek }
-        );
+            }
+        }, { quoted: mek });
 
     } catch (e) {
-        console.log(e);
-        reply(`${e}`);
+        console.error(e);
+        reply(`❌ An error occurred: ${e.message}`);
     }
 });
-
 // group menu
 
 cmd({
@@ -474,6 +471,9 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sen
 
 // main menu
 
+const googleTTS = require('google-tts-api');
+
+
 cmd({
     pattern: "menu",
     desc: "menu the bot",
@@ -483,17 +483,39 @@ cmd({
 }, 
 async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
     try {
-        let dec = `▬
-▎ Hi  ${pushname} 👋 
+        // Generate TTS voice message
+        const ttsText = `Hi ${pushname} This is Garfield whatsapp bot project by Tharidhu Liyana gay`;
+        const ttsUrl = googleTTS.getAudioUrl(ttsText, {
+            lang: 'en',
+            slow: false,
+            host: 'https://translate.google.com',
+        });
+
+        // Download the TTS audio
+        const response = await axios.get(ttsUrl, { responseType: 'arraybuffer' });
+        const ttsBuffer = Buffer.from(response.data, 'binary');
+        const ttsFilePath = 'tts.mp3';
+        fs.writeFileSync(ttsFilePath, ttsBuffer);
+
+        // Send TTS voice message
+        await conn.sendMessage(from, {
+            audio: { url: ttsFilePath },
+            mimetype: "audio/mp4",
+            ptt: true
+        }, { quoted: mek });
+
+        // Generate and send menu message
+        const menu = `▬
+▎ Hi ${pushname} 👋 
 ▎ ${config.BOT_NAME}
-▎ █ 𝗦𝗽𝗲𝗲𝗱 : 0.00119 miliseconds
-▎ █ 𝗥𝘂𝗻𝘁𝗶𝗺𝗲 : 24Hours × 7
-▎ █ 𝗕𝗼𝘁 𝗡𝗮𝗺𝗲 : ${config.BOT_NAME} 
-▎ █ 𝗢𝘄𝗻𝗲𝗿 𝗡𝗮𝗺𝗲 : ${config.OWNER_NAME}
-▎ █ 𝗢𝘄𝗻𝗲𝗿 𝗡𝘂𝗺𝗯𝗲𝗿 : ${config.OWNER_NUM}
-▎ █ 𝗛𝗼𝘀𝘁 𝗡𝗮𝗺𝗲 : ${config.OWNER_NAME}
-▎ █ 𝗣𝗹𝗮𝘁𝗳𝗼𝗿𝗺 : linux
-▎ █ 𝗧𝗼𝘁𝗮𝗹 𝗨𝘀𝗲𝗿 : Unlimited 
+▎ █ 𝗦𝗽𝗲𝗲𝗱: 0.00119 milliseconds
+▎ █ 𝗥𝘂𝗻𝘁𝗶𝗺𝗲: 24 Hours × 7
+▎ █ 𝗕𝗼𝘁 𝗡𝗮𝗺𝗲: ${config.BOT_NAME} 
+▎ █ 𝗢𝘄𝗻𝗲𝗿 𝗡𝗮𝗺𝗲: ${config.OWNER_NAME}
+▎ █ 𝗢𝘄𝗻𝗲𝗿 𝗡𝘂𝗺𝗯𝗲𝗿: ${config.OWNER_NUMBER}
+▎ █ 𝗛𝗼𝘀𝘁 𝗡𝗮𝗺𝗲: ${config.OWNER_NAME}
+▎ █ 𝗣𝗹𝗮𝘁𝗳𝗼𝗿𝗺: linux
+▎ █ 𝗧𝗼𝘁𝗮𝗹 𝗨𝘀𝗲𝗿: Unlimited 
    Ｍｅｎｕ Ｃｏｍｍａｎｄｓ🌀
    ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁ 
    *▓  Allmenu - All Menu* 📜
@@ -506,44 +528,42 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sen
    *▓  Cmenu - Convert Menu* 🔄
    *▓  Fmenu - Fun Menu* 🎉
    *▓  Logo <text>* 🖌️
-   
-▎ ️ＧＡＲＦＩＥＬＤ ＢＯＴ  Created by ${config.OWNER_NAME}  🪁
+
+▎ ️ＧＡＲＦＩΞ𝖫𝖣 𝖡𝖮Т Created by ${config.OWNER_NAME} 🪁
 ▎ ᴘᴏᴡᴇʀᴇᴅ ʙʏ 𝖦Λ𝖱𝖥𝖨Ξ𝖫𝖣 𝖡𝖮Т v10 and 
 ▎ 𝖭Ξ𝖴𝖱Λ𝖫 ΛＩ v1.00             
 ⭕►▁▁▁▁▁▁▁▁▁▁▁▁▁▁
-   ▎ ＧＡＲＦＩＥＬＤ ＢＯＴ
-   ▁▁▁▁▁▁▁▁▁▁▁▁▁▁
- ▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+▎ ＧＡＲＦＩΞ𝖫𝖣 𝖡𝖮Т
+▎ ▁▁▁▁▁▁▁▁▁▁▁▁▁▁
 ▎ 
-   █▄▄ █▀█ ▀█▀
-   █▄█ █▄█ ░█░
+█▄▄ █▀█ ▀█▀
+█▄█ █▄█ ░█░
 ⭕▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
 > ${config.DESCRIPTION}`;
 
-        await conn.sendMessage(
-            from,
-            {
-                image: { url: `${config.ALIVE_IMG}` },
-                caption: dec,
-                contextInfo: {
-                    mentionedJid: [m.sender],
-                    forwardingScore: 999,
-                    isForwarded: false,
-                    forwardedNewsletterMessageInfo: {
-                        newsletterJid: '120363376871871901@newsletter',             newsletterName: 'ᴄᴏᴅᴇᴅ ʙʏ ᴛʜᴀʀɪɴᴅᴜ ʟɪʏᴀɴᴀɢᴇ',
-                        serverMessageId: 143
-                    }
+        await conn.sendMessage(from, {
+            image: { url: config.ALIVE_IMG },
+            caption: menu,
+            contextInfo: {
+                mentionedJid: [m.sender],
+                forwardingScore: 999,
+                isForwarded: false,
+                forwardedNewsletterMessageInfo: {
+                    newsletterJid: '120363376871871901@newsletter',
+                    newsletterName: 'ᴄᴏᴅᴇᴅ ʙʏ ᴛʜᴀʀɪɴᴅᴜ ʟɪʏᴀɴᴀɢᴇ',
+                    serverMessageId: 143
                 }
-            },
-            { quoted: mek }
-        );
+            }
+        }, { quoted: mek });
+
+        // Clean up the temporary TTS file
+        fs.unlinkSync(ttsFilePath);
 
     } catch (e) {
-        console.log(e);
-        reply(`${e}`);
+        console.error(e);
+        reply(`❌ An error occurred: ${e.message}`);
     }
 });
-
 // owner menu
 
 cmd({

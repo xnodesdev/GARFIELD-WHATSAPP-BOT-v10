@@ -1,8 +1,8 @@
 const { cmd } = require("../command");
 const yts = require("yt-search");
 const axios = require("axios");
-
-// temporary songs downloader
+const NodeCache = require("node-cache");
+const cache = new NodeCache({ stdTTL: 3600 });  // Cache results for 1 hour
 
 cmd({
   pattern: "play",
@@ -19,24 +19,34 @@ cmd({
       Example .play Mal mitak ,Kasun Kalhara`);
     }
 
-    reply("`Garfield is searching Song...  🎵`");
+    reply("`Garfield is searching for the song... 🎵`");
 
-    const searchResults = await yts(searchQuery);
-    if (!searchResults.videos || searchResults.videos.length === 0) {
-      return reply(`❌ No results found for "${searchQuery}".`);
+    // Check cache for search results
+    let searchResults = cache.get(searchQuery);
+    if (!searchResults) {
+      searchResults = await yts(searchQuery);
+      if (!searchResults.videos || searchResults.videos.length === 0) {
+        return reply(`❌ No results found for "${searchQuery}".`);
+      }
+      cache.set(searchQuery, searchResults);  // Cache search results
     }
 
     const firstResult = searchResults.videos[0];
     const videoUrl = firstResult.url;
 
-    // Call the API to download the audio
-    const apiUrl = `https://api.davidcyriltech.my.id/download/ytmp3?url=${videoUrl}`;
-    const response = await axios.get(apiUrl);
-    if (!response.data.success) {
-      return reply(`❌ Failed to fetch audio for "${searchQuery}".`);
+    // Check cache for download URL
+    let audioDetails = cache.get(videoUrl);
+    if (!audioDetails) {
+      const apiUrl = `https://api.davidcyriltech.my.id/download/ytmp3?url=${videoUrl}`;
+      const response = await axios.get(apiUrl);
+      if (!response.data.success) {
+        return reply(`❌ Failed to fetch audio for "${searchQuery}".`);
+      }
+      audioDetails = response.data.result;
+      cache.set(videoUrl, audioDetails);  // Cache audio details
     }
 
-    const { title, download_url } = response.data.result;
+    const { title, download_url } = audioDetails;
 
     // Send the audio file
     await conn.sendMessage(from, {
