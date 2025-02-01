@@ -329,16 +329,16 @@ const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/
 
     // Check if the response is valid
     if (!response.data || !response.data.candidates || !response.data.candidates[0]?.content?.parts) {
-      return message.reply("❌ AI පිළිතුරු ලබා ගැනීමට අසමත් විය. 😢");
+      return reply("❌ AI පිළිතුරු ලබා ගැනීමට අසමත් විය. 😢");
     } 
     
 
     // Extract the AI response
     const aiResponse = response.data.candidates[0].content.parts[0].text;
-    await message.reply(`${aiResponse}`);
+    await reply(`${aiResponse}`);
   } catch (error) {
     console.error("Error calling Gemini API:", error);
-    message.reply("❌ Garfield AI පිළිතුරු ලබා ගැනීමට අසමත් විය. 😢");
+    reply("❌ Garfield AI පිළිතුරු ලබා ගැනීමට අසමත් විය. 😢");
   }
              }
         
