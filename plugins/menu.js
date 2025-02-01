@@ -114,7 +114,6 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sen
 
 
 // dlmenu
-
 cmd({
     pattern: "dmenu",
     desc: "menu the bot",
@@ -184,7 +183,7 @@ async (conn, mek, m, { from, quoted, reply }) => {
  await conn.sendMessage(from, { 
       image: { url: `${config.ALIVE_IMG}` },
       caption: menu
-    }), { quoted: mek });
+    }, { quoted: mek });
 
     } catch (e) {
         console.error(e);
@@ -459,9 +458,7 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sen
 });
 
 // main menu
-
 const googleTTS = require('google-tts-api');
-
 
 cmd({
     pattern: "menu",
@@ -530,10 +527,10 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sen
 ⭕▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
 > ${config.DESCRIPTION}`;
 
-       await conn.sendMessage(from, { 
-      image: { url: `${config.ALIVE_IMG}` },
-      caption: menu
-    }), { quoted: mek });
+        await conn.sendMessage(from, { 
+            image: { url: `${config.ALIVE_IMG}` },
+            caption: menu
+        }, { quoted: mek });
 
         // Clean up the temporary TTS file
         fs.unlinkSync(ttsFilePath);
@@ -544,7 +541,6 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sen
     }
 });
 // owner menu
-
 cmd({
     pattern: "omenu",
     desc: "menu the bot",
@@ -577,21 +573,19 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sen
 ◦ *jid* 🆔  
    _Example:_ jid [Query]  
 ✦
-░░░ n${config.BOT_NAME} ░░░
+░░░ ${config.BOT_NAME} ░░░
 > ${config.DESCRIPTION}`;
 
-        
-       await conn.sendMessage(from, { 
-      image: { url: `${config.ALIVE_IMG}` },
-      caption: dec
-    }), { quoted: mek });
+        await conn.sendMessage(from, { 
+            image: { url: `${config.ALIVE_IMG}` },
+            caption: dec
+        }, { quoted: mek });
 
     } catch (e) {
         console.log(e);
         reply(`${e}`);
     }
 });
-
 // convert menu
 
 cmd({
