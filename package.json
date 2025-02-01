@@ -18,7 +18,7 @@
     "@mrnima/facebook-downloader": "1.0.0",
     "@mrnima/tiktok-downloader": "1.0.0",
     "@vitalets/google-translate-api": "^9.2.0",
-    "@whiskeysockets/baileys": "6.7.12",
+    "@whiskeysockets/baileys": "npm:@whiskeysockets/baileys@6.7.12",
     "api-dylux": "1.8.5",
     "@bochilteam/scraper": "^3.0.0",
     "node-yt-dl" : "2.2.5",
@@ -53,6 +53,6 @@
     "wa-sticker-formatter": "^4.4.4",
     "wikipedia": "2.1.2",
     "yt-search": "^2.12.1",
-    "ytdl-core": "^4.11.5"
+    "ytdl-core": "npm:@distube/ytdl-core"
   }
 }
