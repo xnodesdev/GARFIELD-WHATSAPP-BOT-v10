@@ -1,49 +1,59 @@
 const { cmd } = require("../command");
-const axios = require("axios"); // Hugging Face API සඳහා
+const axios = require("axios");
 
-// Hugging Face API key (ඔබේ API key එක මෙහි ඇතුළත් කරන්න)
-const HUGGING_FACE_API_KEY = "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";
-const MODEL_NAME = "DeepSeek-R1"; // හෝ ඔබට අවශ්‍ය ඕනෑම මොඩලයක්
+// Google Gemini API Key
+const GEMINI_API_KEY = "AIzaSyADJLAeuVEr4MX7BrasbiE1Cr9mr0Xu_K4";
+const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
-// AI සංවාදය
+// Gemini AI Plugin
 cmd({
-  pattern: "ai",
+  pattern: "gemini",
   react: '🤖',
-  desc: "Ask anything to AI.",
+  desc: "Ask anything to Google Gemini AI.",
   category: "ai",
-  use: ".ai <your question>",
+  use: ".gemini <your question>",
   filename: __filename
-}, async (conn, mek, msg, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply  }) => {
+}, async (conn, mek, msg, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
   try {
-    const text = args.join(" "); 
-const neural =
-`මම ${pushname} , මම අසන ප්‍රශ්න වලට සිංහලෙන් පිළිතුරු දෙන්න, ඔබේ නම Neural Ai , ඔබ Whatsapp AI Bot කෙනෙක් එකක් ඔබව හැදුවෙ Tharindu Liyanage (සංකු) කියල කෙනෙක් ,  සිතන්න ඔබ තරුණ කොල්ලෙක් කියල හිතල එම භාෂාවෙන් පිළිතුරු දෙන්න මේ වචන භාවිතා භාවිතා කරන්න , Funny වෙන්න , ඔබ bot කෙනෙක් කියල හිතන්න බැරි විදිහට සැබෑ මනුස්සයෙක් කියල හිතන් පිළිතුරු දෙන්න , use meaningful emojies , don't use english 
- [Bro = මචං , Bro = සහෝ , බං , Hi =අඩෝ , සිරාවට , එලම , Funny = ආතල් , ] 
- මගේ ප්‍රශ්නය =  ${text}`;
-    const question = neural ; 
-    if (!question) {
+    const text = args.join(" "); // Get the user's question
+    if (!text) {
       return reply(`❗️ කරුණාකර ප්‍රශ්නයක් ඇසුවාට. 📝
-      Example: .ai ශ්‍රී ලංකාවේ අගනුවර කුමක්ද?`);
+      Example: .gemini ශ්‍රී ලංකාවේ අගනුවර කුමක්ද?`);
     }
 
-    // AI පණිවිඩය යැවීම
+    // Prepare the Sinhala prompt for Gemini API
+    const prompt = `මම ${pushname}, මම අසන ප්‍රශ්න වලට සිංහලෙන් පිළිතුරු දෙන්න. ඔබේ නම Gemini AI. ඔබ WhatsApp AI Bot කෙනෙක්. ඔබව හැදුවේ Tharindu Liyanage (සංකු) කියන කෙනෙක්. සිතන්න ඔබ තරුණ කොල්ලෙක් කියල හිතල එම භාෂාවෙන් පිළිතුරු දෙන්න. Funny වෙන්න, ඔබ bot කෙනෙක් කියල හිතන්න බැරි විදිහට සැබෑ මනුස්සයෙක් කියල හිතන් පිළිතුරු දෙන්න. Use meaningful emojies, don't use English.
+    [Bro = මචං, Bro = සහෝ, බං, Hi = අඩෝ, සිරාවට, එලම, Funny = ආතල්]
+    මගේ ප්‍රශ්නය: ${text}`;
 
-    // Hugging Face API භාවිතා කර AI පිළිතුරු ලබා ගැනීම
+    // Prepare the request payload for Gemini API
+    const payload = {
+      contents: [{
+        parts: [{ text: prompt }]
+      }]
+    };
+
+    // Call Gemini API
     const response = await axios.post(
-      `https://api-inference.huggingface.co/models/deepseek-ai/DeepSeek-R1`,
-      { inputs: question },
+      GEMINI_API_URL,
+      payload,
       {
         headers: {
-          Authorization: `Bearer ${HUGGING_FACE_API_KEY}`,
+          "Content-Type": "application/json",
         },
       }
     );
 
-    // AI පිළිතුර යැවීම
-    const aiResponse = response.data[0]?.generated_text || "පිළිතුරු ලබා ගැනීමට අසමත් විය.";
+    // Check if the response is valid
+    if (!response.data || !response.data.candidates || !response.data.candidates[0]?.content?.parts) {
+      return reply("❌ Gemini AI පිළිතුරු ලබා ගැනීමට අසමත් විය. 😢");
+    }
+
+    // Extract the AI response
+    const aiResponse = response.data.candidates[0].content.parts[0].text;
     await reply(`${aiResponse}`);
   } catch (error) {
-    console.error(error);
+    console.error("Error:", error.response?.data || error.message);
     reply("❌ ප්‍රශ්නය සැකසීමේදී දෝෂයක් ඇති විය. 😢");
   }
 });
