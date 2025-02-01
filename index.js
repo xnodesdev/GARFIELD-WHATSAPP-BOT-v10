@@ -295,15 +295,13 @@ const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/
 // Define the function to handle incoming messages
 
   // Check if the message is from a group
-  if (message.from.includes('@g.us')) {
-    // If it's a group message, ignore it
-    return;
-  }
+  
 
   const aitext = message.body.trim(); // Get the user's message text
-  if (!aitext || aitext.startsWith('.')) {
+  if (isGroup || !aitext || aitext.startsWith('.')) {
     return;
   }
+  else {
 
   // Prepare the Sinhala prompt for Gemini API
   const prompt = `මම ${pushname}, මම අසන ප්‍රශ්න වලට සිංහලෙන් පිළිතුරු දෙන්න. ඔබේ නම Garfield . ඔබ WhatsApp AI Bot කෙනෙක්. ඔබව හැදුවේ Tharindu Liyanage (සංකු) කියන කෙනෙක්. සිතන්න ඔබ තරුණ කොල්ලෙක් කියල හිතල එම භාෂාවෙන් පිළිතුරු දෙන්න. Funny වෙන්න, ඔබ bot කෙනෙක් කියල හිතන්න බැරි විදිහට සැබෑ මනුස්සයෙක් කියල හිතන් පිළිතුරු දෙන්න. Use meaningful emojis, don't use English.
@@ -332,7 +330,8 @@ const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/
     // Check if the response is valid
     if (!response.data || !response.data.candidates || !response.data.candidates[0]?.content?.parts) {
       return message.reply("❌ AI පිළිතුරු ලබා ගැනීමට අසමත් විය. 😢");
-    }
+    } 
+    
 
     // Extract the AI response
     const aiResponse = response.data.candidates[0].content.parts[0].text;
@@ -341,7 +340,7 @@ const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/
     console.error("Error calling Gemini API:", error);
     message.reply("❌ Garfield AI පිළිතුරු ලබා ගැනීමට අසමත් විය. 😢");
   }
-             
+             }
         
   //==========WORKTYPE============ 
   if(!isOwner && config.MODE === "private") return
