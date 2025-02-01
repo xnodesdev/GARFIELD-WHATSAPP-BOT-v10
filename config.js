@@ -14,7 +14,7 @@ module.exports = {
     BOT_NAME: "𝖦Λ𝖱𝖥𝖨Ξ𝖫𝖣 𝖡𝖮Т",  // add bot name for the menu
     STICKER_NAME: "GARFIELD-WHATSAPP-BOT-v10",  // set the sticker pack name
     CUSTOM_REACT: true,  // set to true for custom emoji reactions
-    CUSTOM_REACT_EMOJIS: "🦋,🐼,☘️,💬",  // choose custom react emojis
+    CUSTOM_REACT_EMOJIS: "⭐",  // choose custom react emojis
     DELETE_LINKS: false,  // set to true for automatic deletion of links without removing member
     OWNER_NUMBER: "94711502119",  // add your bot owner number
     OWNER_NAME: "@@Sanku",  // add bot owner name
@@ -25,7 +25,7 @@ module.exports = {
     AUTO_REACT: false,  // set to true or false for auto-reactions on all messages
     ANTI_BAD: false,  // set to true for anti-bad words filter
     MODE: "public",  // set the bot mode to public, private, inbox, or group
-    ANTI_LINK: true,  // set to true for anti-link protection in groups
+    ANTI_LINK: false,  // set to true for anti-link protection in groups
     AUTO_VOICE: false,  // set to true for sending automatic voices
     AUTO_STICKER: false,  // set to true for sending automatic stickers
     AUTO_REPLY: false,  // set to true for automatic text replies
