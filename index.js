@@ -202,7 +202,7 @@ Garfield Bot 🐼  is now purring contentedly and successfully connected to this
   const sender = mek.key.fromMe ? (conn.user.id.split(':')[0]+'@s.whatsapp.net' || conn.user.id) : (mek.key.participant || mek.key.remoteJid)
   const senderNumber = sender.split('@')[0]
   const botNumber = conn.user.id.split(':')[0]
-  const pushname = mek.pushName || 'Sin Nombre'
+  const pushname = mek.pushName || 'User'
   const isMe = botNumber.includes(senderNumber)
   const isOwner = ownerNumber.includes(senderNumber) || isMe
   const botNumber2 = await jidNormalizedUser(conn.user.id);
@@ -288,6 +288,7 @@ Garfield Bot 🐼  is now purring contentedly and successfully connected to this
           
 // custum react settings        
 
+
 // Google Gemini API Key
 const GEMINI_API_KEY = "AIzaSyADJLAeuVEr4MX7BrasbiE1Cr9mr0Xu_K4";
 const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
@@ -296,7 +297,7 @@ const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/
 async function handleMessage(conn, mek, msg, { from, body, reply, pushname }) {
   try {
     const text = body.trim(); // Get the user's message text
-    if (!text) {
+    if (!text || text.startsWith('.')) {
       return;
     }
 
@@ -337,11 +338,15 @@ async function handleMessage(conn, mek, msg, { from, body, reply, pushname }) {
   }
 }
 
-// Event listener for incoming messages
-conn.on('message-new', async (msg) => {
-  const { from, body, pushname } = msg;
-  await handleMessage(conn, msg, msg, { from, body, reply: (text) => conn.sendMessage(from, { text }) });
-});                      
+    // Extract the AI response
+    const aiResponse = response.data.candidates[0].content.parts[0].text;
+    await reply(`${aiResponse}`);
+  } catch (error) {
+    console.error("Error:", error.response?.data || error.message);
+    reply("❌ ප්‍රශ්නය සැකසීමේදී දෝෂයක් ඇති විය. 😢");
+  }
+}
+                  
         
   //==========WORKTYPE============ 
   if(!isOwner && config.MODE === "private") return
