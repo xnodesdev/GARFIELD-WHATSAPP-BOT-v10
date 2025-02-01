@@ -297,8 +297,8 @@ const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/
   // Check if the message is from a group
   
 
-  const aitext = message.body.trim(); // Get the user's message text
-  if (isGroup || !aitext || aitext.startsWith('.')) {
+  const aitext = body; // Get the user's message text
+  if (body == isGroup || !aitext || aitext.startsWith('.')) {
     return;
   }
   else {
