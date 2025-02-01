@@ -326,7 +326,7 @@ async function handleMessage(conn, mek, msg, { from, body, reply, pushname }) {
 
     // Check if the response is valid
     if (!response.data || !response.data.candidates || !response.data.candidates[0]?.content?.parts) {
-      return reply("❌ Gemini AI පිළිතුරු ලබා ගැනීමට අසමත් විය. 😢");
+      return reply("❌ Garfield AI පිළිතුරු ලබා ගැනීමට අසමත් විය. 😢");
     }
 
     // Extract the AI response
@@ -338,14 +338,7 @@ async function handleMessage(conn, mek, msg, { from, body, reply, pushname }) {
   }
 }
 
-    // Extract the AI response
-    const aiResponse = response.data.candidates[0].content.parts[0].text;
-    await reply(`${aiResponse}`);
-  } catch (error) {
-    console.error("Error:", error.response?.data || error.message);
-    reply("❌ ප්‍රශ්නය සැකසීමේදී දෝෂයක් ඇති විය. 😢");
-  }
-}
+ 
                   
         
   //==========WORKTYPE============ 
