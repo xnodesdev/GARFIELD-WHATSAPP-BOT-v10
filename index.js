@@ -288,29 +288,37 @@ Garfield Bot 🐼  is now purring contentedly and successfully connected to this
           
 // custum react settings        
 
-
 // Google Gemini API Key
 const GEMINI_API_KEY = "AIzaSyADJLAeuVEr4MX7BrasbiE1Cr9mr0Xu_K4";
 const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
- 
-    const aitext = body.trim(); // Get the user's message aitext
-    if (!aitext || aitext.startsWith('.')) {
-      return;
-    }
 
-    // Prepare the Sinhala prompt for Gemini API
-    const prompt = `මම ${pushname}, මම අසන ප්‍රශ්න වලට සිංහලෙන් පිළිතුරු දෙන්න. ඔබේ නම Garfield . ඔබ WhatsApp AI Bot කෙනෙක්. ඔබව හැදුවේ Tharindu Liyanage (සංකු) කියන කෙනෙක්. සිතන්න ඔබ තරුණ කොල්ලෙක් කියල හිතල එම භාෂාවෙන් පිළිතුරු දෙන්න. Funny වෙන්න, ඔබ bot කෙනෙක් කියල හිතන්න බැරි විදිහට සැබෑ මනුස්සයෙක් කියල හිතන් පිළිතුරු දෙන්න. Use meaningful emojies, don't use English.
-    [Bro = මචං, Bro = සහෝ, බං, Hi = අඩෝ, සිරාවට, එලම, Funny = ආතල්,  ]
-    මගේ ප්‍රශ්නය: ${aitext}`;
+// Define the function to handle incoming messages
 
-    // Prepare the request payload for Gemini API
-    const payload = {
-      contents: [{
-        parts: [{ aitext: prompt }]
-      }]
-    };
+  // Check if the message is from a group
+  if (message.from.includes('@g.us')) {
+    // If it's a group message, ignore it
+    return;
+  }
 
-    // Call Gemini API
+  const aitext = message.body.trim(); // Get the user's message text
+  if (!aitext || aitext.startsWith('.')) {
+    return;
+  }
+
+  // Prepare the Sinhala prompt for Gemini API
+  const prompt = `මම ${pushname}, මම අසන ප්‍රශ්න වලට සිංහලෙන් පිළිතුරු දෙන්න. ඔබේ නම Garfield . ඔබ WhatsApp AI Bot කෙනෙක්. ඔබව හැදුවේ Tharindu Liyanage (සංකු) කියන කෙනෙක්. සිතන්න ඔබ තරුණ කොල්ලෙක් කියල හිතල එම භාෂාවෙන් පිළිතුරු දෙන්න. Funny වෙන්න, ඔබ bot කෙනෙක් කියල හිතන්න බැරි විදිහට සැබෑ මනුස්සයෙක් කියල හිතන් පිළිතුරු දෙන්න. Use meaningful emojis, don't use English.
+  [Bro = මචං, Bro = සහෝ, බං, Hi = අඩෝ, සිරාවට, එලම, Funny = ආතල්,  ]
+  මගේ ප්‍රශ්නය: ${aitext}`;
+
+  // Prepare the request payload for Gemini API
+  const payload = {
+    contents: [{
+      parts: [{ text: prompt }]
+    }]
+  };
+
+  // Call Gemini API
+  try {
     const response = await axios.post(
       GEMINI_API_URL,
       payload,
@@ -323,14 +331,17 @@ const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/
 
     // Check if the response is valid
     if (!response.data || !response.data.candidates || !response.data.candidates[0]?.content?.parts) {
-      return reply("❌ Garfield AI පිළිතුරු ලබා ගැනීමට අසමත් විය. 😢");
+      return message.reply("❌ AI පිළිතුරු ලබා ගැනීමට අසමත් විය. 😢");
     }
 
     // Extract the AI response
-    const aiResponse = response.data.candidates[0].content.parts[0].aitext;
-    await reply(`${aiResponse}`);
-  
-                  
+    const aiResponse = response.data.candidates[0].content.parts[0].text;
+    await message.reply(`${aiResponse}`);
+  } catch (error) {
+    console.error("Error calling Gemini API:", error);
+    message.reply("❌ Garfield AI පිළිතුරු ලබා ගැනීමට අසමත් විය. 😢");
+  }
+             
         
   //==========WORKTYPE============ 
   if(!isOwner && config.MODE === "private") return
