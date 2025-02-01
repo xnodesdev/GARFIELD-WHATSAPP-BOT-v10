@@ -2,6 +2,7 @@
   "name": "GARFIELD-WHATSAPP-BOT-v10",
   "version": "1.0.0",
   "description": "GARFIELD-WHATSAPP-BOT-v10",
+  "depecrated": false,
   "main": "index.js",
   "scripts": {
     "start": "pm2 start index.js --deep-monitoring --attach --name GARFIELD-WHATSAPP-BOT-v10",
@@ -50,6 +51,6 @@
     "wa-sticker-formatter": "^4.4.4",
     "wikipedia": "2.1.2",
     "yt-search": "^2.12.1",
-    "ytdl-core": "npm:@distube/ytdl-core"
+    "ytdl-core": "4.11.5"
   }
 }
