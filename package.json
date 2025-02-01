@@ -30,6 +30,7 @@
     "file_size_url": "1.0.4",
     "file-type": "^16.5.3",
     "fluent-ffmpeg": "^2.1.2",
+    "btch-downloader": "2.2.9",
     "form-data": "^4.0.0",
     "fs": "^0.0.1-security",
     "fs-extra": "^11.1.0",
