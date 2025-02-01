@@ -8,9 +8,6 @@
     "stop": "pm2 stop GARFIELD-WHATSAPP-BOT-v10",
     "restart": "pm2 restart GARFIELD-WHATSAPP-BOT-v10"
   },
-    "engines": {
-        "node": ">=20.0.0"
-    },
   "dependencies": {
     "@adiwajshing/keyed-db": "^0.2.4",
     "@dark-yasiya/yt-dl.js": "1.0.5",
@@ -18,7 +15,7 @@
     "@mrnima/facebook-downloader": "1.0.0",
     "@mrnima/tiktok-downloader": "1.0.0",
     "@vitalets/google-translate-api": "^9.2.0",
-    "@whiskeysockets/baileys": "npm:@whiskeysockets/baileys@6.7.12",
+    "@whiskeysockets/baileys": "6.6.0",
     "api-dylux": "1.8.5",
     "@bochilteam/scraper": "^3.0.0",
     "node-yt-dl" : "2.2.5",
