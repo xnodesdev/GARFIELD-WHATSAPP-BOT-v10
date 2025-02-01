@@ -4,7 +4,7 @@ const os = require("os");
 const fs = require('fs');
 const { runtime } = require('../lib/functions');
 const axios = require('axios');
-
+ 
 cmd({
     pattern: "menu2",
     desc: "menu the bot",
@@ -181,21 +181,10 @@ async (conn, mek, m, { from, quoted, reply }) => {
 ✦
 ░░░ ${config.BOT_NAME} ░░░
 > ᴘᴏᴡᴇʀᴇᴅ ʙʏ ɢᴀʀꜰɪᴇʟᴅ ʙᴏᴛ`;
-
-        await conn.sendMessage(from, {
-            image: { url: config.ALIVE_IMG },
-            caption: menu,
-            contextInfo: {
-                mentionedJid: [m.sender],
-                forwardingScore: 999,
-                isForwarded: false,
-                forwardedNewsletterMessageInfo: {
-                    newsletterJid: '120363376871871901@newsletter',
-                    newsletterName: 'ᴄᴏᴅᴇᴅ ʙʏ ᴛʜᴀʀɪɴᴅᴜ ʟɪʏᴀɴᴀɢᴇ',
-                    serverMessageId: 143
-                }
-            }
-        }, { quoted: mek });
+ await conn.sendMessage(from, { 
+      image: { url: `${config.ALIVE_IMG}` },
+      caption: menu
+    }), { quoted: mek });
 
     } catch (e) {
         console.error(e);
@@ -541,20 +530,10 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sen
 ⭕▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
 > ${config.DESCRIPTION}`;
 
-        await conn.sendMessage(from, {
-            image: { url: config.ALIVE_IMG },
-            caption: menu,
-            contextInfo: {
-                mentionedJid: [m.sender],
-                forwardingScore: 999,
-                isForwarded: false,
-                forwardedNewsletterMessageInfo: {
-                    newsletterJid: '120363376871871901@newsletter',
-                    newsletterName: 'ᴄᴏᴅᴇᴅ ʙʏ ᴛʜᴀʀɪɴᴅᴜ ʟɪʏᴀɴᴀɢᴇ',
-                    serverMessageId: 143
-                }
-            }
-        }, { quoted: mek });
+       await conn.sendMessage(from, { 
+      image: { url: `${config.ALIVE_IMG}` },
+      caption: menu
+    }), { quoted: mek });
 
         // Clean up the temporary TTS file
         fs.unlinkSync(ttsFilePath);
@@ -601,23 +580,11 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sen
 ░░░ n${config.BOT_NAME} ░░░
 > ${config.DESCRIPTION}`;
 
-        await conn.sendMessage(
-            from,
-            {
-                image: { url: `${config.ALIVE_IMG}` },
-                caption: dec,
-                contextInfo: {
-                    mentionedJid: [m.sender],
-                    forwardingScore: 999,
-                    isForwarded: false,
-                    forwardedNewsletterMessageInfo: {
-                        newsletterJid: '120363376871871901@newsletter',             newsletterName: 'ᴄᴏᴅᴇᴅ ʙʏ ᴛʜᴀʀɪɴᴅᴜ ʟɪʏᴀɴᴀɢᴇ',
-                        serverMessageId: 143
-                    }
-                }
-            },
-            { quoted: mek }
-        );
+        
+       await conn.sendMessage(from, { 
+      image: { url: `${config.ALIVE_IMG}` },
+      caption: dec
+    }), { quoted: mek });
 
     } catch (e) {
         console.log(e);
