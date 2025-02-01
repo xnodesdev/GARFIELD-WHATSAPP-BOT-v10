@@ -17,6 +17,7 @@
     "@vitalets/google-translate-api": "^9.2.0",
     "@whiskeysockets/baileys": "6.6.0",
     "api-dylux": "1.8.5",
+    "node-yt-dl" : "2.2.5",
     "axios": "^1.2.5",
     "btch-downloader": "2.8.4",
     "cheerio": "^1.0.0-rc.12",
