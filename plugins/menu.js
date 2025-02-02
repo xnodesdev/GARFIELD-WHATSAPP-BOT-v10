@@ -152,76 +152,14 @@ cmd({
 }, 
 async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
     try {
-        // Generate TTS voice message
-        const ttsText = `Hi ${pushname}, this is Garfield WhatsApp bot project by Tharidhu Liyana Gamage.`;
-        const ttsUrl = googleTTS.getAudioUrl(ttsText, {
-            lang: 'en',
-            slow: false,
-            host: 'https://translate.google.com',
-        });
+        // Send voice message from data/ai.mp3
+        const voiceFilePath = 'data/ai.mp3';
 
-        // Download the TTS audio
-        const response = await axios.get(ttsUrl, { responseType: 'arraybuffer' });
-        const ttsBuffer = Buffer.from(response.data, 'binary');
-        const ttsFilePath = 'tts.mp3';
-        fs.writeFileSync(ttsFilePath, ttsBuffer);
-
-        // Send TTS voice message
         await conn.sendMessage(from, {
-            audio: { url: ttsFilePath },
+            audio: { url: voiceFilePath },
             mimetype: "audio/mp4",
             ptt: true
         }, { quoted: mek });
-
-        // Clean up the temporary TTS file
-        fs.unlinkSync(ttsFilePath);
-
-        // Generate and send menu message
-        const menu =  `▬\n▎ Hi ${pushname} 👋 \n▎ ${config.BOT_NAME}\n▎ █ 𝗦𝗽𝗲𝗲𝗱: 0.00119 milliseconds\n▎ █ 𝗥𝘂𝗻𝘁𝗶𝗺𝗲: 24 Hours × 7\n▎ █ 𝗕𝗼𝘁 𝗡𝗮𝗺𝗲: ${config.BOT_NAME} \n▎ █ 𝗢𝘄𝗻𝗲𝗿 𝗡𝗮𝗺𝗲: ${config.OWNER_NAME}\n▎ █ 𝗢𝘄𝗻𝗲𝗿 𝗡𝘂𝗺𝗯𝗲𝗿: ${config.OWNER_NUMBER}\n▎ █ 𝗛𝗼𝘀𝘁 𝗡𝗮𝗺𝗲: ${config.OWNER_NAME}\n▎ █ 𝗣𝗹𝗮𝘁𝗳𝗼𝗿𝗺: linux\n▎ █ 𝗧𝗼𝘁𝗮𝗹 𝗨𝘀𝗲𝗿: Unlimited \n   Ｍｅｎｕ Ｃｏｍｍａｎｄｓ🌀\n   ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁ \n   *▓  Allmenu - All Menu* 📜\n   *▓  Dmenu - Download Menu* 📥\n   *▓  Omenu - Other Menu* 🛠️\n   *▓  Aimenu - Ai Menu* 🤖\n   *▓  Amenu - Anime Menu* 🌸\n   *▓  Gmenu - Group Menu* 👥\n   *▓  Mmenu - Main Menu* 🏠\n   *▓  Cmenu - Convert Menu* 🔄\n   *▓  Fmenu - Fun Menu* 🎉\n   *▓  Logo <text>* 🖌️\n\n▎ ️ＧＡＲＦＩΞ𝖫𝖣 𝖡𝖮Т Created by ${config.OWNER_NAME} 🪁\n▎ ᴘᴏᴡᴇʀᴇᴅ ʙʏ 𝖦Λ𝖱𝖥𝖨Ξ𝖫𝖣 𝖡𝖮Т v10 and \n▎ 𝖭Ξ𝖴𝖱Λ𝖫 ΛＩ v1.00             \n⭕►▁▁▁▁▁▁▁▁▁▁▁▁▁▁\n▎ ＧＡＲＦＩΞ𝖫𝖣 𝖡𝖮Т\n▎ ▁▁▁▁▁▁▁▁▁▁▁▁▁▁\n▎ \n█▄▄ █▀█ ▀█▀\n█▄█ █▄█ ░█░\n⭕▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁\n> ${config.DESCRIPTION}`;
-
-        await conn.sendMessage(from, { 
-            image: { url: 'https://i.ibb.co/5g7VGhC9/Picsart-25-01-30-13-20-52-736.png' },
-            caption: menu
-        }, { quoted: mek });
-
-    } catch (e) {
-        console.error(e);
-        reply(`❌ An error occurred: ${e.message}`);
-    }
-});
-//Alive 
-cmd({
-    pattern: "alive",
-    desc: "menu the bot",
-    category: "menu",
-    react: "🗿",
-    filename: __filename
-}, 
-async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
-    try {
-        // Generate TTS voice message
-        const ttsText = `Hi ${pushname}, this is Garfield WhatsApp bot project by Tharidhu Liyana Gamage.`;
-        const ttsUrl = googleTTS.getAudioUrl(ttsText, {
-            lang: 'en',
-            slow: false,
-            host: 'https://translate.google.com',
-        });
-
-        // Download the TTS audio
-        const response = await axios.get(ttsUrl, { responseType: 'arraybuffer' });
-        const ttsBuffer = Buffer.from(response.data, 'binary');
-        const ttsFilePath = 'tts.mp3';
-        fs.writeFileSync(ttsFilePath, ttsBuffer);
-
-        // Send TTS voice message
-        await conn.sendMessage(from, {
-            audio: { url: ttsFilePath },
-            mimetype: "audio/mp4",
-            ptt: true
-        }, { quoted: mek });
-
-        // Clean up the temporary TTS file
-        fs.unlinkSync(ttsFilePath);
 
         // Generate and send menu message
         const menu = `▬\n▎ Hi ${pushname} 👋 \n▎ ${config.BOT_NAME}\n▎ █ 𝗦𝗽𝗲𝗲𝗱: 0.00119 milliseconds\n▎ █ 𝗥𝘂𝗻𝘁𝗶𝗺𝗲: 24 Hours × 7\n▎ █ 𝗕𝗼𝘁 𝗡𝗮𝗺𝗲: ${config.BOT_NAME} \n▎ █ 𝗢𝘄𝗻𝗲𝗿 𝗡𝗮𝗺𝗲: ${config.OWNER_NAME}\n▎ █ 𝗢𝘄𝗻𝗲𝗿 𝗡𝘂𝗺𝗯𝗲𝗿: ${config.OWNER_NUMBER}\n▎ █ 𝗛𝗼𝘀𝘁 𝗡𝗮𝗺𝗲: ${config.OWNER_NAME}\n▎ █ 𝗣𝗹𝗮𝘁𝗳𝗼𝗿𝗺: linux\n▎ █ 𝗧𝗼𝘁𝗮𝗹 𝗨𝘀𝗲𝗿: Unlimited \n   Ｍｅｎｕ Ｃｏｍｍａｎｄｓ🌀\n   ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁ \n   *▓  Allmenu - All Menu* 📜\n   *▓  Dmenu - Download Menu* 📥\n   *▓  Omenu - Other Menu* 🛠️\n   *▓  Aimenu - Ai Menu* 🤖\n   *▓  Amenu - Anime Menu* 🌸\n   *▓  Gmenu - Group Menu* 👥\n   *▓  Mmenu - Main Menu* 🏠\n   *▓  Cmenu - Convert Menu* 🔄\n   *▓  Fmenu - Fun Menu* 🎉\n   *▓  Logo <text>* 🖌️\n\n▎ ️ＧＡＲＦＩΞ𝖫𝖣 𝖡𝖮Т Created by ${config.OWNER_NAME} 🪁\n▎ ᴘᴏᴡᴇʀᴇᴅ ʙʏ 𝖦Λ𝖱𝖥𝖨Ξ𝖫𝖣 𝖡𝖮Т v10 and \n▎ 𝖭Ξ𝖴𝖱Λ𝖫 ΛＩ v1.00             \n⭕►▁▁▁▁▁▁▁▁▁▁▁▁▁▁\n▎ ＧＡＲＦＩΞ𝖫𝖣 𝖡𝖮Т\n▎ ▁▁▁▁▁▁▁▁▁▁▁▁▁▁\n▎ \n█▄▄ █▀█ ▀█▀\n█▄█ █▄█ ░█░\n⭕▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁\n> ${config.DESCRIPTION}`;
@@ -236,7 +174,39 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sen
         reply(`❌ An error occurred: ${e.message}`);
     }
 });
+//Alive 
 
+cmd({
+    pattern: "alive",
+    desc: "menu the bot",
+    category: "menu",
+    react: "🗿",
+    filename: __filename
+}, 
+async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
+    try {
+        // Send voice message from data/ai.mp3
+        const voiceFilePath = 'data/ai.mp3';
+
+        await conn.sendMessage(from, {
+            audio: { url: voiceFilePath },
+            mimetype: "audio/mp4",
+            ptt: true
+        }, { quoted: mek });
+
+        // Generate and send menu message
+        const menu = `▬\n▎ Hi ${pushname} 👋 \n▎ ${config.BOT_NAME}\n▎ █ 𝗦𝗽𝗲𝗲𝗱: 0.00119 milliseconds\n▎ █ 𝗥𝘂𝗻𝘁𝗶𝗺𝗲: 24 Hours × 7\n▎ █ 𝗕𝗼𝘁 𝗡𝗮𝗺𝗲: ${config.BOT_NAME} \n▎ █ 𝗢𝘄𝗻𝗲𝗿 𝗡𝗮𝗺𝗲: ${config.OWNER_NAME}\n▎ █ 𝗢𝘄𝗻𝗲𝗿 𝗡𝘂𝗺𝗯𝗲𝗿: ${config.OWNER_NUMBER}\n▎ █ 𝗛𝗼𝘀𝘁 𝗡𝗮𝗺𝗲: ${config.OWNER_NAME}\n▎ █ 𝗣𝗹𝗮𝘁𝗳𝗼𝗿𝗺: linux\n▎ █ 𝗧𝗼𝘁𝗮𝗹 𝗨𝘀𝗲𝗿: Unlimited \n   Ｍｅｎｕ Ｃｏｍｍａｎｄｓ🌀\n   ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁ \n   *▓  Allmenu - All Menu* 📜\n   *▓  Dmenu - Download Menu* 📥\n   *▓  Omenu - Other Menu* 🛠️\n   *▓  Aimenu - Ai Menu* 🤖\n   *▓  Amenu - Anime Menu* 🌸\n   *▓  Gmenu - Group Menu* 👥\n   *▓  Mmenu - Main Menu* 🏠\n   *▓  Cmenu - Convert Menu* 🔄\n   *▓  Fmenu - Fun Menu* 🎉\n   *▓  Logo <text>* 🖌️\n\n▎ ️ＧＡＲＦＩΞ𝖫𝖣 𝖡𝖮Т Created by ${config.OWNER_NAME} 🪁\n▎ ᴘᴏᴡᴇʀᴇᴅ ʙʏ 𝖦Λ𝖱𝖥𝖨Ξ𝖫𝖣 𝖡𝖮Т v10 and \n▎ 𝖭Ξ𝖴𝖱Λ𝖫 ΛＩ v1.00             \n⭕►▁▁▁▁▁▁▁▁▁▁▁▁▁▁\n▎ ＧＡＲＦＩΞ𝖫𝖣 𝖡𝖮Т\n▎ ▁▁▁▁▁▁▁▁▁▁▁▁▁▁\n▎ \n█▄▄ █▀█ ▀█▀\n█▄█ █▄█ ░█░\n⭕▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁\n> ${config.DESCRIPTION}`;
+
+        await conn.sendMessage(from, { 
+            image: { url: 'https://i.ibb.co/5g7VGhC9/Picsart-25-01-30-13-20-52-736.png' },
+            caption: menu
+        }, { quoted: mek });
+
+    } catch (e) {
+        console.error(e);
+        reply(`❌ An error occurred: ${e.message}`);
+    }
+});
 // owner menu
 cmd({
     pattern: "omenu",
