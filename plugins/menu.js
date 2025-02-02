@@ -153,7 +153,7 @@ cmd({
 async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
     try {
         // Send voice message from data/ai.mp3
-        const voiceFilePath = 'data/ai.mp3';
+        const voiceFilePath = 'data/Ai.mp3';
 
         await conn.sendMessage(from, {
             audio: { url: voiceFilePath },
@@ -186,7 +186,7 @@ cmd({
 async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
     try {
         // Send voice message from data/ai.mp3
-        const voiceFilePath = 'data/ai.mp3';
+        const voiceFilePath = 'data/Ai.mp3';
 
         await conn.sendMessage(from, {
             audio: { url: voiceFilePath },
