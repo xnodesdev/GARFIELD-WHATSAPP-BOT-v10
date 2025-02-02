@@ -147,13 +147,13 @@ cmd({
     pattern: "menu",
     desc: "menu the bot",
     category: "menu",
-    react: "🗿",
+    react: "✅",
     filename: __filename
-}, 
+},
 async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, pushname, reply }) => {
     try {
-        // Send voice message from data/ai.mp3
-        const voiceFilePath = 'data/ai.mp3';
+        // Send voice message from data/Ai.mp3
+        const voiceFilePath = 'data/Ai.mp3';
         let desc = `▬\n▎ Hi ${pushname} 👋 \n▎ ${config.BOT_NAME}\n▎ █ 𝗦𝗽𝗲𝗲𝗱: 0.00119 milliseconds\n▎ █ 𝗥𝘂𝗻𝘁𝗶𝗺𝗲: 24 Hours × 7\n▎ █ 𝗕𝗼𝘁 𝗡𝗮𝗺𝗲: ${config.BOT_NAME} \n▎ █ 𝗢𝘄𝗻𝗲𝗿 𝗡𝗮𝗺𝗲: ${config.OWNER_NAME}\n▎ █ 𝗢𝘄𝗻𝗲𝗿 𝗡𝘂𝗺𝗯𝗲𝗿: ${config.OWNER_NUMBER}\n▎ █ 𝗛𝗼𝘀𝘁 𝗡𝗮𝗺𝗲: ${config.OWNER_NAME}\n▎ █ 𝗣𝗹𝗮𝘁𝗳𝗼𝗿𝗺: linux\n▎ █ 𝗧𝗼𝘁𝗮𝗹 𝗨𝘀𝗲𝗿: Unlimited \n   Ｍｅｎｕ Ｃｏｍｍａｎｄｓ🌀\n   ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁ \n   *▓  Allmenu - All Menu* 📜\n   *▓  Dmenu - Download Menu* 📥\n   *▓  Omenu - Other Menu* 🛠️\n   *▓  Aimenu - Ai Menu* 🤖\n   *▓  Amenu - Anime Menu* 🌸\n   *▓  Gmenu - Group Menu* 👥\n   *▓  Mmenu - Main Menu* 🏠\n   *▓  Cmenu - Convert Menu* 🔄\n   *▓  Fmenu - Fun Menu* 🎉\n   *▓  Logo <text>* 🖌️\n\n▎ ️ＧＡＲＦＩΞ𝖫𝖣 𝖡𝖮Т Created by ${config.OWNER_NAME} 🪁\n▎ ᴘᴏᴡᴇʀᴇᴅ ʙʏ 𝖦Λ𝖱𝖥𝖨Ξ𝖫𝖣 𝖡𝖮Т v10 and \n▎ 𝖭Ξ𝖴𝖱Λ𝖫 ΛＩ v1.00             \n⭕►▁▁▁▁▁▁▁▁▁▁▁▁▁▁\n▎ ＧＡＲＦＩΞ𝖫𝖣 𝖡𝖮Т\n▎ ▁▁▁▁▁▁▁▁▁▁▁▁▁▁\n▎ \n█▄▄ █▀█ ▀█▀\n█▄█ █▄█ ░█░\n⭕▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁\n> ${config.DESCRIPTION}`;
 
         await conn.sendMessage(from, {
@@ -163,29 +163,26 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sen
         }, { quoted: mek });
 
         // Generate and send menu message
-
         await conn.sendMessage(from, { image: { url: 'https://i.ibb.co/5g7VGhC9/Picsart-25-01-30-13-20-52-736.png' }, caption: desc }, { quoted: mek });
-, 
-        
 
     } catch (e) {
         console.error(e);
         reply(`❌ An error occurred: ${e.message}`);
     }
 });
-//Alive 
 
+// Alive command
 cmd({
-    pattern: "menu",
+    pattern: "alive",
     desc: "menu the bot",
     category: "menu",
-    react: "🗿",
+    react: "✅",
     filename: __filename
-}, 
+},
 async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, pushname, reply }) => {
     try {
-        // Send voice message from data/ai.mp3
-        const voiceFilePath = 'data/ai.mp3';
+        // Send voice message from data/Ai.mp3
+        const voiceFilePath = 'data/Ai.mp3';
         let desc = `▬\n▎ Hi ${pushname} 👋 \n▎ ${config.BOT_NAME}\n▎ █ 𝗦𝗽𝗲𝗲𝗱: 0.00119 milliseconds\n▎ █ 𝗥𝘂𝗻𝘁𝗶𝗺𝗲: 24 Hours × 7\n▎ █ 𝗕𝗼𝘁 𝗡𝗮𝗺𝗲: ${config.BOT_NAME} \n▎ █ 𝗢𝘄𝗻𝗲𝗿 𝗡𝗮𝗺𝗲: ${config.OWNER_NAME}\n▎ █ 𝗢𝘄𝗻𝗲𝗿 𝗡𝘂𝗺𝗯𝗲𝗿: ${config.OWNER_NUMBER}\n▎ █ 𝗛𝗼𝘀𝘁 𝗡𝗮𝗺𝗲: ${config.OWNER_NAME}\n▎ █ 𝗣𝗹𝗮𝘁𝗳𝗼𝗿𝗺: linux\n▎ █ 𝗧𝗼𝘁𝗮𝗹 𝗨𝘀𝗲𝗿: Unlimited \n   Ｍｅｎｕ Ｃｏｍｍａｎｄｓ🌀\n   ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁ \n   *▓  Allmenu - All Menu* 📜\n   *▓  Dmenu - Download Menu* 📥\n   *▓  Omenu - Other Menu* 🛠️\n   *▓  Aimenu - Ai Menu* 🤖\n   *▓  Amenu - Anime Menu* 🌸\n   *▓  Gmenu - Group Menu* 👥\n   *▓  Mmenu - Main Menu* 🏠\n   *▓  Cmenu - Convert Menu* 🔄\n   *▓  Fmenu - Fun Menu* 🎉\n   *▓  Logo <text>* 🖌️\n\n▎ ️ＧＡＲＦＩΞ𝖫𝖣 𝖡𝖮Т Created by ${config.OWNER_NAME} 🪁\n▎ ᴘᴏᴡᴇʀᴇᴅ ʙʏ 𝖦Λ𝖱𝖥𝖨Ξ𝖫𝖣 𝖡𝖮Т v10 and \n▎ 𝖭Ξ𝖴𝖱Λ𝖫 ΛＩ v1.00             \n⭕►▁▁▁▁▁▁▁▁▁▁▁▁▁▁\n▎ ＧＡＲＦＩΞ𝖫𝖣 𝖡𝖮Т\n▎ ▁▁▁▁▁▁▁▁▁▁▁▁▁▁\n▎ \n█▄▄ █▀█ ▀█▀\n█▄█ █▄█ ░█░\n⭕▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁\n> ${config.DESCRIPTION}`;
 
         await conn.sendMessage(from, {
@@ -195,18 +192,13 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sen
         }, { quoted: mek });
 
         // Generate and send menu message
-
         await conn.sendMessage(from, { image: { url: 'https://i.ibb.co/5g7VGhC9/Picsart-25-01-30-13-20-52-736.png' }, caption: desc }, { quoted: mek });
-, 
-        
 
     } catch (e) {
         console.error(e);
         reply(`❌ An error occurred: ${e.message}`);
     }
 });
-
-
 
 
 
