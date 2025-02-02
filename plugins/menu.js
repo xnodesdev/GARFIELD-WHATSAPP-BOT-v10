@@ -2,116 +2,10 @@ const config = require('../config');
 const { cmd, commands } = require('../command');
 const os = require("os");
 const fs = require('fs');
+const googleTTS = require('google-tts-api');
 const { runtime } = require('../lib/functions');
 const axios = require('axios');
  
-cmd({
-    pattern: "menu2",
-    desc: "menu the bot",
-    category: "menu",
-    react: "⚡",
-    filename: __filename
-}, 
-async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
-    try {
-        let dec = `╭━━━〔 *${config.BOT_NAME}* 〕━━━┈⊷
-┃★╭──────────────
-┃★│ Owner : *${config.OWNER_NAME}*
-┃★│ Baileys : *Multi Device*
-┃★│ Type : *NodeJs*
-┃★│ Platform : *Heroku*
-┃★│ Mode : *[${config.MODE}]*
-┃★│ Prifix : *[${config.PREFIX}]*
-┃★│ Version : *V.5 Bᴇᴛᴀ*
-┃★╰──────────────
-╰━━━━━━━━━━━━━━━┈⊷
-╭━━〔 *𝐌𝐄𝐍𝐔 𝐋𝐈𝐒𝐓* 〕━━┈⊷
-┃◈╭─────────────·๏
-┃◈┃• surahmenu
-┃◈┃• prayertime
-┃◈┃• aimenu
-┃◈┃• anmiemenu
-┃◈┃• convertmenu
-┃◈┃• funmenu
-┃◈┃• dlmenu
-┃◈┃• listcmd
-┃◈┃• mainmenu
-┃◈┃• groupmenu
-┃◈┃• allmenu
-┃◈┃• ownermenu
-┃◈┃• othermenu
-┃◈┃• logo <text>
-┃◈┃• repo
-┃◈└───────────┈⊷
-╰──────────────┈⊷
-> ${config.DESCRIPTION}
-
-
-▬
-▎ Hi 👋 
-▎ ${config.BOT_NAME}
-▎ █ 𝗦𝗽𝗲𝗲𝗱 : 0.00119 miliseconds
-▎ █ 𝗥𝘂𝗻𝘁𝗶𝗺𝗲 : 24 × 7 Hours 
-▎ █ 𝗕𝗼𝘁 𝗡𝗮𝗺𝗲 : ${config.BOT_NAME} 
-▎ █ 𝗢𝘄𝗻𝗲𝗿 𝗡𝗮𝗺𝗲 : ${config.OWNER_NAME}
-▎ █ 𝗢𝘄𝗻𝗲𝗿 𝗡𝘂𝗺𝗯𝗲𝗿 : ${config.OWNER_NUM}
-▎ █ 𝗛𝗼𝘀𝘁 𝗡𝗮𝗺𝗲 : ${config.OWNER_NAME}
-▎ █ 𝗣𝗹𝗮𝘁𝗳𝗼𝗿𝗺 : linux
-▎ █ 𝗧𝗼𝘁𝗮𝗹 𝗨𝘀𝗲𝗿 : 11
-   Ｍｅｎｕ Ｃｏｍｍａｎｄｓ🌀
-   ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁ 
-   *▓  AllMenu* 
-   *▓  DMenu*
-   *▓  Searchmenu*
-   *▓  mainimenu*
-   *▓  Convertmenu*
-   *▓  Funmenu*
-   *▓  Databasemenu*
-   *▓  Gamemenu*
-
-▎ ️ＧＡＲＦＩＥＬＤ ＢＯＴ  Created by ${config.OWNER_NAME} 🪁
-▎ ᴘᴏᴡᴇʀᴇᴅ ʙʏ 𝖦Λ𝖱𝖥𝖨Ξ𝖫𝖣 𝖡𝖮Т v10 and 
-▎ 𝖭Ξ𝖴𝖱Λ𝖫 ΛＩ v1.00             
-⭕►▁▁▁▁▁▁▁▁▁▁▁▁▁▁
-   ▎ ＧＡＲＦＩＥＬＤ ＢＯＴ
-   ▁▁▁▁▁▁▁▁▁▁▁▁▁▁
- ▁▁▁▁▁▁▁▁▁▁▁▁▁▁
-▎ 
-   █▄▄ █▀█ ▀█▀
-   █▄█ █▄█ ░█░
-⭕▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
-
-
-
-
-`;
-
-        await conn.sendMessage(
-            from,
-            {
-                image: { url: `${config.ALIVE_IMG}` },
-                caption: dec,
-                contextInfo: {
-                    mentionedJid: [m.sender],
-                    forwardingScore: 999,
-                    isForwarded: false,
-                    forwardedNewsletterMessageInfo: {
-                        newsletterJid: '120363376871871901@newsletter',
-                        newsletterName: '© ᴄᴏᴅᴇᴅ ʙʏ ᴛʜᴀʀɪɴᴅᴜ ʟɪʏᴀɴᴀɢᴇ',
-                        serverMessageId: 143
-                    }
-                }
-            },
-            { quoted: mek }
-        );
-
-
-    } catch (e) {
-        console.log(e);
-        reply(`${e}`);
-    }
-});
-
 
 // dlmenu
 cmd({
@@ -123,65 +17,9 @@ cmd({
 }, 
 async (conn, mek, m, { from, quoted, reply }) => {
     try {
-        const menu = `░░░ *ＤＯＷＮＬＯＡＤ ＭＥＮＵ* ░░░
-
-◦ *Facebook* 📘  
-   _Example:_ facebook [Query]  
-◦ *fb* 🌐  
-   _Example:_ fb [Query]  
-◦ *Mediafire* 📂  
-   _Example:_ mediafire [Query]  
-◦ *TikTok* 🎵  
-   _Example:_ tiktok [Query]  
-◦ *tt* 📲  
-   _Example:_ tt [Query]  
-◦ *Twitter* 🐦  
-   _Example:_ twitter [Query]  
-◦ *Instagram* 📸  
-   _Example:_ insta [Query]  
-◦ *Insta* 🌟  
-   _Example:_ insta [Query]  
-◦ *APK* 📱  
-   _Example:_ apk [Query]  
-◦ *Images* 🖼️  
-   _Example:_ img [Query]  
-◦ *img* 🌠  
-   _Example:_ img [Query]  
-◦ *song* 🎧  
-   _Example:_ spotify [Query]  
-◦ *Spotify* 🎧  
-   _Example:_ spotify [Query]  
-◦ *vid* 🎬  
-   _Example:_ video [Query]  
-◦ *Play* 🎮  
-   _Example:_ play [Query]  
-◦ *play2* ⚡  
-   _Example:_ play2 [Query]  
-◦ *play5* 🚀  
-   _Example:_ play5 [Query]  
-◦ *Video* 🎥  
-   _Example:_ video [Query]  
-◦ *video2* 🎬  
-   _Example:_ video2 [Query]  
-◦ *Drama* 🎭  
-   _Example:_ drama [Query]  
-◦ *YouTube MP3* 🎶  
-   _Example:_ ytmp3 [Query]  
-◦ *ytmp3* 🎧  
-◦ *YouTube MP4* 📺  
-   _Example:_ ytmp4 [Query]  
-◦ *ytmp4* 📼  
-◦ *Git* 💻  
-   _Example:_ git [Query]  
-◦ *Google Drive* 📂  
-   _Example:_ gdrive [Query]  
-◦ *gdrive* 📁  
-   _Example:_ gdrive [Query]  
-✦
-░░░ ${config.BOT_NAME} ░░░
-> ᴘᴏᴡᴇʀᴇᴅ ʙʏ ɢᴀʀꜰɪᴇʟᴅ ʙᴏᴛ`;
+        const menu = '░░░ *ＤＯＷＮＬＯＡＤ ＭＥＮＵ* ░░░\n\n◦ *Facebook* 📘  \n   _Example:_ facebook [Query]  \n◦ *fb* 🌐  \n   _Example:_ fb [Query]  \n◦ *Mediafire* 📂  \n   _Example:_ mediafire [Query]  \n◦ *TikTok* 🎵  \n   _Example:_ tiktok [Query]  \n◦ *tt* 📲  \n   _Example:_ tt [Query]  \n◦ *Twitter* 🐦  \n   _Example:_ twitter [Query]  \n◦ *Instagram* 📸  \n   _Example:_ insta [Query]  \n◦ *Insta* 🌟  \n   _Example:_ insta [Query]  \n◦ *APK* 📱  \n   _Example:_ apk [Query]  \n◦ *Images* 🖼️  \n   _Example:_ img [Query]  \n◦ *img* 🌠  \n   _Example:_ img [Query]  \n◦ *song* 🎧  \n   _Example:_ spotify [Query]  \n◦ *Spotify* 🎧  \n   _Example:_ spotify [Query]  \n◦ *vid* 🎬  \n   _Example:_ video [Query]  \n◦ *Play* 🎮  \n   _Example:_ play [Query]  \n◦ *play2* ⚡  \n   _Example:_ play2 [Query]  \n◦ *play5* 🚀  \n   _Example:_ play5 [Query]  \n◦ *Video* 🎥  \n   _Example:_ video [Query]  \n◦ *video2* 🎬  \n   _Example:_ video2 [Query]  \n◦ *Drama* 🎭  \n   _Example:_ drama [Query]  \n◦ *YouTube MP3* 🎶  \n   _Example:_ ytmp3 [Query]  \n◦ *ytmp3* 🎧  \n◦ *YouTube MP4* 📺  \n   _Example:_ ytmp4 [Query]  \n◦ *ytmp4* 📼  \n◦ *Git* 💻  \n   _Example:_ git [Query]  \n◦ *Google Drive* 📂  \n   _Example:_ gdrive [Query]  \n◦ *gdrive* 📁  \n   _Example:_ gdrive [Query]  \n✦\n░░░ ${config.BOT_NAME} ░░░\n> ᴘᴏᴡᴇʀᴇᴅ ʙʏ ɢᴀʀꜰɪᴇʟᴅ ʙᴏᴛ';
  await conn.sendMessage(from, { 
-      image: { url: `${config.ALIVE_IMG}` },
+      image: { url: 'https://i.ibb.co/5g7VGhC9/Picsart-25-01-30-13-20-52-736.png' },
       caption: menu
     }, { quoted: mek });
 
@@ -202,84 +40,12 @@ cmd({
 async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
     try
        {
-        let dec = `░░░ *𝗚𝗥𝗢𝗨𝗣 𝗠𝗘𝗡𝗨* ░░░
-
-◦ *grouplink* 🔗  
-   _Example:_ grouplink [Query]  
-◦ *kickall* 🚫  
-   _Example:_ kickall [Query]  
-◦ *kickall2* 🚫  
-   _Example:_ kickall2 [Query]  
-◦ *kickall3* 🚫  
-   _Example:_ kickall3 [Query]  
-◦ *add* ➕  
-   _Example:_ add [Query]  
-◦ *remove* ➖  
-   _Example:_ remove [Query]  
-◦ *kick* 👢  
-   _Example:_ kick [Query]  
-◦ *promote* ⬆️  
-   _Example:_ promote [Query]  
-◦ *demote* ⬇️  
-   _Example:_ demote [Query]  
-◦ *dismiss* 🚪  
-   _Example:_ dismiss [Query]  
-◦ *revoke* ⛔  
-   _Example:_ revoke [Query]  
-◦ *setgoodbye* 👋  
-   _Example:_ setgoodbye [Query]  
-◦ *setwelcome* 🎉  
-   _Example:_ setwelcome [Query]  
-◦ *delete* 🗑️  
-   _Example:_ delete [Query]  
-◦ *getpic* 📸  
-   _Example:_ getpic [Query]  
-◦ *ginfo* ℹ️  
-   _Example:_ ginfo [Query]  
-◦ *disappear on* 🌟  
-   _Example:_ disappear on [Query]  
-◦ *disappear off* 💨  
-   _Example:_ disappear off [Query]  
-◦ *disappear 7D,24H* ⏰  
-   _Example:_ disappear 7D,24H [Query]  
-◦ *allreq* 🌐  
-   _Example:_ allreq [Query]  
-◦ *updategname* 📝  
-   _Example:_ updategname [Query]  
-◦ *updategdesc* 📄  
-   _Example:_ updategdesc [Query]  
-◦ *joinrequests* 📩  
-   _Example:_ joinrequests [Query]  
-◦ *senddm* ✉️  
-   _Example:_ senddm [Query]  
-◦ *nikal* 🚪  
-   _Example:_ nikal [Query]  
-◦ *mute* 🔇  
-   _Example:_ mute [Query]  
-◦ *unmute* 🔊  
-   _Example:_ unmute [Query]  
-◦ *lockgc* 🔒  
-   _Example:_ lockgc [Query]  
-◦ *unlockgc* 🔓  
-   _Example:_ unlockgc [Query]  
-◦ *invite* ✉️  
-   _Example:_ invite [Query]  
-◦ *tag* 🏷️  
-   _Example:_ tag [Query]  
-◦ *hidetag* 👀  
-   _Example:_ hidetag [Query]  
-◦ *tagall* 📢  
-   _Example:_ tagall [Query]  
-◦ *tagadmins* 🛡️  
-   _Example:_ tagadmins [Query]  
-✦
-░░░ n${config.BOT_NAME} ░░░
-> ${config.DESCRIPTION}`;
+        let dec =   '░░░ *𝗚𝗥𝗢𝗨𝗣 𝗠𝗘𝗡𝗨* ░░░\n\n◦ *grouplink* 🔗  \n   _Example:_ grouplink [Query]  \n◦ *kickall* 🚫  \n   _Example:_ kickall [Query]  \n◦ *kickall2* 🚫  \n   _Example:_ kickall2 [Query]  \n◦ *kickall3* 🚫  \n   _Example:_ kickall3 [Query]  \n◦ *add* ➕  \n   _Example:_ add [Query]  \n◦ *remove* ➖  \n   _Example:_ remove [Query]  \n◦ *kick* 👢  \n   _Example:_ kick [Query]  \n◦ *promote* ⬆️  \n   _Example:_ promote [Query]  \n◦ *demote* ⬇️  \n   _Example:_ demote [Query]  \n◦ *dismiss* 🚪  \n   _Example:_ dismiss [Query]  \n◦ *revoke* ⛔  \n   _Example:_ revoke [Query]  \n◦ *setgoodbye* 👋  \n   _Example:_ setgoodbye [Query]  \n◦ *setwelcome* 🎉  \n   _Example:_ setwelcome [Query]  \n◦ *delete* 🗑️  \n   _Example:_ delete [Query]  \n◦ *getpic* 📸  \n   _Example:_ getpic [Query]  \n◦ *ginfo* ℹ️  \n   _Example:_ ginfo [Query]  \n◦ *disappear on* 🌟  \n   _Example:_ disappear on [Query]  \n◦ *disappear off* 💨  \n   _Example:_ disappear off [Query]  \n◦ *disappear 7D,24H* ⏰  \n   _Example:_ disappear 7D,24H [Query]  \n◦ *allreq* 🌐  \n   _Example:_ allreq [Query]  \n◦ *updategname* 📝  \n   _Example:_ updategname [Query]  \n◦ *updategdesc* 📄  \n   _Example:_ updategdesc [Query]  \n◦ *joinrequests* 📩  \n   _Example:_ joinrequests [Query]  \n◦ *senddm* ✉️  \n   _Example:_ senddm [Query]  \n◦ *nikal* 🚪  \n   _Example:_ nikal [Query]  \n◦ *mute* 🔇  \n   _Example:_ mute [Query]  \n◦ *unmute* 🔊  \n   _Example:_ unmute [Query]  \n◦ *lockgc* 🔒  \n   _Example:_ lockgc [Query]  \n◦ *unlockgc* 🔓  \n   _Example:_ unlockgc [Query]  \n◦ *invite* ✉️  \n   _Example:_ invite [Query]  \n◦ *tag* 🏷️  \n   _Example:_ tag [Query]  \n◦ *hidetag* 👀  \n   _Example:_ hidetag [Query]  \n◦ *tagall* 📢  \n   _Example:_ tagall [Query]  \n◦ *tagadmins* 🛡️  \n   _Example:_ tagadmins [Query]  \n✦\n░░░ n${config.BOT_NAME} ░░░\n> ${config.DESCRIPTION}';
 
         await conn.sendMessage(
             from,
             {
-                image: { url: `${config.ALIVE_IMG}` },
+                image: { url: 'https://i.ibb.co/5g7VGhC9/Picsart-25-01-30-13-20-52-736.png' },
                 caption: dec,
                 contextInfo: {
                     mentionedJid: [m.sender],
@@ -312,58 +78,12 @@ cmd({
 async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
     try {
 
-        let dec = `░░░ 𝗙𝗨𝗡 𝗠𝗘𝗡𝗨 ░░░
-
-◦ *insult* 🗣️  
-   _Example:_ insult [Query]  
-◦ *pickup* 💬  
-   _Example:_ pickup [Query]  
-◦ *ship* 🚢  
-   _Example:_ ship [Query]  
-◦ *character* 🎭  
-   _Example:_ character [Query]  
-◦ *hack* 💻  
-   _Example:_ hack [Query]  
-◦ *joke* 😂  
-   _Example:_ joke [Query]  
-◦ *hrt* 💔  
-   _Example:_ hrt [Query]  
-◦ *hpy* 😊  
-   _Example:_ hpy [Query]  
-◦ *syd* 😢  
-   _Example:_ syd [Query]  
-◦ *anger* 😡  
-   _Example:_ anger [Query]  
-◦ *shy* 😳  
-   _Example:_ shy [Query]  
-◦ *kiss* 💋  
-   _Example:_ kiss [Query]  
-◦ *mon* 👾  
-   _Example:_ mon [Query]  
-◦ *cunfuzed* 😕  
-   _Example:_ cunfuzed [Query]  
-◦ *setpp* 📸  
-   _Example:_ setpp [Query]  
-◦ *hand* 🤚  
-   _Example:_ hand [Query]  
-◦ *nikal* 🚪  
-   _Example:_ nikal [Query]  
-◦ *hold* ✋  
-   _Example:_ hold [Query]  
-◦ *hug* 🤗  
-   _Example:_ hug [Query]  
-◦ *hifi* ✋  
-   _Example:_ hifi [Query]  
-◦ *poke* 👉  
-   _Example:_ poke [Query]  
-✦
-░░░ ${config.BOT_NAME} ░░░
-> ${config.DESCRIPTION}`;
+        let dec = '░░░ 𝗙𝗨𝗡 𝗠𝗘𝗡𝗨 ░░░\n\n◦ *insult* 🗣️  \n   _Example:_ insult [Query]  \n◦ *pickup* 💬  \n   _Example:_ pickup [Query]  \n◦ *ship* 🚢  \n   _Example:_ ship [Query]  \n◦ *character* 🎭  \n   _Example:_ character [Query]  \n◦ *hack* 💻  \n   _Example:_ hack [Query]  \n◦ *joke* 😂  \n   _Example:_ joke [Query]  \n◦ *hrt* 💔  \n   _Example:_ hrt [Query]  \n◦ *hpy* 😊  \n   _Example:_ hpy [Query]  \n◦ *syd* 😢  \n   _Example:_ syd [Query]  \n◦ *anger* 😡  \n   _Example:_ anger [Query]  \n◦ *shy* 😳  \n   _Example:_ shy [Query]  \n◦ *kiss* 💋  \n   _Example:_ kiss [Query]  \n◦ *mon* 👾  \n   _Example:_ mon [Query]  \n◦ *cunfuzed* 😕  \n   _Example:_ cunfuzed [Query]  \n◦ *setpp* 📸  \n   _Example:_ setpp [Query]  \n◦ *hand* 🤚  \n   _Example:_ hand [Query]  \n◦ *nikal* 🚪  \n   _Example:_ nikal [Query]  \n◦ *hold* ✋  \n   _Example:_ hold [Query]  \n◦ *hug* 🤗  \n   _Example:_ hug [Query]  \n◦ *hifi* ✋  \n   _Example:_ hifi [Query]  \n◦ *poke* 👉  \n   _Example:_ poke [Query]  \n✦\n░░░ ${config.BOT_NAME} ░░░\n> ${config.DESCRIPTION}';
 
         await conn.sendMessage(
             from,
             {
-                image: { url: `${config.ALIVE_IMG}` },
+                image: { url: 'https://i.ibb.co/5g7VGhC9/Picsart-25-01-30-13-20-52-736.png' },
                 caption: dec,
                 contextInfo: {
                     mentionedJid: [m.sender],
@@ -395,48 +115,12 @@ cmd({
 }, 
 async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
     try {
-        let dec = `░░ ⬤ 𝗢𝘁𝗵𝗲𝗿 𝗠𝗲𝗻𝘂 ⬤ ░░
-
-◦ *vv* 🎥  
-   _Example:_ vv [Query]  
-◦ *pair* 💑  
-   _Example:_ pair [Query]  
-◦ *pair2* 💏  
-   _Example:_ pair2 [Query]  
-◦ *fact* 📜  
-   _Example:_ fact [Query]  
-◦ *fancy* ✨  
-   _Example:_ fancy [Query]  
-◦ *define* 📖  
-   _Example:_ define [Query]  
-◦ *news* 📰  
-   _Example:_ news [Query]  
-◦ *movie* 🎬  
-   _Example:_ movie [Query]  
-◦ *weather* 🌤️  
-   _Example:_ weather [Query]  
-◦ *srepo* 📑  
-   _Example:_ srepo [Query]  
-◦ *insult* 🗣️  
-   _Example:_ insult [Query]  
-◦ *save* 💾  
-   _Example:_ save [Query]  
-◦ *wikipedia* 🌐  
-   _Example:_ wikipedia [Query]  
-◦ *gpass* 🔑  
-   _Example:_ gpass [Query]  
-◦ *githubstalk* 🕵️  
-   _Example:_ githubstalk [Query]  
-◦ *yts link* 📎  
-   _Example:_ yts link [Query]  
-✦
-░░░ ${config.BOT_NAME} ░░░
-> ${config.DESCRIPTION}`;
+        let dec = '░░ ⬤ 𝗢𝘁𝗵𝗲𝗿 𝗠𝗲𝗻𝘂 ⬤ ░░\n\n◦ *vv* 🎥  \n   _Example:_ vv [Query]  \n◦ *pair* 💑  \n   _Example:_ pair [Query]  \n◦ *pair2* 💏  \n   _Example:_ pair2 [Query]  \n◦ *fact* 📜  \n   _Example:_ fact [Query]  \n◦ *fancy* ✨  \n   _Example:_ fancy [Query]  \n◦ *define* 📖  \n   _Example:_ define [Query]  \n◦ *news* 📰  \n   _Example:_ news [Query]  \n◦ *movie* 🎬  \n   _Example:_ movie [Query]  \n◦ *weather* 🌤️  \n   _Example:_ weather [Query]  \n◦ *srepo* 📑  \n   _Example:_ srepo [Query]  \n◦ *insult* 🗣️  \n   _Example:_ insult [Query]  \n◦ *save* 💾  \n   _Example:_ save [Query]  \n◦ *wikipedia* 🌐  \n   _Example:_ wikipedia [Query]  \n◦ *gpass* 🔑  \n   _Example:_ gpass [Query]  \n◦ *githubstalk* 🕵️  \n   _Example:_ githubstalk [Query]  \n◦ *yts link* 📎  \n   _Example:_ yts link [Query]  \n✦\n░░░ ${config.BOT_NAME} ░░░\n> ${config.DESCRIPTION}' ;
 
         await conn.sendMessage(
             from,
             {
-                image: { url: `${config.ALIVE_IMG}` },
+                image: { url: 'https://i.ibb.co/5g7VGhC9/Picsart-25-01-30-13-20-52-736.png' },
                 caption: dec,
                 contextInfo: {
                     mentionedJid: [m.sender],
@@ -458,7 +142,6 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sen
 });
 
 // main menu
-const googleTTS = require('google-tts-api');
 
 cmd({
     pattern: "menu",
@@ -470,7 +153,7 @@ cmd({
 async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
     try {
         // Generate TTS voice message
-        const ttsText = `Hi ${pushname} This is Garfield whatsapp bot project by Tharidhu Liyana gay`;
+        const ttsText = `Hi ${pushname}, this is Garfield WhatsApp bot project by Tharidhu Liyana Gamage.`;
         const ttsUrl = googleTTS.getAudioUrl(ttsText, {
             lang: 'en',
             slow: false,
@@ -490,56 +173,70 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sen
             ptt: true
         }, { quoted: mek });
 
-        // Generate and send menu message
-        const menu = `▬
-▎ Hi ${pushname} 👋 
-▎ ${config.BOT_NAME}
-▎ █ 𝗦𝗽𝗲𝗲𝗱: 0.00119 milliseconds
-▎ █ 𝗥𝘂𝗻𝘁𝗶𝗺𝗲: 24 Hours × 7
-▎ █ 𝗕𝗼𝘁 𝗡𝗮𝗺𝗲: ${config.BOT_NAME} 
-▎ █ 𝗢𝘄𝗻𝗲𝗿 𝗡𝗮𝗺𝗲: ${config.OWNER_NAME}
-▎ █ 𝗢𝘄𝗻𝗲𝗿 𝗡𝘂𝗺𝗯𝗲𝗿: ${config.OWNER_NUMBER}
-▎ █ 𝗛𝗼𝘀𝘁 𝗡𝗮𝗺𝗲: ${config.OWNER_NAME}
-▎ █ 𝗣𝗹𝗮𝘁𝗳𝗼𝗿𝗺: linux
-▎ █ 𝗧𝗼𝘁𝗮𝗹 𝗨𝘀𝗲𝗿: Unlimited 
-   Ｍｅｎｕ Ｃｏｍｍａｎｄｓ🌀
-   ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁ 
-   *▓  Allmenu - All Menu* 📜
-   *▓  Dmenu - Download Menu* 📥
-   *▓  Omenu - Other Menu* 🛠️
-   *▓  Aimenu - Ai Menu* 🤖
-   *▓  Amenu - Anime Menu* 🌸
-   *▓  Gmenu - Group Menu* 👥
-   *▓  Mmenu - Main Menu* 🏠
-   *▓  Cmenu - Convert Menu* 🔄
-   *▓  Fmenu - Fun Menu* 🎉
-   *▓  Logo <text>* 🖌️
-
-▎ ️ＧＡＲＦＩΞ𝖫𝖣 𝖡𝖮Т Created by ${config.OWNER_NAME} 🪁
-▎ ᴘᴏᴡᴇʀᴇᴅ ʙʏ 𝖦Λ𝖱𝖥𝖨Ξ𝖫𝖣 𝖡𝖮Т v10 and 
-▎ 𝖭Ξ𝖴𝖱Λ𝖫 ΛＩ v1.00             
-⭕►▁▁▁▁▁▁▁▁▁▁▁▁▁▁
-▎ ＧＡＲＦＩΞ𝖫𝖣 𝖡𝖮Т
-▎ ▁▁▁▁▁▁▁▁▁▁▁▁▁▁
-▎ 
-█▄▄ █▀█ ▀█▀
-█▄█ █▄█ ░█░
-⭕▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
-> ${config.DESCRIPTION}`;
-
-        await conn.sendMessage(from, { 
-            image: { url: `${config.ALIVE_IMG}` },
-            caption: menu
-        }, { quoted: mek });
-
         // Clean up the temporary TTS file
         fs.unlinkSync(ttsFilePath);
+
+        // Generate and send menu message
+        const menu = ' `▬\n▎ Hi ${pushname} 👋 \n▎ ${config.BOT_NAME}\n▎ █ 𝗦𝗽𝗲𝗲𝗱: 0.00119 milliseconds\n▎ █ 𝗥𝘂𝗻𝘁𝗶𝗺𝗲: 24 Hours × 7\n▎ █ 𝗕𝗼𝘁 𝗡𝗮𝗺𝗲: ${config.BOT_NAME} \n▎ █ 𝗢𝘄𝗻𝗲𝗿 𝗡𝗮𝗺𝗲: ${config.OWNER_NAME}\n▎ █ 𝗢𝘄𝗻𝗲𝗿 𝗡𝘂𝗺𝗯𝗲𝗿: ${config.OWNER_NUMBER}\n▎ █ 𝗛𝗼𝘀𝘁 𝗡𝗮𝗺𝗲: ${config.OWNER_NAME}\n▎ █ 𝗣𝗹𝗮𝘁𝗳𝗼𝗿𝗺: linux\n▎ █ 𝗧𝗼𝘁𝗮𝗹 𝗨𝘀𝗲𝗿: Unlimited \n   Ｍｅｎｕ Ｃｏｍｍａｎｄｓ🌀\n   ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁ \n   *▓  Allmenu - All Menu* 📜\n   *▓  Dmenu - Download Menu* 📥\n   *▓  Omenu - Other Menu* 🛠️\n   *▓  Aimenu - Ai Menu* 🤖\n   *▓  Amenu - Anime Menu* 🌸\n   *▓  Gmenu - Group Menu* 👥\n   *▓  Mmenu - Main Menu* 🏠\n   *▓  Cmenu - Convert Menu* 🔄\n   *▓  Fmenu - Fun Menu* 🎉\n   *▓  Logo <text>* 🖌️\n\n▎ ️ＧＡＲＦＩΞ𝖫𝖣 𝖡𝖮Т Created by ${config.OWNER_NAME} 🪁\n▎ ᴘᴏᴡᴇʀᴇᴅ ʙʏ 𝖦Λ𝖱𝖥𝖨Ξ𝖫𝖣 𝖡𝖮Т v10 and \n▎ 𝖭Ξ𝖴𝖱Λ𝖫 ΛＩ v1.00             \n⭕►▁▁▁▁▁▁▁▁▁▁▁▁▁▁\n▎ ＧＡＲＦＩΞ𝖫𝖣 𝖡𝖮Т\n▎ ▁▁▁▁▁▁▁▁▁▁▁▁▁▁\n▎ \n█▄▄ █▀█ ▀█▀\n█▄█ █▄█ ░█░\n⭕▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁\n> ${config.DESCRIPTION}`';
+
+        await conn.sendMessage(from, { 
+            image: { url: 'https://i.ibb.co/5g7VGhC9/Picsart-25-01-30-13-20-52-736.png' },
+            caption: menu
+        }, { quoted: mek });
 
     } catch (e) {
         console.error(e);
         reply(`❌ An error occurred: ${e.message}`);
     }
 });
+//Alive 
+cmd({
+    pattern: "alive",
+    desc: "menu the bot",
+    category: "menu",
+    react: "🗿",
+    filename: __filename
+}, 
+async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
+    try {
+        // Generate TTS voice message
+        const ttsText = `Hi ${pushname}, this is Garfield WhatsApp bot project by Tharidhu Liyana Gamage.`;
+        const ttsUrl = googleTTS.getAudioUrl(ttsText, {
+            lang: 'en',
+            slow: false,
+            host: 'https://translate.google.com',
+        });
+
+        // Download the TTS audio
+        const response = await axios.get(ttsUrl, { responseType: 'arraybuffer' });
+        const ttsBuffer = Buffer.from(response.data, 'binary');
+        const ttsFilePath = 'tts.mp3';
+        fs.writeFileSync(ttsFilePath, ttsBuffer);
+
+        // Send TTS voice message
+        await conn.sendMessage(from, {
+            audio: { url: ttsFilePath },
+            mimetype: "audio/mp4",
+            ptt: true
+        }, { quoted: mek });
+
+        // Clean up the temporary TTS file
+        fs.unlinkSync(ttsFilePath);
+
+        // Generate and send menu message
+        const menu = ' `▬\n▎ Hi ${pushname} 👋 \n▎ ${config.BOT_NAME}\n▎ █ 𝗦𝗽𝗲𝗲𝗱: 0.00119 milliseconds\n▎ █ 𝗥𝘂𝗻𝘁𝗶𝗺𝗲: 24 Hours × 7\n▎ █ 𝗕𝗼𝘁 𝗡𝗮𝗺𝗲: ${config.BOT_NAME} \n▎ █ 𝗢𝘄𝗻𝗲𝗿 𝗡𝗮𝗺𝗲: ${config.OWNER_NAME}\n▎ █ 𝗢𝘄𝗻𝗲𝗿 𝗡𝘂𝗺𝗯𝗲𝗿: ${config.OWNER_NUMBER}\n▎ █ 𝗛𝗼𝘀𝘁 𝗡𝗮𝗺𝗲: ${config.OWNER_NAME}\n▎ █ 𝗣𝗹𝗮𝘁𝗳𝗼𝗿𝗺: linux\n▎ █ 𝗧𝗼𝘁𝗮𝗹 𝗨𝘀𝗲𝗿: Unlimited \n   Ｍｅｎｕ Ｃｏｍｍａｎｄｓ🌀\n   ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁ \n   *▓  Allmenu - All Menu* 📜\n   *▓  Dmenu - Download Menu* 📥\n   *▓  Omenu - Other Menu* 🛠️\n   *▓  Aimenu - Ai Menu* 🤖\n   *▓  Amenu - Anime Menu* 🌸\n   *▓  Gmenu - Group Menu* 👥\n   *▓  Mmenu - Main Menu* 🏠\n   *▓  Cmenu - Convert Menu* 🔄\n   *▓  Fmenu - Fun Menu* 🎉\n   *▓  Logo <text>* 🖌️\n\n▎ ️ＧＡＲＦＩΞ𝖫𝖣 𝖡𝖮Т Created by ${config.OWNER_NAME} 🪁\n▎ ᴘᴏᴡᴇʀᴇᴅ ʙʏ 𝖦Λ𝖱𝖥𝖨Ξ𝖫𝖣 𝖡𝖮Т v10 and \n▎ 𝖭Ξ𝖴𝖱Λ𝖫 ΛＩ v1.00             \n⭕►▁▁▁▁▁▁▁▁▁▁▁▁▁▁\n▎ ＧＡＲＦＩΞ𝖫𝖣 𝖡𝖮Т\n▎ ▁▁▁▁▁▁▁▁▁▁▁▁▁▁\n▎ \n█▄▄ █▀█ ▀█▀\n█▄█ █▄█ ░█░\n⭕▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁\n> ${config.DESCRIPTION}`';
+
+        await conn.sendMessage(from, { 
+            image: { url: 'https://i.ibb.co/5g7VGhC9/Picsart-25-01-30-13-20-52-736.png' },
+            caption: menu
+        }, { quoted: mek });
+
+    } catch (e) {
+        console.error(e);
+        reply(`❌ An error occurred: ${e.message}`);
+    }
+});
+
 // owner menu
 cmd({
     pattern: "omenu",
@@ -550,34 +247,10 @@ cmd({
 }, 
 async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
     try {
-        let dec = `░ 𝗢𝘄𝗻𝗲𝗿 𝗠𝗲𝗻𝘂 ░
-
-◦ *owner* 👑  
-   _Example:_ owner [Query]  
-◦ *block* 🚫  
-   _Example:_ block [Query]  
-◦ *unblock* ✔️  
-   _Example:_ unblock [Query]  
-◦ *fullpp* 📸  
-   _Example:_ fullpp [Query]  
-◦ *setpp* 🖼️  
-   _Example:_ setpp [Query]  
-◦ *restart* 🔄  
-   _Example:_ restart [Query]  
-◦ *shutdown* ⏹️  
-   _Example:_ shutdown [Query]  
-◦ *updatecmd* ⬆️  
-   _Example:_ updatecmd [Query]  
-◦ *gjid* 🆔  
-   _Example:_ gjid [Query]  
-◦ *jid* 🆔  
-   _Example:_ jid [Query]  
-✦
-░░░ ${config.BOT_NAME} ░░░
-> ${config.DESCRIPTION}`;
+        let dec = '░ 𝗢𝘄𝗻𝗲𝗿 𝗠𝗲𝗻𝘂 ░\n\n◦ *owner* 👑  \n   _Example:_ owner [Query]  \n◦ *block* 🚫  \n   _Example:_ block [Query]  \n◦ *unblock* ✔️  \n   _Example:_ unblock [Query]  \n◦ *fullpp* 📸  \n   _Example:_ fullpp [Query]  \n◦ *setpp* 🖼️  \n   _Example:_ setpp [Query]  \n◦ *restart* 🔄  \n   _Example:_ restart [Query]  \n◦ *shutdown* ⏹️  \n   _Example:_ shutdown [Query]  \n◦ *updatecmd* ⬆️  \n   _Example:_ updatecmd [Query]  \n◦ *gjid* 🆔  \n   _Example:_ gjid [Query]  \n◦ *jid* 🆔  \n   _Example:_ jid [Query]  \n✦\n░░░ ${config.BOT_NAME} ░░░\n> ${config.DESCRIPTION}';
 
         await conn.sendMessage(from, { 
-            image: { url: `${config.ALIVE_IMG}` },
+            image: { url: 'https://i.ibb.co/5g7VGhC9/Picsart-25-01-30-13-20-52-736.png' },
             caption: dec
         }, { quoted: mek });
 
@@ -618,7 +291,7 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sen
         await conn.sendMessage(
             from,
             {
-                image: { url: `${config.ALIVE_IMG}` },
+                image: { url: 'https://i.ibb.co/5g7VGhC9/Picsart-25-01-30-13-20-52-736.png' },
                 caption: dec,
                 contextInfo: {
                     mentionedJid: [m.sender],
@@ -651,50 +324,12 @@ cmd({
 }, 
 async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
     try {
-          let dec = `░𝗔𝗻𝗶𝗺𝗲 𝗠𝗲𝗻𝘂░
-
-◦ *dog* 🐶  
-   _Example:_ dog [Query]  
-◦ *awoo* 🐺  
-   _Example:_ awoo [Query]  
-◦ *garl* 🌸  
-   _Example:_ garl [Query]  
-◦ *waifu* 💖  
-   _Example:_ waifu [Query]  
-◦ *neko* 🐱  
-   _Example:_ neko [Query]  
-◦ *maid* 🧹  
-   _Example:_ maid [Query]  
-◦ *animegirl* 👧  
-   _Example:_ animegirl [Query]  
-◦ *animegirl1* 👧  
-   _Example:_ animegirl1 [Query]  
-◦ *animegirl2* 👧  
-   _Example:_ animegirl2 [Query]  
-◦ *animegirl3* 👧  
-   _Example:_ animegirl3 [Query]  
-◦ *animegirl4* 👧  
-   _Example:_ animegirl4 [Query]  
-◦ *animegirl5* 👧  
-   _Example:_ animegirl5 [Query]  
-◦ *anime1* 🌀  
-   _Example:_ anime1 [Query]  
-◦ *anime2* 🌀  
-   _Example:_ anime2 [Query]  
-◦ *anime3* 🌀  
-   _Example:_ anime3 [Query]  
-◦ *anime4* 🌀  
-   _Example:_ anime4 [Query]  
-◦ *anime5* 🌀  
-   _Example:_ anime5 [Query]  
-✦
-░░░ n${config.BOT_NAME} ░░░
-> ${config.DESCRIPTION}`;
+          let dec = '░𝗔𝗻𝗶𝗺𝗲 𝗠𝗲𝗻𝘂░\n\n◦ *dog* 🐶  \n   _Example:_ dog [Query]  \n◦ *awoo* 🐺  \n   _Example:_ awoo [Query]  \n◦ *garl* 🌸  \n   _Example:_ garl [Query]  \n◦ *waifu* 💖  \n   _Example:_ waifu [Query]  \n◦ *neko* 🐱  \n   _Example:_ neko [Query]  \n◦ *maid* 🧹  \n   _Example:_ maid [Query]  \n◦ *animegirl* 👧  \n   _Example:_ animegirl [Query]  \n◦ *animegirl1* 👧  \n   _Example:_ animegirl1 [Query]  \n◦ *animegirl2* 👧  \n   _Example:_ animegirl2 [Query]  \n◦ *animegirl3* 👧  \n   _Example:_ animegirl3 [Query]  \n◦ *animegirl4* 👧  \n   _Example:_ animegirl4 [Query]  \n◦ *animegirl5* 👧  \n   _Example:_ animegirl5 [Query]  \n◦ *anime1* 🌀  \n   _Example:_ anime1 [Query]  \n◦ *anime2* 🌀  \n   _Example:_ anime2 [Query]  \n◦ *anime3* 🌀  \n   _Example:_ anime3 [Query]  \n◦ *anime4* 🌀  \n   _Example:_ anime4 [Query]  \n◦ *anime5* 🌀  \n   _Example:_ anime5 [Query]  \n✦\n░░░ n${config.BOT_NAME} ░░░\n> ${config.DESCRIPTION}';
 
         await conn.sendMessage(
             from,
             {
-                image: { url: `${config.ALIVE_IMG}` },
+                image: { url: 'https://i.ibb.co/5g7VGhC9/Picsart-25-01-30-13-20-52-736.png' },
                 caption: dec,
                 contextInfo: {
                     mentionedJid: [m.sender],
@@ -727,26 +362,12 @@ cmd({
 }, 
 async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
     try {
-        let dec = `░ 𝗔𝗜 𝗠𝗘𝗡𝗨 ░
-
-◦ *ai* 🤖  
-   _Example:_ ai [Query]  
-◦ *meta* 🌐  
-   _Example:_ meta [Query]  
-◦ *gpt4* 💡  
-   _Example:_ gpt4 [Query]  
-◦ *bing* 🔍  
-   _Example:_ bing [Query]  
-◦ *copilot* 🧭  
-   _Example:_ copilot [Query]  
-✦
-░░░ n${config.BOT_NAME} ░░░
-> ${config.DESCRIPTION}`;
+        let dec = '░ 𝗔𝗜 𝗠𝗘𝗡𝗨 ░\n\n◦ *ai* 🤖  \n   _Example:_ ai [Query]  \n◦ *meta* 🌐  \n   _Example:_ meta [Query]  \n◦ *gpt4* 💡  \n   _Example:_ gpt4 [Query]  \n◦ *bing* 🔍  \n   _Example:_ bing [Query]  \n◦ *copilot* 🧭  \n   _Example:_ copilot [Query]  \n✦\n░░░ n${config.BOT_NAME} ░░░\n> ${config.DESCRIPTION}';
 
         await conn.sendMessage(
             from,
             {
-                image: { url: `${config.ALIVE_IMG}` },
+                image: { url: 'https://i.ibb.co/5g7VGhC9/Picsart-25-01-30-13-20-52-736.png' },
                 caption: dec,
                 contextInfo: {
                     mentionedJid: [m.sender],
