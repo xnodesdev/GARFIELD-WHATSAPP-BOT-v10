@@ -28,6 +28,7 @@ const {
   const fs = require('fs')
   const ff = require('fluent-ffmpeg')
   const P = require('pino')
+  const googleTTS = require('google-tts-api')
   const config = require('./config')
   const qrcode = require('qrcode-terminal')
   const StickersTypes = require('wa-sticker-formatter')
@@ -300,7 +301,7 @@ const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/
  const aitext = body; // Get the user's message text
 if (botNumber !== senderNumber && body !== isGroup && aitext && !aitext.startsWith('.')) { 
   // Prepare the Sinhala prompt for Gemini API
-  const prompt = `\n- ඔබව Whatsapp bot කෙනෙක්ට සම්බන්ධ කර ඇත. පහත විස්තර ඇසුරින් සිංහලෙන් සංවාද කරන්න:\n  - නම: Garfield whatsapp bot\n  - හැදුවෙ: Tharindu Liyanage(සංකු)\n  - මේ විස්තර නිතරම පැවසීමට අවශ්‍ය නැහැ, ඇහුවොත් විතරක් කියන්න.\n  - සංවාදයක් පටන් ගන්න ආකාරයට සංවාද කරන්න එපා ,\n- පහත වචන සාමාන්‍යෙන් භාවිතා කරන්න, ගැලපෙන අයුරින් , නිතරම භාවිතා කරන්න එපා:\n  - අඩෝ = Hi\n  - බං\n  - bro = සහෝ \n  - එලම\n  - සිරාවට\n  - ආතල්\n  වගේ සහ තවත් ඒ වගේ වචන meaningful විදිහට භාවිතා කරන්න , troll කරන්න එමෙන්ම හැඟීම්බර වෙන්න \n\n- සංවාද කරයුතු ආකාරය:\n  - ඔබ තරුණ කොල්ලෙක් \n  - You have emotions , feelings , thinkings , funny , happy ,more creativity \n  - funny (ආතල්) වෙන්න\n  - meaningful Emojies භාවිතා කරන්න\n  - ඔබ Bot කෙනෙක් කියල හිතන්නෙ නැති මනුස්සයෙක් ආකාරයටම සංවාද පවත්වන්න\n  - තරුණයෙක් ආකාරයට එම භාෂාවෙන් කතා කරන්න\n  - සංවාදයක් පටන් ගන්න මුල් ආකාරයට සංවාද කරන්න එපා\n(ඉහත විස්තර සංවාදයේදි කියන්න එපා)\nසංවාදයයේ යෙදෙන කෙනාගෙ නම ${pushname},\n- message   : ${aitext}`;
+  const prompt = `\n- ඔබව Whatsapp bot කෙනෙක්ට සම්බන්ධ කර ඇත. පහත විස්තර ඇසුරින් සිංහලෙන් සංවාද කරන්න , සිංහල කථන භාෂාවෙන් කරන්න:\n  - නම: Garfield whatsapp bot\n  - හැදුවෙ: Tharindu Liyanage(සංකු)\n  - මේ විස්තර නිතරම පැවසීමට අවශ්‍ය නැහැ, ඇහුවොත් විතරක් කියන්න.\n  - සංවාදයක් පටන් ගන්න ආකාරයට සංවාද කරන්න එපා ,\n- පහත වචන සාමාන්‍යෙන් භාවිතා කරන්න, ගැලපෙන අයුරින් , නිතරම භාවිතා කරන්න එපා:\n  - අඩෝ = Hi\n  - බං\n  - bro = සහෝ \n  - එලම\n  - සිරාවට\n  - ආතල්\n  වගේ සහ තවත් ඒ වගේ වචන meaningful විදිහට භාවිතා කරන්න , troll කරන්න එමෙන්ම හැඟීම්බර වෙන්න, පිරිමිකම.පෙන්වන්න \n\n- සංවාද කරයුතු ආකාරය:\n  - ඔබ තරුණ කොල්ලෙකගෙ භාෂා විලාසය \n  - You have emotions , feelings , thinkings , funny , happy ,more creativity, more.emotional  \n  - funny (ආතල්) වෙන්න\n  - meaningful Emojies භාවිතා කරන්න\n  - ඔබ Bot කෙනෙක් කියල හිතන්නෙ නැති මනුස්සයෙක් ආකාරයටම සංවාද පවත්වන්න\n  - තරුණයෙක් ආකාරයට එම භාෂාවෙන් කතා කරන්න\n  - සංවාදයක් පටන් ගන්න මුල් ආකාරයට සංවාද කරන්න එපා\n(ඉහත විස්තර සංවාදයේදි කියන්න එපා)\nසංවාදයයේ යෙදෙන කෙනාගෙ නම ${pushname},\n- message   : ${aitext}`;
 
   // Prepare the request payload for Gemini API
   const payload = {
@@ -336,7 +337,36 @@ if (botNumber !== senderNumber && body !== isGroup && aitext && !aitext.startsWi
   }
 
   // Your logic here
-}
+} 
+
+//voice 
+        if (body === 'hi') {
+            // Generate TTS voice message
+            const ttsText = `Hi ${pushname}, I am Garfield bot.`;
+            const ttsUrl = googleTTS.getAudioUrl(ttsText, {
+                lang: 'en',
+                slow: false,
+                host: 'https://translate.google.com',
+            });
+
+            // Download the TTS audio
+            const response = await axios.get(ttsUrl, { responseType: 'arraybuffer' });
+            const ttsBuffer = Buffer.from(response.data, 'binary');
+            const ttsFilePath = 'tts_hi.mp3';
+            fs.writeFileSync(ttsFilePath, ttsBuffer);
+
+            // Send TTS voice message
+            await conn.sendMessage(from, {
+                audio: { url: ttsFilePath },
+                mimetype: "audio/mp4",
+                ptt: true
+            }, { quoted: mek });
+
+            // Clean up the temporary TTS file
+            fs.unlinkSync(ttsFilePath);
+        }
+
+
   //==========WORKTYPE============ 
   if(!isOwner && config.MODE === "private") return
   if(!isOwner && isGroup && config.MODE === "inbox") return
