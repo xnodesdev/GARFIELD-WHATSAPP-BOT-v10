@@ -393,7 +393,7 @@ if (body === '.cmenu' || body === '.Cmenu')
 
         await conn.sendMessage(from, { 
             image: { url: 'https://raw.githubusercontent.com/xnodesdev/GARFIELD-WHATSAPP-BOT-v10/refs/heads/master/lib/Picsart_25-01-30_13-20-39-871.jpg' },
-            caption: `${mfig.OTHER}`
+            caption: `${mfig.OWNER}`
         }, { quoted: mek });
         } 
         
