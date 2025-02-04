@@ -1,4 +1,14 @@
 {
+  "name": "GARFIELD-WHATSAPP-BOT-v10",
+  "version": "1.0.0",
+  "description": "GARFIELD-WHATSAPP-BOT-v10",
+  "depecrated": false,
+  "main": "index.js",
+  "scripts": {
+    "start": "pm2 start index.js --deep-monitoring --attach --name GARFIELD-WHATSAPP-BOT-v10",
+    "stop": "pm2 stop GARFIELD-WHATSAPP-BOT-v10",
+    "restart": "pm2 restart GARFIELD-WHATSAPP-BOT-v10"
+  },
   "dependencies": {
     "@adiwajshing/keyed-db": "^0.2.4",
     "@bochilteam/scraper": "^5.0.1",
