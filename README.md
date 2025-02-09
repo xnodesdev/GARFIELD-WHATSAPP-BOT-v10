@@ -1,4 +1,4 @@
-# ＧＡＲＦＩＥＬＤ ＢＯＴ ｖ10 🚀
+# ＧＡＲＦＩＥＬＤ ᴬᴵ ＢＯＴｖ10 🚀
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Version](https://img.shields.io/badge/Version-v10.0-green.svg)](https://github.com/xnodesdev/GARFIELD-WHATSAPP-BOT-v10/releases)
@@ -22,7 +22,7 @@
 - **Media Support:** Send and receive images, videos, and documents. 📷🎥📄
 - **Group Management:** Efficiently manage WhatsApp groups with various admin features. 👥🔧
 - **APIs Integration:** Integration with multiple APIs for extended functionalities. 🔗
-- **Voice Commands:** Support for voice commands using Google TTS API. 🎤
+- **Voice Replies:** Support for voice commands using Google TTS API. 🎤
 - **Custom Commands:** Easily add and configure custom commands. 🛠️
 
 ## Installation 🛠️
@@ -68,10 +68,10 @@ Deploy your bot using one of these popular hosting services:
 <a href="https://panel.io/deploy" style="display:inline-block;margin:10px;"><img src="https://img.shields.io/badge/Deploy-Panel-red.svg?logo=panel" style="height:50px;"></a>
 <a href="https://app.koyeb.com/deploy" style="display:inline-block;margin:10px;"><img src="https://img.shields.io/badge/Deploy-Koyeb-blue.svg?logo=koyeb" style="height:50px;"></a>
 
-## Pair Device
+## Click to Pair Device
 [![Pair Device](https://github.com/xnodesdev/GARFIELD-WHATSAPP-BOT-v10/blob/master/lib/Picsart_25-02-09_23-02-32-688.png)](https://confidential-randee-xnodesdves-d676b79b.koyeb.app/)
 
-## Neural AI and Sinhala AI Chat Feature
+## Neural AI and සිංහල AI Chat Feature
 <p align="center">
   <img src="https://camo.githubusercontent.com/4ccb106355cfba7541b707fac4319477a694ed180228df23b1c9325994e5841e/68747470733a2f2f692e6962622e636f2f54634c56664d5a2f506963736172742d32322d30382d32322d31352d32312d34312d3137352e706e67" width="500">
 </p>
@@ -81,8 +81,8 @@ Once the bot is up and running, you can interact with it through WhatsApp by sen
 
 - **Automated Replies:** Send "Hi" to receive an automated greeting message. 👋
 - **Send Media:** Send an image to receive an automated response with a caption. 🖼️
-- **Voice Commands:** Say "Hello Bot" to trigger a voice response. 🗣️
-- **Get Menu:** Send `.menu` to receive the bot's command menu. 📜
+- **Voice Replies:** Say "Hi" to trigger a voice response. 🗣️
+- **Get Menu:** Send `.menu or .allmenu` to receive the bot's command menu. 📜
 
 ## Contributing 💡
 We welcome contributions from the community! If you would like to contribute, please follow these steps:
@@ -104,11 +104,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Coded by
 **Tharindu Liyanage** 👾
-
----
-
-Have questions or need support? Reach out to us via [email](mailto:support@example.com). 💬
-
-```
-
-Feel free to make any additional adjustments or let me know if there's anything else you'd like to include! 😊[43dcd9a7-70db-4a1f-b0ae-981daa162054](https://github.com/sidneywm/iconic-multiselect/tree/83c4f6d15bd214a3c72067b3893e953029d67eb5/README.md?citationMarker=43dcd9a7-70db-4a1f-b0ae-981daa162054 "1")
