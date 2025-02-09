@@ -2,7 +2,7 @@ const fs = require('fs');
 
 function convertToBool(text, fault = 'true') {
     return text.toLowerCase() === fault.toLowerCase();
-}
+} 
  
 module.exports = {
     SESSION_ID: "You ID past here", // add your Session Id  Ex Xnodes~e2R2VQgS#KFvTRMN77ZGFOYSKbA4mpNjwt7KBwiRFwRoG1-vi4"
