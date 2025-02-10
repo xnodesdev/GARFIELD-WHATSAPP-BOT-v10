@@ -11,9 +11,10 @@
 </p>
 
 ## Introduction
-ＧＡＲＦＩＥＬＤ ＢＯＴ v10 is a highly advanced and feature-rich WhatsApp bot designed to enhance your messaging experience. Developed by Xnodes Development and coded by Tharindu Liyanage, this bot offers a range of functionalities to make your interactions seamless and enjoyable. 🌟
+GARFIELD-WHATSAPP-BOT-v10 is a highly advanced and feature-rich WhatsApp bot designed to enhance your messaging experience. Developed by Xnodes Development and coded by Tharindu Liyanage, this bot offers a range of functionalities to make your interactions seamless and enjoyable. 
+<br>
 
-<p align="center">
+<p align="left">
   <img src="https://github.com/xnodesdev/GARFIELD-WHATSAPP-BOT-v10/blob/master/lib/Picsart_25-01-30_13-20-39-871.jpg" width="500">
 </p>
 
