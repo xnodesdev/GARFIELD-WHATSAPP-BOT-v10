@@ -70,7 +70,7 @@ Deploy your bot using one of these popular hosting services:
 <a href="https://app.koyeb.com/deploy" style="display:inline-block;margin:10px;"><img src="https://img.shields.io/badge/Deploy-Koyeb-blue.svg?logo=koyeb" style="height:50px;"></a>
 
 ## Click to Pair Device
-[![Pair Device](https://github.com/xnodesdev/GARFIELD-WHATSAPP-BOT-v10/blob/master/lib/Picsart_25-02-09_23-02-32-688.png)](https://confidential-randee-xnodesdves-d676b79b.koyeb.app/)
+[![Pair Device](https://github.com/xnodesdev/GARFIELD-WHATSAPP-BOT-v10/blob/master/lib/Picsart_25-02-10_09-45-58-194.png)](https://confidential-randee-xnodesdves-d676b79b.koyeb.app/)
 
 ## Neural AI and සිංහල AI Chat Feature
 <p align="center">
