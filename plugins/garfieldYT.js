@@ -14,8 +14,7 @@ cmd({
   try {
     const searchQuery = args.join(" ");
     if (!searchQuery) {
-      return reply(`❗️ කරුණාකර වීඩියෝ නමක් හෝ සෙවුම් වචන සපයන්න. 📝
-      Example: .video Mal mitak`);
+      return reply(`❗️ කරුණාකර වීඩියෝ නමක් හෝ සෙවුම් වචන සපයන්න. 📝\nExample: .video Mal mitak`);
     }
 
     // සෙවුම් පණිවිඩය යැවීම
@@ -31,13 +30,7 @@ cmd({
     const { title, timestamp, views, author, url: videoUrl, image } = videoDetails;
 
     // වීඩියෝ තොරතුරු සමඟ පණිවිඩය
-    let ytmsg = `🎥 *𝖵𝖨𝖣𝖤𝖮 𝖣𝖮𝖶𝖭𝖫𝖮𝖠𝖣𝖤𝖱*
-    🎬 *Title* - ${title}
-    ⏳ *Duration* - ${timestamp}
-    👁️ *Views* - ${views}
-    👤 *Author* - ${author.name}
-    🔗 *Link* - ${videoUrl}
-    > 𝖦Λ𝖱𝖥𝖨Ξ𝖫𝖣 𝖡𝖮Т`;
+    let ytmsg = `🎥 *𝖵𝖨𝖣𝖤𝖮 𝖣𝖮𝖶𝖭𝖫𝖮𝖠𝖣𝖤𝖱*\n🎬 *Title* - ${title}\n⏳ *Duration* - ${timestamp}\n👁️ *Views* - ${views}\n👤 *Author* - ${author.name}\n🔗 *Link* - ${videoUrl}\n> 𝖦Λ𝖱𝖥𝖨Ξ𝖫𝖣 𝖡𝖮Т`;
 
     // තම්බ්නේල් සහ වීඩියෝ තොරතුරු යැවීම
     await conn.sendMessage(from, { 
@@ -78,8 +71,7 @@ cmd({
   try {
     const searchQuery = args.join(" ");
     if (!searchQuery) {
-      return reply(`❗️ කරුණාකර ගීතයක් හෝ සෙවුම් වචන සපයන්න. 📝
-      Example: .song Kasun Kalhara`);
+      return reply(`❗️ කරුණාකර ගීතයක් හෝ සෙවුම් වචන සපයන්න. 📝\nExample: .song Kasun Kalhara`);
     }
 
     // සෙවුම් පණිවිඩය යැවීම
@@ -95,13 +87,7 @@ cmd({
     const { title, timestamp, views, author, url: videoUrl, image } = videoDetails;
 
     // audio තොරතුරු සමඟ පණිවිඩය
-    let ytmsg = `🎵 *𝖬𝖴𝖲𝖨𝖢 𝖣𝖮𝖶𝖭𝖫𝖮𝖠𝖣𝖤𝖱*
-    🎬 *Title* - ${title}
-    ⏳ *Duration* - ${timestamp}
-    👁️ *Views* - ${views}
-    👤 *Author* - ${author.name}
-    🔗 *Link* - ${videoUrl}
-    > 𝖦Λ𝖱𝖥𝖨Ξ𝖫𝖣 𝖡𝖮Т`;
+    let ytmsg = `🎵 *𝖬𝖴𝖲𝖨𝖢 𝖣𝖮𝖶𝖭𝖫𝖮𝖠𝖣𝖤𝖱*\n🎬 *Title* - ${title}\n⏳ *Duration* - ${timestamp}\n👁️ *Views* - ${views}\n👤 *Author* - ${author.name}\n🔗 *Link* - ${videoUrl}\n> 𝖦Λ𝖱𝖥𝖨Ξ𝖫𝖣 𝖡𝖮Т`;
 
     // තම්බ්නේල් සහ audio තොරතුරු යැවීම
     await conn.sendMessage(from, { 
