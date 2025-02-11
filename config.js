@@ -5,7 +5,7 @@ function convertToBool(text, fault = 'true') {
 } 
  
 module.exports = {
-    SESSION_ID: "You ID past here", // add your Session Id  Ex Xnodes~e2R2VQgS#KFvTRMN77ZGFOYSKbA4mpNjwt7KBwiRFwRoG1-vi4"
+    SESSION_ID: "Xnodes~imJlFJrQ#me_HO7YNBg6qChD5PW8SxItq3tt88Wrv4lDsSMuG1Bw", // add your Session Id  Ex Xnodes~e2R2VQgS#KFvTRMN77ZGFOYSKbA4mpNjwt7KBwiRFwRoG1-vi4"
     AUTO_STATUS_SEEN: true,  // set to true or false for auto-seeing status
     AUTO_STATUS_REPLY: true,  // set to true if you want auto-reply on status
     AUTO_STATUS_REACT: true,  // set to true if you want auto-react on status
@@ -16,8 +16,8 @@ module.exports = {
     CUSTOM_REACT: false,  // set to true for custom emoji reactions
     CUSTOM_REACT_EMOJIS: "⭐",  // choose custom react emojis
     DELETE_LINKS: false,  // set to true for automatic deletion of links without removing member
-    OWNER_NUMBER: "94xxxxxxxz",  // add your bot owner number
-    OWNER_NAME: "@@Sanku",  // add bot owner name
+    OWNER_NUMBER: "94711502119",  // add your bot owner number
+    OWNER_NAME: "@Sanku",  // add bot owner name
     DESCRIPTION: "©Ｐｏｗｅｒｅｄ ｂｙ Ｘｎｏｄｅｓ",  // add bot description
     ALIVE_IMG: "https://i.ibb.co/5g7VGhC9/Picsart-25-01-30-13-20-52-736.png",  // add image URL for alive message
     LIVE_MSG: "> 𝖢𝗈𝖽𝖾𝖽 𝖻𝗒 𝖳𝗁𝖺𝗋𝗂𝗇𝖽𝗎 𝖫𝗂𝗒𝖺𝗇𝖺𝗀𝖾",  // add alive message
