@@ -1,1 +1,92 @@
-function _0x5436(){const _0x26f22c=['random','info','floor','(((.+)+)+)+$','createWriteStream','මෝඩ\x20හරකෙක්','නළුවෙක්','බේබද්දෙක්','sendMessage','230KXAmBH','bind','8sBSDqL','toString','../command','එල\x20කොල්ලෙක්','fun','පොල්\x20ගොබ්බයෙක්','trace','.mp3','who','ගොං\x20හිපාටුවෙක්','console','පිස්සෙක්','GET','axios','__proto__','පිටසක්වල\x20ජීවියෙක්','apply','යට\x20ඇඳුම්\x20හොරෙක්','Error:','audio/mpeg','Get\x20a\x20random\x20word\x20as\x20an\x20audio\x20message.','ගොබ්බයෙක්','හොඳ\x20ළමයෙක්','.who','length','හොරෙක්','error','+94711502119','warn','2997345IZjchG','finish','1777014MXHSIN','අසහන\x20කාරයෙක්','stream','log','582334DgnKNo','return\x20(function()\x20','data','මැරයෙක්','1687697kCddUI','exception','table','4219590aARvfI','pipe','රිලවෙක්','search','constructor','1146724GhInsW','264EVLpxq','unlinkSync','32858KOBZLE','3gyPdPA','ලිංගික\x20බෙලහීනතාවයෙන්\x20පෙලෙන්නෙක්','හිපාටුවෙක්'];_0x5436=function(){return _0x26f22c;};return _0x5436();}const _0x1e73a8=_0x47ef;function _0x47ef(_0x205bfb,_0x169a6f){const _0x376cca=_0x5436();return _0x47ef=function(_0x338947,_0x54da72){_0x338947=_0x338947-0x1d7;let _0x5c27d2=_0x376cca[_0x338947];return _0x5c27d2;},_0x47ef(_0x205bfb,_0x169a6f);}(function(_0x4244ed,_0x11272d){const _0x3bf49e=_0x47ef,_0x198b8d=_0x4244ed();while(!![]){try{const _0x3f9aba=-parseInt(_0x3bf49e(0x1e4))/0x1+parseInt(_0x3bf49e(0x1d8))/0x2*(parseInt(_0x3bf49e(0x1e8))/0x3)+-parseInt(_0x3bf49e(0x1f6))/0x4*(parseInt(_0x3bf49e(0x213))/0x5)+-parseInt(_0x3bf49e(0x1df))/0x6+parseInt(_0x3bf49e(0x1e7))/0x7*(-parseInt(_0x3bf49e(0x1e5))/0x8)+parseInt(_0x3bf49e(0x215))/0x9+-parseInt(_0x3bf49e(0x1f4))/0xa*(-parseInt(_0x3bf49e(0x1dc))/0xb);if(_0x3f9aba===_0x11272d)break;else _0x198b8d['push'](_0x198b8d['shift']());}catch(_0x41c3e7){_0x198b8d['push'](_0x198b8d['shift']());}}}(_0x5436,0xc6a25));const _0x54599b=(function(){let _0x39c9c7=!![];return function(_0x3bce39,_0x6019ec){const _0x151d0b=_0x39c9c7?function(){const _0x34e1ef=_0x47ef;if(_0x6019ec){const _0x36a4cb=_0x6019ec[_0x34e1ef(0x206)](_0x3bce39,arguments);return _0x6019ec=null,_0x36a4cb;}}:function(){};return _0x39c9c7=![],_0x151d0b;};}()),_0x5c2dc6=_0x54599b(this,function(){const _0x166f22=_0x47ef;return _0x5c2dc6[_0x166f22(0x1f7)]()[_0x166f22(0x1e2)](_0x166f22(0x1ee))[_0x166f22(0x1f7)]()[_0x166f22(0x1e3)](_0x5c2dc6)['search'](_0x166f22(0x1ee));});_0x5c2dc6();const _0x54da72=(function(){let _0x16fa61=!![];return function(_0x3dc9e9,_0x531ef9){const _0x494e6c=_0x16fa61?function(){const _0xb50880=_0x47ef;if(_0x531ef9){const _0x9e7139=_0x531ef9[_0xb50880(0x206)](_0x3dc9e9,arguments);return _0x531ef9=null,_0x9e7139;}}:function(){};return _0x16fa61=![],_0x494e6c;};}()),_0x338947=_0x54da72(this,function(){const _0xbea23c=_0x47ef,_0xa3c3dd=function(){const _0x5f1bb4=_0x47ef;let _0x2d9c09;try{_0x2d9c09=Function(_0x5f1bb4(0x1d9)+'{}.constructor(\x22return\x20this\x22)(\x20)'+');')();}catch(_0x48bc5c){_0x2d9c09=window;}return _0x2d9c09;},_0x1b9c93=_0xa3c3dd(),_0x1edc09=_0x1b9c93[_0xbea23c(0x200)]=_0x1b9c93[_0xbea23c(0x200)]||{},_0x5063dd=[_0xbea23c(0x1d7),_0xbea23c(0x212),_0xbea23c(0x1ec),'error',_0xbea23c(0x1dd),_0xbea23c(0x1de),_0xbea23c(0x1fc)];for(let _0x203738=0x0;_0x203738<_0x5063dd[_0xbea23c(0x20e)];_0x203738++){const _0x530905=_0x54da72[_0xbea23c(0x1e3)]['prototype'][_0xbea23c(0x1f5)](_0x54da72),_0x560c6b=_0x5063dd[_0x203738],_0x92b291=_0x1edc09[_0x560c6b]||_0x530905;_0x530905[_0xbea23c(0x204)]=_0x54da72[_0xbea23c(0x1f5)](_0x54da72),_0x530905[_0xbea23c(0x1f7)]=_0x92b291['toString'][_0xbea23c(0x1f5)](_0x92b291),_0x1edc09[_0x560c6b]=_0x530905;}});_0x338947();const {cmd}=require(_0x1e73a8(0x1f8)),axios=require(_0x1e73a8(0x203)),fs=require('fs'),words=[_0x1e73a8(0x216),_0x1e73a8(0x201),_0x1e73a8(0x1f0),_0x1e73a8(0x20b),_0x1e73a8(0x1f9),_0x1e73a8(0x20f),_0x1e73a8(0x1e1),'උරුලෑවෙක්','වැද්දෙක්',_0x1e73a8(0x1f1),_0x1e73a8(0x1ff),'පිස්සු\x20යකෙක්',_0x1e73a8(0x20c),_0x1e73a8(0x1ea),_0x1e73a8(0x1fb),'ගෑණු\x20පෙරේතයෙක්','සමලිංගිකයෙක්',_0x1e73a8(0x1db),_0x1e73a8(0x1e9),_0x1e73a8(0x1f2),_0x1e73a8(0x207),_0x1e73a8(0x205)];function getRandomWord(_0x561a62){const _0x3f434f=_0x1e73a8,_0x2f74f7=Math[_0x3f434f(0x1ed)](Math[_0x3f434f(0x1eb)]()*_0x561a62[_0x3f434f(0x20e)]);return _0x561a62[_0x2f74f7];}const TTS_API_URL='https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=si&q=';cmd({'pattern':_0x1e73a8(0x1fe),'react':'🎤','desc':_0x1e73a8(0x20a),'category':_0x1e73a8(0x1fa),'use':_0x1e73a8(0x20d),'filename':__filename},async(_0x53e7c1,_0x126449,_0x4e2986,{from:_0x2a736f,quoted:_0x4ee7b3,body:_0x1aedb9,isCmd:_0x1ebee5,command:_0x307fd7,args:_0x4ee1b3,q:_0x1a70c1,isGroup:_0x36334e,sender:_0xca6295,senderNumber:_0x210956,botNumber2:_0x1e06fa,botNumber:_0x939fe7,pushname:_0x473f53,isMe:_0x6e5787,isOwner:_0xf3c9df,groupMetadata:_0x3ab7c0,groupName:_0x4c4597,participants:_0x3f493a,groupAdmins:_0x37bcbf,isBotAdmins:_0x14df98,isAdmins:_0x1750c2,reply:_0x49bd3b})=>{const _0x1abef0=_0x1e73a8;try{const _0x58d8a5=_0x1abef0(0x211);let _0x41c220;_0x210956===_0x58d8a5?_0x41c220='ගොඩක්\x20හොඳ\x20ළමයෙක්':_0x41c220=getRandomWord(words);const _0x24e253=_0x473f53+',\x20ඔයා\x20'+_0x41c220,_0x52e252=''+TTS_API_URL+encodeURIComponent(_0x24e253),_0x17abf3='./temp/'+Date['now']()+_0x1abef0(0x1fd),_0x1f3fab=fs[_0x1abef0(0x1ef)](_0x17abf3),_0x4039bf=await axios({'url':_0x52e252,'method':_0x1abef0(0x202),'responseType':_0x1abef0(0x217)});_0x4039bf[_0x1abef0(0x1da)][_0x1abef0(0x1e0)](_0x1f3fab),_0x1f3fab['on'](_0x1abef0(0x214),async()=>{const _0x224ebe=_0x1abef0;await _0x53e7c1[_0x224ebe(0x1f3)](_0x2a736f,{'audio':fs['readFileSync'](_0x17abf3),'mimetype':_0x224ebe(0x209)},{'quoted':_0x126449}),fs[_0x224ebe(0x1e6)](_0x17abf3);});}catch(_0x24a6cf){console[_0x1abef0(0x210)](_0x1abef0(0x208),_0x24a6cf),_0x49bd3b('❌\x20Audio\x20message\x20එක\x20යැවීමේදී\x20දෝෂයක්\x20ඇති\x20විය.\x20😢');}});
+const { cmd } = require("../command");
+const googleTTS = require('google-tts-api');
+const fs = require("fs");
+const path = require("path");
+
+// Array of words
+const words = [
+  "අසහන කාරයෙක්",
+  "පිස්සෙක්",
+  "මෝඩ හරකෙක්",
+  "ගොබ්බයෙක්",
+  "එල කොල්ලෙක්",
+  "හොරෙක්",
+  "රිලවෙක්",
+  "උරුලෑවෙක්",
+  "වැද්දෙක්",
+  "නළුවෙක්",
+  "ගොං හිපාටුවෙක්",
+  "පිස්සු යකෙක්",
+  "හොඳ ළමයෙක්",
+  "හිපාටුවෙක්",
+  "පොල් ගොබ්බයෙක්",
+  "ගෑණු පෙරේතයෙක්",
+  "සමලිංගිකයෙක්",
+  "මැරයෙක්",
+  "ලිංගික බෙලහීනතාවයෙන් පෙලෙන්නෙක්",
+  "බේබද්දෙක්",
+  "යට ඇඳුම් හොරෙක්",
+  "පිටසක්වල ජීවියෙක්"
+];
+
+// Function to get a random word from the array
+function getRandomWord(arr) {
+  const randomIndex = Math.floor(Math.random() * arr.length);
+  return arr[randomIndex];
+}
+
+cmd({
+  pattern: "who",
+  react: '🎤',
+  desc: "Get a random word as an audio message.",
+  category: "fun",
+  use: ".who",
+  filename: __filename
+}, async (conn, mek, msg, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
+  try {
+    // Check if the sender's number is +94711502119
+    const specialNumber = "+94711502119";
+    let randomWord;
+
+    if (senderNumber === specialNumber) {
+      randomWord = "එල කොල්ලෙක්"; // Always return this word for the special number
+    } else {
+      randomWord = getRandomWord(words); // Get a random word for others
+    }
+
+    const textbook = `${pushname}, ඔයා ${randomWord}`;
+
+    // Generate the TTS URL
+    const url = googleTTS.getAudioUrl(textbook, {
+      lang: 'si',
+      slow: false,
+      host: 'https://translate.google.com',
+    });
+
+    // Download the audio file
+    const audioFilePath = path.join(__dirname, `./temp/${Date.now()}.mp3`);
+    const writer = fs.createWriteStream(audioFilePath);
+
+    const response = await axios({
+      url,
+      method: 'GET',
+      responseType: 'stream'
+    });
+
+    response.data.pipe(writer);
+
+    writer.on('finish', async () => {
+      // Send the audio file
+      await conn.sendMessage(from, {
+        audio: fs.readFileSync(audioFilePath),
+        mimetype: "audio/mpeg",
+      }, { quoted: mek });
+
+      // Delete the temporary file
+      fs.unlinkSync(audioFilePath);
+    });
+  } catch (error) {
+    console.error("Error:", error);
+    reply("❌ Audio message එක යැවීමේදී දෝෂයක් ඇති විය. 😢");
+  }
+});
