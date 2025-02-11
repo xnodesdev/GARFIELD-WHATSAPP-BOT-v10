@@ -1,6 +1,6 @@
 const { cmd } = require("../command");
 const yts = require("yt-search"); // YouTube සෙවුම් සඳහා
-const { ytv, yta } = require("./yt2"); // yt2.js එක භාවිතා කිරීම
+const { ytv, yta } = require("../lib/y2.js"); // yt2.js එක භාවිතා කිරීම
 
 // YouTube වීඩියෝ බාගත කිරීම
 cmd({
