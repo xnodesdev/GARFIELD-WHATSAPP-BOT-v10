@@ -5,7 +5,7 @@ function convertToBool(text, fault = 'true') {
 } 
  
 module.exports = {
-    SESSION_ID: "", // add your Session Id  Ex : Xnodes~e2R2VQgS#KFvTRMN77ZGFOYSKbA4mpNjwt7KBwiRFwRoG1-vi4"
+    SESSION_ID: "Xnodes~f34CjJpI#kWK0jIKMYxZ1JeZTJWhkOPiaAkt8uvjqDUekBd8xkBI", // add your Session Id  Ex : Xnodes~e2R2VQgS#KFvTRMN77ZGFOYSKbA4mpNjwt7KBwiRFwRoG1-vi4"
     AUTO_STATUS_SEEN: true,  // set to true or false for auto-seeing status
     AUTO_STATUS_REPLY: true,  // set to true if you want auto-reply on status
     AUTO_STATUS_REACT: true,  // set to true if you want auto-react on status
@@ -36,7 +36,7 @@ module.exports = {
     DEV: "254717066747",  // replace with your WhatsApp number
     ANTI_VV: true,  // set to true for anti-once view
     ANTI_DEL_PATH: "log",  // change to 'same' if you want to resend deleted message in the same chat
-    AUTO_RECORDING: false  // set to true for auto-recording
+    AUTO_RECORDING: true  // set to true for auto-recording
 };
 
 
