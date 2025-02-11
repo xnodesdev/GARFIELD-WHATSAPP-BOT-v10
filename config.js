@@ -5,18 +5,18 @@ function convertToBool(text, fault = 'true') {
 } 
  
 module.exports = {
-    SESSION_ID: "Xnodes~imJlFJrQ#me_HO7YNBg6qChD5PW8SxItq3tt88Wrv4lDsSMuG1Bw", // add your Session Id  Ex : Xnodes~e2R2VQgS#KFvTRMN77ZGFOYSKbA4mpNjwt7KBwiRFwRoG1-vi4"
+    SESSION_ID: "Xnodes~f34CjJpI#kWK0jIKMYxZ1JeZTJWhkOPiaAkt8uvjqDUekBd8xkBI", // add your Session Id  Ex : Xnodes~e2R2VQgS#KFvTRMN77ZGFOYSKbA4mpNjwt7KBwiRFwRoG1-vi4"
     AUTO_STATUS_SEEN: true,  // set to true or false for auto-seeing status
     AUTO_STATUS_REPLY: true,  // set to true if you want auto-reply on status
     AUTO_STATUS_REACT: true,  // set to true if you want auto-react on status
     AUTO_STATUS_MSG: "GARFIELD-WHATSAPP-BOT-v10",  // set the auto-reply message for status replies
-    PREFIX: ".",  // add your prefix for the bot
-    BOT_NAME: "𝖦Λ𝖱𝖥𝖨Ξ𝖫𝖣 𝖡𝖮Т",  // add bot name for the menu
-    STICKER_NAME: "GARFIELD-WHATSAPP-BOT-v10",  // set the sticker pack name
+    PREFIX: "?",  // add your prefix for the bot
+    BOT_NAME: "LOXY 𝖡𝖮Т",  // add bot name for the menu
+    STICKER_NAME: "LOXYFAM",  // set the sticker pack name
     CUSTOM_REACT: false,  // set to true for custom emoji reactions
-    CUSTOM_REACT_EMOJIS: "⭐",  // choose custom react emojis
+    CUSTOM_REACT_EMOJIS: "🧌",  // choose custom react emojis
     DELETE_LINKS: false,  // set to true for automatic deletion of links without removing member
-    OWNER_NUMBER: "94711502119",  // add your bot owner number
+    OWNER_NUMBER: "254717066747",  // add your bot owner number
     OWNER_NAME: "@Sanku",  // add bot owner name
     DESCRIPTION: "©Ｐｏｗｅｒｅｄ ｂｙ Ｘｎｏｄｅｓ",  // add bot description
     ALIVE_IMG: "https://i.ibb.co/5g7VGhC9/Picsart-25-01-30-13-20-52-736.png",  // add image URL for alive message
@@ -33,10 +33,10 @@ module.exports = {
     PUBLIC_MODE: true,  // set to false for private mode
     AUTO_TYPING: false,  // set to true for automatic show typing
     READ_CMD: false,  // set to true to mark commands as read
-    DEV: "94711502119",  // replace with your WhatsApp number
+    DEV: "254717066747",  // replace with your WhatsApp number
     ANTI_VV: true,  // set to true for anti-once view
     ANTI_DEL_PATH: "log",  // change to 'same' if you want to resend deleted message in the same chat
-    AUTO_RECORDING: false  // set to true for auto-recording
+    AUTO_RECORDING: true  // set to true for auto-recording
 };
 
 
