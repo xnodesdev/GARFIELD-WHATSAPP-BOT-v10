@@ -1,1 +1,72 @@
-function _0x23b6(_0x283856,_0x1525fb){const _0x3d82ee=_0x4544();return _0x23b6=function(_0xbad1b7,_0x2bafb1){_0xbad1b7=_0xbad1b7-0xf6;let _0x5561b7=_0x3d82ee[_0xbad1b7];return _0x5561b7;},_0x23b6(_0x283856,_0x1525fb);}const _0x226b34=_0x23b6;function _0x4544(){const _0xd546a8=['1487748NJCLxR','5qBSZZk','error','2zkRCQQ','https://api.davidcyriltech.my.id/download/ytmp3?url=','\x0a>\x20𝖦Λ𝖱𝖥𝖨Ξ𝖫𝖣\x20𝖡𝖮Т','(((.+)+)+)+$','join','❌\x20An\x20error\x20occurred\x20while\x20processing\x20your\x20request.\x20😢','search','info','❌\x20No\x20results\x20found\x20for\x20\x22','return\x20(function()\x20','1267HQYmKF','80pgyQcu','__proto__','420871nqVwWQ','Error\x20while\x20processing\x20request:','169989cvAGMo','result','trace','\x0a\x20\x20\x20\x20👤\x20*Author*\x20-\x20','audio/mp4','table','console','song','music','toString','🎥\x20*𝖵𝖨𝖣𝖤𝖮\x20𝖣𝖮𝖶𝖭𝖫𝖮𝖠𝖣𝖤𝖱*\x0a\x20\x20\x20\x20🎬\x20*Title*\x20-\x20','log','\x0a\x20\x20\x20\x20👁️\x20*Views*\x20-\x20','\x22.\x20😔','🔍\x20Garfield\x20is\x20searching\x20for\x20the\x20song...\x20🎵','✅\x20*','bind','1130997RdmpzQ','3342222UFnbNC','sendMessage','warn','\x22.\x20😞','length','❗️\x20Please\x20provide\x20a\x20song\x20name\x20or\x20keywords\x20to\x20search\x20for.\x20📝\x0a\x20\x20\x20\x20\x20\x20Example:\x20.play\x20🎵\x20Mal\x20mitak\x20,Kasun\x20Kalhara','constructor','\x0a\x20\x20\x20\x20⏳\x20*Duration*\x20-\x20','prototype','*\x20has\x20been\x20downloaded\x20successfully!\x20🎉','.play1\x20<song\x20name\x20or\x20keywords>','axios','1158114BLYGpb','exception','3280FluCbq','apply','{}.constructor(\x22return\x20this\x22)(\x20)','❌\x20Failed\x20to\x20fetch\x20audio\x20for\x20\x22','videos','get','yt-search','name','Download\x20audio\x20from\x20YouTube\x20by\x20searching\x20for\x20keywords\x20(using\x20API\x202).','success'];_0x4544=function(){return _0xd546a8;};return _0x4544();}(function(_0x2df3d9,_0x538e79){const _0x2377af=_0x23b6,_0x45b8c1=_0x2df3d9();while(!![]){try{const _0x1368bd=parseInt(_0x2377af(0xf8))/0x1*(parseInt(_0x2377af(0x125))/0x2)+parseInt(_0x2377af(0x109))/0x3+-parseInt(_0x2377af(0x122))/0x4*(parseInt(_0x2377af(0x123))/0x5)+parseInt(_0x2377af(0x116))/0x6+parseInt(_0x2377af(0x12f))/0x7*(-parseInt(_0x2377af(0x118))/0x8)+-parseInt(_0x2377af(0x10a))/0x9+parseInt(_0x2377af(0x130))/0xa*(parseInt(_0x2377af(0xf6))/0xb);if(_0x1368bd===_0x538e79)break;else _0x45b8c1['push'](_0x45b8c1['shift']());}catch(_0x42a2b6){_0x45b8c1['push'](_0x45b8c1['shift']());}}}(_0x4544,0x37cee));const _0x2442ad=(function(){let _0x52e139=!![];return function(_0x5b6253,_0x3c0261){const _0x253221=_0x52e139?function(){const _0x4cdf96=_0x23b6;if(_0x3c0261){const _0x132cfd=_0x3c0261[_0x4cdf96(0x119)](_0x5b6253,arguments);return _0x3c0261=null,_0x132cfd;}}:function(){};return _0x52e139=![],_0x253221;};}()),_0x344ca0=_0x2442ad(this,function(){const _0x1284b8=_0x23b6;return _0x344ca0[_0x1284b8(0x101)]()[_0x1284b8(0x12b)](_0x1284b8(0x128))[_0x1284b8(0x101)]()['constructor'](_0x344ca0)[_0x1284b8(0x12b)]('(((.+)+)+)+$');});_0x344ca0();const _0x2bafb1=(function(){let _0x25edec=!![];return function(_0x4db175,_0x405468){const _0x288e2b=_0x25edec?function(){const _0x442fb4=_0x23b6;if(_0x405468){const _0x4b6dc7=_0x405468[_0x442fb4(0x119)](_0x4db175,arguments);return _0x405468=null,_0x4b6dc7;}}:function(){};return _0x25edec=![],_0x288e2b;};}()),_0xbad1b7=_0x2bafb1(this,function(){const _0x35f9cb=_0x23b6;let _0x494d1f;try{const _0x2770bc=Function(_0x35f9cb(0x12e)+_0x35f9cb(0x11a)+');');_0x494d1f=_0x2770bc();}catch(_0x55e1b4){_0x494d1f=window;}const _0x69ca52=_0x494d1f[_0x35f9cb(0xfe)]=_0x494d1f[_0x35f9cb(0xfe)]||{},_0x1c5ec5=[_0x35f9cb(0x103),_0x35f9cb(0x10c),_0x35f9cb(0x12c),_0x35f9cb(0x124),_0x35f9cb(0x117),_0x35f9cb(0xfd),_0x35f9cb(0xfa)];for(let _0x3da0a9=0x0;_0x3da0a9<_0x1c5ec5['length'];_0x3da0a9++){const _0x126421=_0x2bafb1[_0x35f9cb(0x110)][_0x35f9cb(0x112)][_0x35f9cb(0x108)](_0x2bafb1),_0x5d5c9d=_0x1c5ec5[_0x3da0a9],_0xafdd78=_0x69ca52[_0x5d5c9d]||_0x126421;_0x126421[_0x35f9cb(0x131)]=_0x2bafb1[_0x35f9cb(0x108)](_0x2bafb1),_0x126421[_0x35f9cb(0x101)]=_0xafdd78[_0x35f9cb(0x101)]['bind'](_0xafdd78),_0x69ca52[_0x5d5c9d]=_0x126421;}});_0xbad1b7();const {cmd}=require('../command'),yts=require(_0x226b34(0x11e)),axios=require(_0x226b34(0x115));cmd({'pattern':_0x226b34(0xff),'react':'🎶','desc':_0x226b34(0x120),'category':_0x226b34(0x100),'use':_0x226b34(0x114),'filename':__filename},async(_0x2b5e74,_0x4c2104,_0x5201c8,{from:_0x6d0b,args:_0x329f40,reply:_0x3f6f4d})=>{const _0xa52ff7=_0x226b34;try{const _0x6acfb6=_0x329f40[_0xa52ff7(0x129)]('\x20');if(!_0x6acfb6)return _0x3f6f4d(_0xa52ff7(0x10f));_0x3f6f4d(_0xa52ff7(0x106));const _0x43069c=await yts(_0x6acfb6);if(!_0x43069c['videos']||_0x43069c[_0xa52ff7(0x11c)][_0xa52ff7(0x10e)]===0x0)return _0x3f6f4d(_0xa52ff7(0x12d)+_0x6acfb6+_0xa52ff7(0x105));const _0x2dfaef=_0x43069c[_0xa52ff7(0x11c)][0x0],{title:_0x3bd8e6,timestamp:_0x27fa9d,views:_0x29cf2d,author:_0x1fa9d3,url:_0x313d0d,image:_0x39685a}=_0x2dfaef,_0xaf755=_0xa52ff7(0x102)+_0x3bd8e6+_0xa52ff7(0x111)+_0x27fa9d+_0xa52ff7(0x104)+_0x29cf2d+_0xa52ff7(0xfb)+_0x1fa9d3[_0xa52ff7(0x11f)]+'\x0a\x20\x20\x20\x20🔗\x20*Link*\x20-\x20'+_0x313d0d+_0xa52ff7(0x127);await _0x2b5e74[_0xa52ff7(0x10b)](_0x6d0b,{'image':{'url':_0x39685a},'caption':_0xaf755});const _0x279aab=_0xa52ff7(0x126)+_0x313d0d,{data:_0x467e3d}=await axios[_0xa52ff7(0x11d)](_0x279aab);if(!_0x467e3d[_0xa52ff7(0x121)])return _0x3f6f4d(_0xa52ff7(0x11b)+_0x6acfb6+_0xa52ff7(0x10d));const {download_url:_0x571623}=_0x467e3d[_0xa52ff7(0xf9)];await _0x2b5e74[_0xa52ff7(0x10b)](_0x6d0b,{'audio':{'url':_0x571623},'mimetype':_0xa52ff7(0xfc),'ptt':![]},{'quoted':_0x4c2104}),_0x3f6f4d(_0xa52ff7(0x107)+_0x3bd8e6+_0xa52ff7(0x113));}catch(_0xf8519d){console['error'](_0xa52ff7(0xf7),_0xf8519d),_0x3f6f4d(_0xa52ff7(0x12a));}});
+const { cmd } = require("../command");
+const yts = require("yt-search");
+const axios = require("axios");
+
+// temporary songs downloader
+
+cmd({
+  pattern: "song",
+  react: '🎶',
+  desc: "Download audio from YouTube by searching for keywords (using API 2).",
+  category: "music",
+  use: ".play1 <song name or keywords>",
+  filename: __filename
+}, async (conn, mek, msg, { from, args, reply }) => {
+  try {
+    const searchQuery = args.join(" ");
+    if (!searchQuery) {
+      return reply(`❗️ Please provide a song name or keywords to search for. 📝
+      Example: .play 🎵 Mal mitak ,Kasun Kalhara`);
+    }
+
+    // Send searching message
+    reply("🔍 Garfield is searching for the song... 🎵");
+
+    // Perform YouTube search
+    const searchResults = await yts(searchQuery);
+    if (!searchResults.videos || searchResults.videos.length === 0) {
+      return reply(`❌ No results found for "${searchQuery}". 😔`);
+    }
+
+    const videoDetails = searchResults.videos[0];
+    const { title, timestamp, views, author, url: videoUrl, image } = videoDetails;
+
+    // Message to send with details
+    const ytmsg = `🎥 *𝖵𝖨𝖣𝖤𝖮 𝖣𝖮𝖶𝖭𝖫𝖮𝖠𝖣𝖤𝖱*
+    🎬 *Title* - ${title}
+    ⏳ *Duration* - ${timestamp}
+    👁️ *Views* - ${views}
+    👤 *Author* - ${author.name}
+    🔗 *Link* - ${videoUrl}
+> 𝖦Λ𝖱𝖥𝖨Ξ𝖫𝖣 𝖡𝖮Т`;
+
+    // Send thumbnail and video details
+    await conn.sendMessage(from, { 
+      image: { url: image },
+      caption: ytmsg
+    });
+
+    // Call the API to download the audio
+    const apiUrl = `https://api.davidcyriltech.my.id/download/ytmp3?url=${videoUrl}`;
+    const { data } = await axios.get(apiUrl);
+
+    if (!data.success) {
+      return reply(`❌ Failed to fetch audio for "${searchQuery}". 😞`);
+    }
+
+    const { download_url } = data.result;
+
+    // Download the audio file
+    await conn.sendMessage(from, {
+      audio: { url: download_url },
+      mimetype: 'audio/mp4',
+      ptt: false
+    }, { quoted: mek });
+
+    // Send download success message
+    reply(`✅ *${title}* has been downloaded successfully! 🎉`);
+  } catch (error) {
+    console.error("Error while processing request:", error);
+    reply("❌ An error occurred while processing your request. 😢");
+  }
+});
