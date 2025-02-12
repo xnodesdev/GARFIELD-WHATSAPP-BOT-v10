@@ -1,10 +1,11 @@
 const { cmd } = require("../command");
+const ytdl = require("ytdl-core"); // YouTube වීඩියෝ බාගත කිරීම සඳහා
 const yts = require("yt-search"); // YouTube සෙවුම් සඳහා
-const { ytv, yta } = require("../lib/y2.js"); // yt2.js එක භාවිතා කිරීම
+const fs = require("fs"); // ගොනු කළමනාකරණය සඳහා
 
 // YouTube වීඩියෝ බාගත කිරීම
 cmd({
-  pattern: "ytmp",
+  pattern: "ytt",
   react: '🎥',
   desc: "Download YouTube video by searching for keywords.",
   category: "main",
@@ -14,11 +15,12 @@ cmd({
   try {
     const searchQuery = args.join(" ");
     if (!searchQuery) {
-      return reply(`❗️ කරුණාකර වීඩියෝ නමක් හෝ සෙවුම් වචන සපයන්න. 📝\nExample: .video Mal mitak`);
+      return reply(`❗️ කරුණාකර වීඩියෝ නමක් හෝ සෙවුම් වචන සපයන්න. 📝
+      Example: .video Mal mitak`);
     }
 
     // සෙවුම් පණිවිඩය යැවීම
-    reply("🔍 Searching for the video... 🎥");
+    reply("*🔍 Searching for the video... 🎥*");
 
     // YouTube සෙවුම් කිරීම
     const searchResults = await yts(searchQuery);
@@ -30,7 +32,13 @@ cmd({
     const { title, timestamp, views, author, url: videoUrl, image } = videoDetails;
 
     // වීඩියෝ තොරතුරු සමඟ පණිවිඩය
-    let ytmsg = `🎥 *𝖵𝖨𝖣𝖤𝖮 𝖣𝖮𝖶𝖭𝖫𝖮𝖠𝖣𝖤𝖱*\n🎬 *Title* - ${title}\n⏳ *Duration* - ${timestamp}\n👁️ *Views* - ${views}\n👤 *Author* - ${author.name}\n🔗 *Link* - ${videoUrl}\n> 𝖦Λ𝖱𝖥𝖨Ξ𝖫𝖣 𝖡𝖮Т`;
+    let ytmsg = `🎥 *𝖵𝖨𝖣𝖤𝖮 𝖣𝖮𝖶𝖭𝖫𝖮𝖠𝖣𝖤𝖱*
+    🎬 *Title* - ${title}
+    ⏳ *Duration* - ${timestamp}
+    👁️ *Views* - ${views}
+    👤 *Author* - ${author.name}
+    🔗 *Link* - ${videoUrl}
+    > 𝖦Λ𝖱𝖥𝖨Ξ𝖫𝖣 𝖡𝖮Т`;
 
     // තම්බ්නේල් සහ වීඩියෝ තොරතුරු යැවීම
     await conn.sendMessage(from, { 
@@ -38,79 +46,42 @@ cmd({
       caption: ytmsg
     });
 
-    // yt2.js භාවිතා කර වීඩියෝ බාගත කිරීම
-    const videoData = await ytv(videoUrl);
-    if (!videoData.link) {
-      return reply("❌ Failed to get the video download link. 😞");
-    }
+    // අහඹු ගොනු නාමයක් ජනනය කිරීම
+    const randomName = `${Math.floor(Math.random() * 10000)}.mp4`;
 
-    // වීඩියෝ ගොනුව යැවීම
-    await conn.sendMessage(from, {
-      video: { url: videoData.link },
-      mimetype: "video/mp4",
-      caption: `> *${title}*\n> *Quality: ${videoData.quality}*\n> *© Pᴏᴡᴇʀᴇᴅ Bʏ Mʀ Sʜᴀʙᴀɴ ♡*`
-    }, { quoted: mek });
+    // වීඩියෝ බාගත කිරීම
+    const stream = ytdl(videoUrl, { filter: (info) => info.itag == 22 || info.itag == 18 })
+      .pipe(fs.createWriteStream(`./data/${randomName}`));
 
-    // බාගත කිරීම සාර්ථක පණිවිඩය
-    reply(`✅ *${title}* has been downloaded successfully! 🎉`);
-  } catch (e) {
-    console.error(e);
-    reply("❌ An error occurred while processing your request. 😢");
-  }
-});
+    // බාගත කිරීමේ පණිවිඩය යැවීම
+    reply("*🔍 Downloading the video... 🎥*");
 
-// YouTube audio බාගත කිරීම
-cmd({
-  pattern: "ytms",
-  react: '🎶',
-  desc: "Download YouTube audio by searching for keywords.",
-  category: "main",
-  use: ".song <song name or keywords>",
-  filename: __filename
-}, async (conn, mek, msg, { from, args, reply }) => {
-  try {
-    const searchQuery = args.join(" ");
-    if (!searchQuery) {
-      return reply(`❗️ කරුණාකර ගීතයක් හෝ සෙවුම් වචන සපයන්න. 📝\nExample: .song Kasun Kalhara`);
-    }
-
-    // සෙවුම් පණිවිඩය යැවීම
-    reply("🔍 Searching for the song... 🎵");
-
-    // YouTube සෙවුම් කිරීම
-    const searchResults = await yts(searchQuery);
-    if (!searchResults.videos || searchResults.videos.length === 0) {
-      return reply(`❌ No results found for "${searchQuery}". 😔`);
-    }
-
-    const videoDetails = searchResults.videos[0];
-    const { title, timestamp, views, author, url: videoUrl, image } = videoDetails;
-
-    // audio තොරතුරු සමඟ පණිවිඩය
-    let ytmsg = `🎵 *𝖬𝖴𝖲𝖨𝖢 𝖣𝖮𝖶𝖭𝖫𝖮𝖠𝖣𝖤𝖱*\n🎬 *Title* - ${title}\n⏳ *Duration* - ${timestamp}\n👁️ *Views* - ${views}\n👤 *Author* - ${author.name}\n🔗 *Link* - ${videoUrl}\n> 𝖦Λ𝖱𝖥𝖨Ξ𝖫𝖣 𝖡𝖮Т`;
-
-    // තම්බ්නේල් සහ audio තොරතුරු යැවීම
-    await conn.sendMessage(from, { 
-      image: { url: image },
-      caption: ytmsg
+    await new Promise((resolve, reject) => {
+      stream.on('error', reject);
+      stream.on('finish', resolve);
     });
 
-    // yt2.js භාවිතා කර audio බාගත කිරීම
-    const audioData = await yta(videoUrl);
-    if (!audioData.link) {
-      return reply("❌ Failed to get the audio download link. 😞");
+    // ගොනුවේ ප්‍රමාණය පරීක්ෂා කිරීම
+    const stats = fs.statSync(`./data/${randomName}`);
+    const fileSizeInBytes = stats.size;
+    const fileSizeInMegabytes = fileSizeInBytes / (1024 * 1024);
+
+    if (fileSizeInMegabytes <= 999) {
+      // වීඩියෝ ගොනුව යැවීම
+      await conn.sendMessage(from, {
+        video: fs.readFileSync(`./data/${randomName}`),
+        fileName: `${title}.mp4`,
+        mimetype: 'video/mp4'
+      }, { quoted: mek });
+
+      // බාගත කිරීම සාර්ථක පණිවිඩය
+      reply(`✅ *${title}* has been downloaded successfully! 🎉`);
+    } else {
+      reply(`❌ වීඩියෝවේ ප්‍රමාණය 1000MB ඉක්මවා ඇත. එය බාගත කිරීමට නොහැකි විය. 😢`);
     }
 
-    // audio ගොනුව යැවීම
-    await conn.sendMessage(from, {
-      audio: { url: audioData.link },
-      mimetype: "audio/mpeg",
-      fileName: `${title}.mp3`,
-      caption: `> *${title}*\n> *© Pᴏᴡᴇʀᴇᴅ Bʏ Mʀ Sʜᴀʙᴀɴ ♡*`
-    }, { quoted: mek });
-
-    // බාගත කිරීම සාර්ථක පණිවිඩය
-    reply(`✅ *${title}* has been downloaded successfully! 🎉`);
+    // ගොනුව මකා දැමීම
+    fs.unlinkSync(`./data/${randomName}`);
   } catch (e) {
     console.error(e);
     reply("❌ An error occurred while processing your request. 😢");
