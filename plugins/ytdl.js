@@ -1,9 +1,22 @@
-const { cmd } = require("../command");
-const ytdl = require("@distube/ytdl-core"); // YouTube වීඩියෝ සහ audio බාගත කිරීම සඳහා
-const yts = require("yt-search"); // YouTube සෙවුම් සඳහා
-const fs = require("fs"); // ගොනු කළමනාකරණය සඳහා
 
-// YouTube audio බාගත කිරීම
+const { cmd } = require("../command");
+const ytdl = require("@distube/ytdl-core");
+const yts = require("yt-search");
+const fs = require("fs");
+const { promisify } = require("util");
+const writeFile = promisify(fs.writeFile);
+const unlink = promisify(fs.unlink);
+const readFile = promisify(fs.readFile);
+
+
+// Helper function to handle errors
+const handleErrors = (reply, errorMsg) => (e) => {
+  console.error(e);
+  reply(errorMsg);
+};
+
+
+// Download YouTube audio
 cmd({
   pattern: "play",
   react: '🎶',
@@ -15,74 +28,53 @@ cmd({
   try {
     const searchQuery = args.join(" ");
     if (!searchQuery) {
-      return reply(`❗️ කරුණාකර ගීතයක් හෝ සෙවුම් වචන සපයන්න. 📝
-      Example: .audio Despacito`);
+      return reply(`❗️ Please provide a song name or keywords. 📝\nExample: .audio Despacito`);
     }
 
-    // සෙවුම් පණිවිඩය යැවීම
+
     reply("🔍 Searching for the song... 🎵");
 
-    // YouTube සෙවුම් කිරීම
+
     const searchResults = await yts(searchQuery);
-    if (!searchResults.videos || searchResults.videos.length === 0) {
+    if (!searchResults.videos.length) {
       return reply(`❌ No results found for "${searchQuery}". 😔`);
     }
 
-    const videoDetails = searchResults.videos[0];
-    const { title, duration, timestamp, views, author, url: videoUrl, image } = videoDetails;
 
-    // audio තොරතුරු සමඟ පණිවිඩය
-    let ytmsg = `*🎶 Song Name* - ${title}
-*🕜 Duration* - ${duration}
-*📻 Listerners* - ${views}
-*🎙️ Artist* - ${author.name}
-> 𝖦Λ𝖱𝖥𝖨Ξ𝖫𝖣 𝖡𝖮Тv10.1
-> File Name ${title}.mp3`;
+    const { title, duration, views, author, url: videoUrl, image } = searchResults.videos[0];
+    
 
-    // තම්බ්නේල් සහ audio තොරතුරු යැවීම
-    await conn.sendMessage(from, { 
-      image: { url: image },
-      caption: ytmsg
-    });
+    const tempFileName = `./store/${title}.mp3`;
 
-    // අහඹු ගොනු නාමයක් ජනනය කිරීම
-    const tempFileName = `./store/yt_audio_${Date.now()}.mp3`;
 
-    // audio බාගත කිරීම
     const info = await ytdl.getInfo(videoUrl);
-    const format = ytdl.filterFormats(info.formats, 'audioonly');
-    const audioFormat = format.find(f => f.audioBitrate === 128);
-
+    const audioFormat = ytdl.filterFormats(info.formats, 'audioonly').find(f => f.audioBitrate === 320);
     if (!audioFormat) {
       return reply("❌ No suitable audio format found. 😢");
     }
 
-    const audioStream = ytdl.downloadFromInfo(info, { quality: audioFormat.itag })
-      .pipe(fs.createWriteStream(tempFileName));
 
+    const audioStream = ytdl.downloadFromInfo(info, { quality: audioFormat.itag });
     await new Promise((resolve, reject) => {
-      audioStream.on('finish', resolve);
-      audioStream.on('error', reject);
+      audioStream.pipe(fs.createWriteStream(tempFileName)).on('finish', resolve).on('error', reject);
     });
 
-    // audio ගොනුව යැවීම
+
     await conn.sendMessage(from, {
-      audio: fs.readFileSync(tempFileName),
+      document: await readFile(tempFileName),
       mimetype: "audio/mpeg",
       fileName: `${title}.mp3`
     }, { quoted: mek });
 
-    // බාගත කිරීම සාර්ථක පණිවිඩය
 
-    // තාවකාලික ගොනුව මකා දැමීම
-    fs.unlinkSync(tempFileName);
+    await unlink(tempFileName);
   } catch (e) {
-    console.error(e);
-    reply("❌ An error occurred while processing your request. 😢");
+    handleErrors(reply, "❌ An error occurred while processing your request. 😢")(e);
   }
 });
 
-// YouTube වීඩියෝ බාගත කිරීම
+
+// Download YouTube video
 cmd({
   pattern: "ytdl",
   react: '🎥',
@@ -94,67 +86,49 @@ cmd({
   try {
     const searchQuery = args.join(" ");
     if (!searchQuery) {
-      return reply(`❗️ කරුණාකර වීඩියෝ නමක් හෝ සෙවුම් වචන සපයන්න. 📝
-      Example: .video Despacito`);
+      return reply(`❗️ Please provide a video name or keywords. 📝\nExample: .video Despacito`);
     }
 
-    // සෙවුම් පණිවිඩය යැවීම
-    reply("```🔍 Searching for the video... 🎥```");
 
-    // YouTube සෙවුම් කිරීම
+    reply("🔍 Searching for the video... 🎥");
+
+
     const searchResults = await yts(searchQuery);
-    if (!searchResults.videos || searchResults.videos.length === 0) {
+    if (!searchResults.videos.length) {
       return reply(`❌ No results found for "${searchQuery}". 😔`);
     }
 
-    const videoDetails = searchResults.videos[0];
-    const { title, duration, timestamp, views, author, url: videoUrl, image } = videoDetails;
 
-    // වීඩියෝ තොරතුරු සමඟ පණිවිඩය
-    let ytmsg = `🎬 *Title* - ${title}
-🕜 *Duration* - ${duration}
-👁️ *Views* - ${views}
-👤 *Author* - ${author.name}
-🔗 *Link* - ${videoUrl}
-> 𝖦Λ𝖱𝖥𝖨Ξ𝖫𝖣 𝖡𝖮Тv10.1
-> File Name ${title}.mp4`;
+    const { title, duration, views, author, url: videoUrl, image } = searchResults.videos[0];
+    const ytmsg = `🎬 *Title* - ${title}\n🕜 *Duration* - ${duration}\n👁️ *Views* - ${views}\n👤 *Author* - ${author.name}\n🔗 *Link* - ${videoUrl}`;
 
-    // තම්බ්නේල් සහ වීඩියෝ තොරතුරු යැවීම
-    
 
-    // අහඹු ගොනු නාමයක් ජනනය කිරීම
     const tempFileName = `./store/yt_video_${Date.now()}.mp4`;
 
-    // වීඩියෝ බාගත කිරීම
-    const info = await ytdl.getInfo(videoUrl);
-    const format = ytdl.filterFormats(info.formats, 'videoandaudio');
-    const videoFormat = format.find(f => f.qualityLabel === '360p');
 
+    const info = await ytdl.getInfo(videoUrl);
+    const videoFormat = ytdl.filterFormats(info.formats, 'videoandaudio').find(f => f.qualityLabel === '360p');
     if (!videoFormat) {
       return reply("❌ No suitable video format found. 😢");
     }
 
-    const videoStream = ytdl.downloadFromInfo(info, { quality: videoFormat.itag })
-      .pipe(fs.createWriteStream(tempFileName));
 
+    const videoStream = ytdl.downloadFromInfo(info, { quality: videoFormat.itag });
     await new Promise((resolve, reject) => {
-      videoStream.on('finish', resolve);
-      videoStream.on('error', reject);
+      videoStream.pipe(fs.createWriteStream(tempFileName)).on('finish', resolve).on('error', reject);
     });
 
-    // වීඩියෝ ගොනුව යැවීම
+
     await conn.sendMessage(from, {
-      video: fs.readFileSync(tempFileName),
+      document: await readFile(tempFileName),
       mimetype: "video/mp4",
+      fileName: `${title}.mp4`,
       caption: ytmsg
     }, { quoted: mek });
 
-    // බාගත කිරීම සාර්ථක පණිවිඩය
 
-    // තාවකාලික ගොනුව මකා දැමීම
-    fs.unlinkSync(tempFileName);
+    await unlink(tempFileName);
   } catch (e) {
-    console.error(e);
-    reply("❌ An error occurred while processing your request. 😢");
+    handleErrors(reply, "❌ An error occurred while processing your request. 😢")(e);
   }
 });
