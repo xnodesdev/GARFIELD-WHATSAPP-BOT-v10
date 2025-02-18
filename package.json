@@ -52,7 +52,7 @@
     "wikipedia": "2.1.2",
     "yt-search": "^2.12.1",
     "ytdl-core": "4.11.5",
-    "garfield-ytdl" :"1.0.0",
+    "@distube/ytdl-core" :"^4.16.4",
     "another-fb-video-downloader" : "1.0.6"
   }
 }
