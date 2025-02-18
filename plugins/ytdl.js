@@ -1,63 +1,70 @@
 const { cmd } = require("../command");
-const yts = require("yt-search");
-const axios = require("axios");
-const NodeCache = require("node-cache");
-const cache = new NodeCache({ stdTTL: 3600 }); // Cache results for 1 hour
+const ytSearch = require('yt-search');
+const ytdl = require('@distube/ytdl-core');
+const ffmpeg = require('fluent-ffmpeg'); // Add this line for audio conversion
+const fs = require("fs");
 
 cmd({
   pattern: "play",
-  react: '🎶',
-  desc: "Download audio from YouTube by searching for keywords (using API 2).",
-  category: "music",
-  use: ".play1 <song name or keywords>",
+  react: '🎵',
+  desc: "Download YouTube audio by providing the video name.",
+  category: "main",
+  use: ".play <YouTube video name>",
   filename: __filename
 }, async (conn, mek, msg, { from, args, reply }) => {
   try {
-    const searchQuery = args.join(" ");
-    if (!searchQuery) {
-      return reply(`*Please provide a song name or keywords to search for.*
-      Example: .play Mal mitak, Kasun Kalhara`);
+    const query = args.join(" ");
+    if (!query) {
+      return reply(`❗️කරුණාකර YouTube වීඩියෝ නමක් සපයන්න. 📝
+      Example: .play Despacito`);
     }
 
-    reply("`Garfield is searching for the song... 🎵`");
+    reply("```Downloading Song... ⬇️```");
 
-    // Check cache for search results
-    let searchResults = cache.get(searchQuery);
-    if (!searchResults) {
-      searchResults = await yts(searchQuery);
-      if (!searchResults.videos || searchResults.videos.length === 0) {
-        return reply(`❌ No results found for "${searchQuery}".`);
-      }
-      cache.set(searchQuery, searchResults); // Cache search results
+    const searchResults = await ytSearch(query);
+    const video = searchResults.videos[0];
+
+    if (!video) {
+      return reply("❌ No video found with that name. 😢");
     }
 
-    const firstResult = searchResults.videos[0];
-    const videoUrl = firstResult.url;
+    const ytUrl = video.url;
+    const info = await ytdl.getInfo(ytUrl);
+    const audioFormat = ytdl.filterFormats(info.formats, 'audioonly').find(f => f.audioBitrate === 320);
 
-    // Check cache for download URL
-    let audioDetails = cache.get(videoUrl);
-    if (!audioDetails) {
-      const apiUrl = `https://api.davidcyriltech.my.id/download/ytmp3?url=${videoUrl}`;
-      const response = await axios.get(apiUrl);
-      if (!response.data.success) {
-        return reply(`❌ Failed to fetch audio for "${searchQuery}".`);
-      }
-      audioDetails = response.data.result;
-      cache.set(videoUrl, audioDetails); // Cache audio details
+    if (!audioFormat) {
+      return reply("❌ No suitable audio format found. 😢");
     }
 
-    const { title, download_url } = audioDetails;
+    const outputPathMp3 = `./src/tmp/${Date.now()}.mp3`;
+    const outputPathWav = `./src/tmp/${video.title}.wav`; // Save as WAV format
 
-    // Send the audio file
-    await conn.sendMessage(from, {
-      audio: { url: download_url },
-      mimetype: 'audio/mp4',
-      ptt: false
-    }, { quoted: mek });
+    const audioStream = ytdl.downloadFromInfo(info, { quality: audioFormat.itag });
 
-    reply(`✅ *${title}* has been downloaded successfully!`);
-  } catch (error) {
-    console.error(error);
-    reply("❌ An error occurred while processing your request.");
+    audioStream.pipe(fs.createWriteStream(outputPathMp3)).on('finish', async () => {
+      ffmpeg(outputPathMp3)
+        .toFormat('wav')
+        .on('end', async () => {
+          await conn.sendMessage(from, {
+            audio: fs.readFileSync(outputPathWav),
+            mimetype: "audio/wav",
+            fileName: `${video.title}.wav`
+          }, { quoted: mek });
+
+          fs.unlinkSync(outputPathMp3);
+          fs.unlinkSync(outputPathWav);
+        })
+        .on('error', (err) => {
+          console.error(err);
+          reply("❌ An error occurred while processing your request. 😢");
+        })
+        .save(outputPathWav);
+    }).on('error', (e) => {
+      console.error(e);
+      reply("❌ An error occurred while processing your request. 😢");
+    });
+  } catch (e) {
+    console.error(e);
+    reply("❌ An error occurred while processing your request. 😢");
   }
 });
