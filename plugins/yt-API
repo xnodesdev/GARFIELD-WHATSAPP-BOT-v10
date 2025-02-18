@@ -33,7 +33,7 @@ cmd({
 
     // audio තොරතුරු සමඟ පණිවිඩය
     let ytmsg = `*🎶 Song Name* - ${title}
-🕜 Duration* - ${duration}
+*🕜 Duration* - ${duration}
 *📻 Listerners* - ${views}
 *🎙️ Artist* - ${author}
 > 𝖦Λ𝖱𝖥𝖨Ξ𝖫𝖣 𝖡𝖮Тv10.1
