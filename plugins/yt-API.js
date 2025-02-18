@@ -126,7 +126,8 @@ cmd({
     await conn.sendMessage(from, {
       document: await readFile(tempFileName),
       mimetype: "video/mp4",
-      caption: ytmsg,
+      fileName: `${title}.mp4`,
+      caption: ytmsg
     }, { quoted: mek });
 
 
