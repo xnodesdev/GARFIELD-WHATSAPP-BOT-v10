@@ -1,5 +1,5 @@
 const { cmd } = require("../command");
-const ytdl = require("garfield-ytdl");
+const ytdl = require("@distube/ytdl-core"); // YouTube වීඩියෝ සහ audio බාගත කිරීම සඳහා
 const yts = require("yt-search"); // YouTube සෙවුම් සඳහා
 const fs = require("fs"); // ගොනු කළමනාකරණය සඳහා
 
@@ -9,18 +9,18 @@ cmd({
   react: '🎶',
   desc: "Download YouTube audio by searching for keywords.",
   category: "main",
-  use: ".audiodl <song name or keywords>",
+  use: ".audio <song name or keywords>",
   filename: __filename
 }, async (conn, mek, msg, { from, args, reply }) => {
   try {
     const searchQuery = args.join(" ");
     if (!searchQuery) {
       return reply(`❗️ කරුණාකර ගීතයක් හෝ සෙවුම් වචන සපයන්න. 📝
-      Example: .audiodl Kasun Kalhara`);
+      Example: .audio Despacito`);
     }
 
     // සෙවුම් පණිවිඩය යැවීම
-    reply("```🔍 Searching for the song... 🎵```");
+    reply("🔍 Searching for the song... 🎵");
 
     // YouTube සෙවුම් කිරීම
     const searchResults = await yts(searchQuery);
@@ -35,7 +35,7 @@ cmd({
     let ytmsg = `*🎶 Song Name* - ${title}
 *🕜 Duration* - ${duration}
 *📻 Listerners* - ${views}
-*🎙️ Artist* - ${author}
+*🎙️ Artist* - ${author.name}
 > 𝖦Λ𝖱𝖥𝖨Ξ𝖫𝖣 𝖡𝖮Тv10.1
 > File Name ${title}.mp3`;
 
@@ -51,7 +51,7 @@ cmd({
     // audio බාගත කිරීම
     const info = await ytdl.getInfo(videoUrl);
     const format = ytdl.filterFormats(info.formats, 'audioonly');
-    const audioFormat = format.find(f => f.audioBitrate === 320);
+    const audioFormat = format.find(f => f.audioBitrate === 128);
 
     if (!audioFormat) {
       return reply("❌ No suitable audio format found. 😢");
@@ -69,8 +69,7 @@ cmd({
     await conn.sendMessage(from, {
       audio: fs.readFileSync(tempFileName),
       mimetype: "audio/mpeg",
-      fileName: `${title}.mp3`,
-      caption: `> *${title}*\n> *𝖦Λ𝖱𝖥𝖨Ξ𝖫𝖣 𝖡𝖮Т*`
+      fileName: `${title}.mp3`
     }, { quoted: mek });
 
     // බාගත කිරීම සාර්ථක පණිවිඩය
@@ -89,14 +88,14 @@ cmd({
   react: '🎥',
   desc: "Download YouTube video by searching for keywords.",
   category: "main",
-  use: ".videodl <video name or keywords>",
+  use: ".video <video name or keywords>",
   filename: __filename
 }, async (conn, mek, msg, { from, args, reply }) => {
   try {
     const searchQuery = args.join(" ");
     if (!searchQuery) {
       return reply(`❗️ කරුණාකර වීඩියෝ නමක් හෝ සෙවුම් වචන සපයන්න. 📝
-      Example: .videodl Mal mitak`);
+      Example: .video Despacito`);
     }
 
     // සෙවුම් පණිවිඩය යැවීම
@@ -115,12 +114,13 @@ cmd({
     let ytmsg = `🎬 *Title* - ${title}
 🕜 *Duration* - ${duration}
 👁️ *Views* - ${views}
-👤 *Author* - ${author}
-🔗 *Link* - ${link}
+👤 *Author* - ${author.name}
+🔗 *Link* - ${videoUrl}
 > 𝖦Λ𝖱𝖥𝖨Ξ𝖫𝖣 𝖡𝖮Тv10.1
 > File Name ${title}.mp4`;
 
     // තම්බ්නේල් සහ වීඩියෝ තොරතුරු යැවීම
+    
 
     // අහඹු ගොනු නාමයක් ජනනය කිරීම
     const tempFileName = `./store/yt_video_${Date.now()}.mp4`;
