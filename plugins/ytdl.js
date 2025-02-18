@@ -29,7 +29,7 @@ cmd({
     }
 
     const videoDetails = searchResults.videos[0];
-    const { title, timestamp, views, author, url: videoUrl, image } = videoDetails;
+    const { title, duration, timestamp, views, author, url: videoUrl, image } = videoDetails;
 
     // audio තොරතුරු සමඟ පණිවිඩය
     let ytmsg = `*🎶 Song Name* - ${title}
@@ -109,7 +109,7 @@ cmd({
     }
 
     const videoDetails = searchResults.videos[0];
-    const { title, timestamp, views, author, url: videoUrl, image } = videoDetails;
+    const { title, duration, timestamp, views, author, url: videoUrl, image } = videoDetails;
 
     // වීඩියෝ තොරතුරු සමඟ පණිවිඩය
     let ytmsg = `🎬 *Title* - ${title}
