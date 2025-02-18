@@ -146,7 +146,8 @@ cmd({
     await conn.sendMessage(from, {
       video: fs.readFileSync(tempFileName),
       mimetype: "video/mp4",
-      caption: ytmsg
+      caption: ytmsg , 
+      thumbail: image
     }, { quoted: mek });
 
     // බාගත කිරීම සාර්ථක පණිවිඩය
