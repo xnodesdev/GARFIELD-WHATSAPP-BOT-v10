@@ -1,5 +1,5 @@
 const { cmd } = require("../command");
-const ytdl = require("@distube/ytdl-core"); // YouTube වීඩියෝ සහ audio බාගත කිරීම සඳහා
+const ytdl = require("garfield-ytdl");
 const yts = require("yt-search"); // YouTube සෙවුම් සඳහා
 const fs = require("fs"); // ගොනු කළමනාකරණය සඳහා
 
