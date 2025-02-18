@@ -39,12 +39,13 @@ cmd({
     });
 
     await conn.sendMessage(from, {
-      video: fs.readFileSync(tempFileName),
+      document: fs.readFileSync(tempFileName),
       mimetype: "video/mp4",
       caption: `📁 *File Name* : 82837.mp4 
 🎬 *Format*: mp4
 🌍 *Video Source* : Facebook 
-> 𝖦Λ𝖱𝖥𝖨Ξ𝖫𝖣 𝖡𝖮Т v10.1 Facebook Video downloader`
+> 𝖦Λ𝖱𝖥𝖨Ξ𝖫𝖣 𝖡𝖮Т v10.1 Facebook Video downloader`,
+      fileName: `FacebookVideo.mp4`
     }, { quoted: mek });
 
     fs.unlinkSync(tempFileName);
