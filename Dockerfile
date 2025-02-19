@@ -1,7 +1,20 @@
-FROM node:lts-buster
-WORKDIR /root/GARFIELD-WHATSAPP-BOT-v10
+# Use the official Node.js 20.18.1 image from Docker Hub
+FROM node:20.18.1
+
+# Create and set the working directory
+WORKDIR /app
+
+# Copy package.json and package-lock.json files
 COPY package*.json ./
-RUN npm install && npm install -g pm2 || yarn install --network-concurrency 1
+
+# Install dependencies
+RUN npm install
+
+# Copy the rest of the application files
 COPY . .
-EXPOSE 9090
-CMD ["npm", "start"]
+
+# Expose the port the app runs on
+EXPOSE 3000
+
+# Command to run the bot
+CMD ["node", "index.js"]
