@@ -13,7 +13,7 @@
     "@adiwajshing/keyed-db": "^0.2.4",
     "@bochilteam/scraper": "^3.0.0",
     "@dark-yasiya/yt-dl.js": "1.0.5",
-    "@distube/ytdl-core": "4.16.4",
+    "@distube/ytdl-core": "latest",
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
     "@mrnima/facebook-downloader": "1.0.0",
     "@mrnima/tiktok-downloader": "1.0.0",
