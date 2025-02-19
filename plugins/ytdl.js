@@ -32,7 +32,7 @@ cmd({
     }
 
 
-    reply("🔍 Searching for the song... 🎵");
+    reply("```🔍 Searching for the song... 🎵```");
 
 
     const searchResults = await yts(searchQuery);
@@ -48,7 +48,7 @@ cmd({
 
 
     const info = await ytdl.getInfo(videoUrl);
-    const audioFormat = ytdl.filterFormats(info.formats, 'audioonly').find(f => f.audioBitrate === 320);
+    const audioFormat = ytdl.filterFormats(info.formats, 'audioonly').find(f => f.audioBitrate === 128);
     if (!audioFormat) {
       return reply("❌ No suitable audio format found. 😢");
     }
@@ -90,7 +90,7 @@ cmd({
     }
 
 
-    reply("🔍 Searching for the video... 🎥");
+    reply("```🔍 Searching for the video... 🎥```");
 
 
     const searchResults = await yts(searchQuery);
