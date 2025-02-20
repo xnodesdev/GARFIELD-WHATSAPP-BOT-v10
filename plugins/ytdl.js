@@ -3,7 +3,6 @@ const ytdl = require("@distube/ytdl-core");
 const yts = require("yt-search");
 const fs = require("fs");
 const { promisify } = require("util");
-const { getRandomIPv6 } = require("@distube/ytdl-core/lib/utils");
 
 // Promisify fs methods for better async handling
 const writeFile = promisify(fs.writeFile);
@@ -21,28 +20,68 @@ const ytdlOptions = {
   },
 };
 
-// Helper function to handle errors
-const handleErrors = (reply, errorMsg) => (e) => {
-  console.error(e);
-  reply(errorMsg);
-};
-
-// Create a cookie agent (optional, for private/restricted videos)
+// Add your YouTube cookies here
 const cookies = [
   {
-    domain: ".youtube.com",
     name: "SAPISID",
     value: "-dluw4VrSxq-MtTZ/AW-UIF_IAnRVeajVe",
+    domain: ".youtube.com",
+    path: "/",
+    secure: true,
+    httpOnly: true,
+  },
+  {
+    name: "APISID",
+    value: "1fl2qLX2zOKTjBNB/AF9y-UgG71yqVlWpB",
+    domain: ".youtube.com",
+    path: "/",
+    secure: true,
+    httpOnly: true,
+  },
+  {
+    name: "HSID",
+    value: "A2kh1bxoObs4HhAZd",
+    domain: ".youtube.com",
+    path: "/",
+    secure: true,
+    httpOnly: true,
+  },
+  {
+    name: "SID",
+    value: "g.a000uAhoA1gKgf=dollWk9UlQC_lyBcFMVscDrsDYSE80gkHU6_ZI9TMHREMO8Z57D077XgACgYKAZ8SARASFQHGX2MinK2xWUDMecJX4F_HRRSaBoVAUF8yKokoJcQD0iu_Fda0C0-RVke0076",
+    domain: ".youtube.com",
+    path: "/",
+    secure: true,
+    httpOnly: true,
+  },
+  {
+    name: "LOGIN_INFO",
+    value: "AFmmF2swRAlgZn0bZOU569l5CZRr0KAgQsy4YtruzqUy7sY3GArHEClPBN3jD3vBfx3SIOElNkzFZ4n1AwPV9v0DvwzKxF4ZozQUQ3MjNmd3oTlmATDfDcokupahHY4ViNbjMejGV30TRLQhUwXp2xSxTIOHpkaX9zVn1bcFJXU2RNGv2DW6zvK1RN3FR6W0TluWZDEwaOZBmfBMtEbnBVUpUN5NTFlKbVl0DNoxwT1l0V1ZxaIJUTToaFVRlRMdzNmbWlgQlaNWBpMnbphfPbWldaUXfMtMDBQeG9PDVg6ckp1S08xVTR3",
+    domain: ".youtube.com",
+    path: "/",
+    secure: true,
+    httpOnly: true,
+  },
+  {
+    name: "PREF",
+    value: "f6=40000000&tz=Asia.Colombo&f7=100&f4=4000000",
+    domain: ".youtube.com",
     path: "/",
     secure: true,
     httpOnly: true,
   },
 ];
 
+// Helper function to handle errors
+const handleErrors = (reply, errorMsg) => (e) => {
+  console.error(e);
+  reply(errorMsg);
+};
+
 // Download YouTube audio
 cmd(
   {
-    pattern: "song",
+    pattern: "play",
     react: "🎶",
     desc: "Download YouTube audio by searching for keywords.",
     category: "main",
@@ -68,18 +107,18 @@ cmd(
 
       const { title, duration, views, author, url: videoUrl, image } =
         searchResults.videos[0];
-      const ytmsg = `*🎶 Song Name* - ${title}\n*🕜 Duration* - ${duration}\n*📻 Listeners* - ${views}\n*🎙️ Artist* - ${author.name}\n> File Name ${title}.mp3`;
-
-      // Send song details with thumbnail
-      await conn.sendMessage(from, { image: { url: image }, caption: ytmsg });
-
       const tempFileName = `./store/yt_audio_${Date.now()}.mp3`;
 
-      // Get video info with custom headers and IP rotation
-      const agent = ytdl.createAgent(cookies, {
-        localAddress: getRandomIPv6("2001:2::/48"),
+      // Get video info with custom headers and cookies
+      const info = await ytdl.getInfo(videoUrl, {
+        ...ytdlOptions,
+        requestOptions: {
+          headers: {
+            ...ytdlOptions.headers,
+            Cookie: cookies.map((c) => `${c.name}=${c.value}`).join("; "),
+          },
+        },
       });
-      const info = await ytdl.getInfo(videoUrl, { ...ytdlOptions, agent });
       const audioFormat = ytdl
         .filterFormats(info.formats, "audioonly")
         .find((f) => f.audioBitrate === 128);
@@ -90,6 +129,12 @@ cmd(
       // Download audio
       const audioStream = ytdl.downloadFromInfo(info, {
         quality: audioFormat.itag,
+        requestOptions: {
+          headers: {
+            ...ytdlOptions.headers,
+            Cookie: cookies.map((c) => `${c.name}=${c.value}`).join("; "),
+          },
+        },
       });
       await new Promise((resolve, reject) => {
         audioStream
@@ -102,7 +147,7 @@ cmd(
       await conn.sendMessage(
         from,
         {
-          audio: await readFile(tempFileName),
+          document: await readFile(tempFileName),
           mimetype: "audio/mpeg",
           fileName: `${title}.mp3`,
         },
@@ -152,11 +197,16 @@ cmd(
 
       const tempFileName = `./store/yt_video_${Date.now()}.mp4`;
 
-      // Get video info with custom headers and IP rotation
-      const agent = ytdl.createAgent(cookies, {
-        localAddress: getRandomIPv6("2001:2::/48"),
+      // Get video info with custom headers and cookies
+      const info = await ytdl.getInfo(videoUrl, {
+        ...ytdlOptions,
+        requestOptions: {
+          headers: {
+            ...ytdlOptions.headers,
+            Cookie: cookies.map((c) => `${c.name}=${c.value}`).join("; "),
+          },
+        },
       });
-      const info = await ytdl.getInfo(videoUrl, { ...ytdlOptions, agent });
       const videoFormat = ytdl
         .filterFormats(info.formats, "videoandaudio")
         .find((f) => f.qualityLabel === "360p");
@@ -167,6 +217,12 @@ cmd(
       // Download video
       const videoStream = ytdl.downloadFromInfo(info, {
         quality: videoFormat.itag,
+        requestOptions: {
+          headers: {
+            ...ytdlOptions.headers,
+            Cookie: cookies.map((c) => `${c.name}=${c.value}`).join("; "),
+          },
+        },
       });
       await new Promise((resolve, reject) => {
         videoStream
@@ -181,8 +237,8 @@ cmd(
         {
           document: await readFile(tempFileName),
           mimetype: "video/mp4",
-          caption: ytmsg,
           filename: `${title}.mp4`
+          caption: ytmsg,
         },
         { quoted: mek }
       );
