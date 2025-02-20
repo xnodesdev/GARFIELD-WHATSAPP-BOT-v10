@@ -97,7 +97,7 @@ cmd(
         );
       }
 
-      reply("🔍 Searching for the song... 🎵");
+      reply("```🔍 Searching for the song... 🎵```");
 
       // Search for the song using yt-search
       const searchResults = await yts(searchQuery);
@@ -184,7 +184,7 @@ cmd(
         );
       }
 
-      reply("🔍 Searching for the video... 🎥");
+      reply("```🔍 Searching for the video... 🎥```");
 
       // Search for the video using yt-search
       const searchResults = await yts(searchQuery);
@@ -238,7 +238,7 @@ cmd(
         {
           document: await readFile(tempFileName),
           mimetype: "video/mp4",
-          filename: `${title}.mp4`
+          filename: `${title}.mp4`,
           caption: ytmsg
         },
         { quoted: mek }
