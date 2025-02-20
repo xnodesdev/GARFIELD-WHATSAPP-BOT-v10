@@ -154,7 +154,7 @@ cmd(
         {
           audio: await readFile(tempFileName),
           mimetype: "audio/mpeg",
-          fileName: `${title}.mp3`,
+          fileName: `${title}.mp3`
         },
         { quoted: mek }
       );
@@ -242,8 +242,8 @@ cmd(
         {
           document: await readFile(tempFileName),
           mimetype: "video/mp4",
-          filename: `${title}.mp4`
-          caption: ytmsg,
+          filename: `${title}.mp4`,
+          caption: ytmsg
         },
         { quoted: mek }
       );
