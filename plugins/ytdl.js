@@ -3,16 +3,11 @@ const ytdl = require("@distube/ytdl-core");
 const yts = require("yt-search");
 const fs = require("fs");
 const { promisify } = require("util");
-const Bottleneck = require("bottleneck");
 
+// Promisify fs methods for better async handling
 const writeFile = promisify(fs.writeFile);
 const unlink = promisify(fs.unlink);
 const readFile = promisify(fs.readFile);
-
-// Rate limiter to avoid too many requests
-const limiter = new Bottleneck({
-  minTime: 1000, // 1 request per second
-});
 
 // Custom headers to mimic a browser request
 const ytdlOptions = {
@@ -30,6 +25,19 @@ const handleErrors = (reply, errorMsg) => (e) => {
   console.error(e);
   reply(errorMsg);
 };
+
+// Create a cookie agent (optional, for private/restricted videos)
+const cookies = [
+  {
+    domain: ".youtube.com",
+    name: "SAPISID",
+    value: "-dluw4VrSxq-MtTZ/AW-UIF_IAnRVeajVe",
+    path: "/",
+    secure: true,
+    httpOnly: true,
+  },
+];
+const agent = ytdl.createAgent(cookies);
 
 // Download YouTube audio
 cmd(
@@ -50,10 +58,10 @@ cmd(
         );
       }
 
-      reply("🔍 Searching for the song... 🎵");
+      reply("```🔍 Searching for the song... 🎵```");
 
-      // Search for the song using yt-search with rate limiting
-      const searchResults = await limiter.schedule(() => yts(searchQuery));
+      // Search for the song using yt-search
+      const searchResults = await yts(searchQuery);
       if (!searchResults.videos.length) {
         return reply(`❌ No results found for "${searchQuery}". 😔`);
       }
@@ -67,10 +75,8 @@ cmd(
 
       const tempFileName = `./store/yt_audio_${Date.now()}.mp3`;
 
-      // Get video info with custom headers
-      const info = await limiter.schedule(() =>
-        ytdl.getInfo(videoUrl, ytdlOptions)
-      );
+      // Get video info with custom headers and cookies
+      const info = await ytdl.getInfo(videoUrl, { ...ytdlOptions, agent });
       const audioFormat = ytdl
         .filterFormats(info.formats, "audioonly")
         .find((f) => f.audioBitrate === 128);
@@ -129,10 +135,10 @@ cmd(
         );
       }
 
-      reply("🔍 Searching for the video... 🎥");
+      reply("```🔍 Searching for the video... 🎥```");
 
-      // Search for the video using yt-search with rate limiting
-      const searchResults = await limiter.schedule(() => yts(searchQuery));
+      // Search for the video using yt-search
+      const searchResults = await yts(searchQuery);
       if (!searchResults.videos.length) {
         return reply(`❌ No results found for "${searchQuery}". 😔`);
       }
@@ -143,10 +149,8 @@ cmd(
 
       const tempFileName = `./store/yt_video_${Date.now()}.mp4`;
 
-      // Get video info with custom headers
-      const info = await limiter.schedule(() =>
-        ytdl.getInfo(videoUrl, ytdlOptions)
-      );
+      // Get video info with custom headers and cookies
+      const info = await ytdl.getInfo(videoUrl, { ...ytdlOptions, agent });
       const videoFormat = ytdl
         .filterFormats(info.formats, "videoandaudio")
         .find((f) => f.qualityLabel === "360p");
@@ -172,6 +176,7 @@ cmd(
           document: await readFile(tempFileName),
           mimetype: "video/mp4",
           caption: ytmsg,
+          filename: `${title}.mp4`
         },
         { quoted: mek }
       );
