@@ -150,6 +150,7 @@ cmd(
           document: await readFile(tempFileName),
           mimetype: "audio/mpeg",
           fileName: `${title}.mp3`,
+          caption: `${title} *has been Downloaded Successfullly ☁️*`
         },
         { quoted: mek }
       );
@@ -238,7 +239,7 @@ cmd(
           document: await readFile(tempFileName),
           mimetype: "video/mp4",
           filename: `${title}.mp4`
-          caption: ytmsg,
+          caption: ytmsg
         },
         { quoted: mek }
       );
