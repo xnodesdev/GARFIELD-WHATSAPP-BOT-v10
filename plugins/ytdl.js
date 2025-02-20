@@ -3,6 +3,7 @@ const ytdl = require("@distube/ytdl-core");
 const yts = require("yt-search");
 const fs = require("fs");
 const { promisify } = require("util");
+const { getRandomIPv6 } = require("@distube/ytdl-core/lib/utils");
 
 // Promisify fs methods for better async handling
 const writeFile = promisify(fs.writeFile);
@@ -37,7 +38,6 @@ const cookies = [
     httpOnly: true,
   },
 ];
-const agent = ytdl.createAgent(cookies);
 
 // Download YouTube audio
 cmd(
@@ -58,7 +58,7 @@ cmd(
         );
       }
 
-      reply("```🔍 Searching for the song... 🎵```");
+      reply("🔍 Searching for the song... 🎵");
 
       // Search for the song using yt-search
       const searchResults = await yts(searchQuery);
@@ -75,7 +75,10 @@ cmd(
 
       const tempFileName = `./store/yt_audio_${Date.now()}.mp3`;
 
-      // Get video info with custom headers and cookies
+      // Get video info with custom headers and IP rotation
+      const agent = ytdl.createAgent(cookies, {
+        localAddress: getRandomIPv6("2001:2::/48"),
+      });
       const info = await ytdl.getInfo(videoUrl, { ...ytdlOptions, agent });
       const audioFormat = ytdl
         .filterFormats(info.formats, "audioonly")
@@ -119,7 +122,7 @@ cmd(
 // Download YouTube video
 cmd(
   {
-    pattern: "video",
+    pattern: "yt",
     react: "🎥",
     desc: "Download YouTube video by searching for keywords.",
     category: "main",
@@ -135,7 +138,7 @@ cmd(
         );
       }
 
-      reply("```🔍 Searching for the video... 🎥```");
+      reply("🔍 Searching for the video... 🎥");
 
       // Search for the video using yt-search
       const searchResults = await yts(searchQuery);
@@ -149,7 +152,10 @@ cmd(
 
       const tempFileName = `./store/yt_video_${Date.now()}.mp4`;
 
-      // Get video info with custom headers and cookies
+      // Get video info with custom headers and IP rotation
+      const agent = ytdl.createAgent(cookies, {
+        localAddress: getRandomIPv6("2001:2::/48"),
+      });
       const info = await ytdl.getInfo(videoUrl, { ...ytdlOptions, agent });
       const videoFormat = ytdl
         .filterFormats(info.formats, "videoandaudio")
