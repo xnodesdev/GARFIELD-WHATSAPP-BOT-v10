@@ -42,7 +42,7 @@ const cookies = [
 // Download YouTube audio
 cmd(
   {
-    pattern: "song",
+    pattern: "play",
     react: "🎶",
     desc: "Download YouTube audio by searching for keywords.",
     category: "main",
@@ -97,7 +97,7 @@ cmd(
       await conn.sendMessage(
         from,
         {
-          audio: await readFile(tempFileName),
+          document: await readFile(tempFileName),
           mimetype: "audio/mpeg",
           fileName: `${title}.mp3`,
         },
