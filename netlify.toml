@@ -1,2 +1,8 @@
-[dev]
-  command = "npm start"
+[build]
+  command = "docker build -t GARFIELD-WHATSAPP-BOT-v10 . && docker run -p 80:3000 GARFIELD-WHATSAPP-BOT-v10"
+  publish = "/usr/src/app"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.js"
+  status = 200
