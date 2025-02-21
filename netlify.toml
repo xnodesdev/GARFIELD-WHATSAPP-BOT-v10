@@ -1,5 +1,5 @@
 [build]
-  command = "npm run build" # Build command, adjust if you have a different build process  # Directory for Netlify Functions (optional)
+  command = "npm install" # Build command, adjust if you have a different build process  # Directory for Netlify Functions (optional)
   publish = "dist"          # Directory to publish (adjust if needed)
 
 [build.environment]
