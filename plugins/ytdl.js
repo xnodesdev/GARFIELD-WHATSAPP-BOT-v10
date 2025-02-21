@@ -27,18 +27,18 @@ cmd({
     }
 
     const { title, duration, views, author, url: videoUrl, image } = searchResults.videos[0];
-    const ytmsg = `*🎶 Song Name* - ${title}\n*🕜 Duration* - ${duration}\n*📻 Listeners* - ${views}\n*🎙️ Artist* - ${author.name}\n> File Name ${title}.mp3`;
+    const ytmsg = `*🎶 Song Name* - ${title}\n*🕜 Duration* - ${duration}\n*📻 Listeners* - ${views}\n*🎙️ Artist* - ${author.name}\n> File Name: ${title}.mp3`;
 
     // Send song details with thumbnail
     await conn.sendMessage(from, { image: { url: image }, caption: ytmsg });
 
     const result = await alldl(videoUrl);
-    if (!result || !result.data || notresult.data.videoUrl) {
+    if (!result || !result.data || !result.data.videoUrl) {
       return reply("❌ Failed to retrieve video URL. Please try again.");
     }
 
     const videoDownloadUrl = result.data.videoUrl;
-    const videoFilePath = path.join('./downloads', `${title}.mp4`);
+    const videoFilePath = path.join('./downloads', `${title.replace(/[^a-zA-Z0-9]/g, '_')}.mp4`);
 
     const videoResponse = await fetch(videoDownloadUrl);
     if (!videoResponse.ok) {
@@ -50,7 +50,7 @@ cmd({
     fs.writeFileSync(videoFilePath, videoBuffer);
 
     // Extract audio using direct FFmpeg command
-    const audioFilePath = path.join('./downloads', `${title}.mp3`);
+    const audioFilePath = path.join('./downloads', `${title.replace(/[^a-zA-Z0-9]/g, '_')}.mp3`);
     const ffmpegCmd = `ffmpeg -i "${videoFilePath}" -q:a 0 -map a "${audioFilePath}" -y -loglevel error`;
 
     exec(ffmpegCmd, async (error, stdout, stderr) => {
@@ -58,7 +58,6 @@ cmd({
         return reply("❌ An error occurred while extracting audio. 😢");
       }
 
-      // Send the audio file
       await conn.sendMessage(from, {
         audio: fs.readFileSync(audioFilePath),
         mimetype: "audio/mpeg",
