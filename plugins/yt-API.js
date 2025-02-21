@@ -4,6 +4,7 @@ const { alldl } = require('rahad-all-downloader');
 const yts = require('yt-search');
 const fs = require('fs');
 const path = require('path');
+const fetch = require('node-fetch'); // Add this if not using a global fetch
 
 
 
