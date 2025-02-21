@@ -50,7 +50,7 @@ cmd(
         );
       }
 
-      reply("🔍 Searching for the song... 🎵");
+      reply("```🔍 Searching for the song... 🎵```");
 
       // Search for the song using yt-search with rate limiting
       const searchResults = await limiter.schedule(() => yts(searchQuery));
@@ -108,7 +108,7 @@ cmd(
 // Download YouTube video
 cmd(
   {
-    pattern: "ytdl",
+    pattern: "yt",
     react: "🎥",
     desc: "Download YouTube video by searching for keywords.",
     category: "main",
@@ -124,7 +124,7 @@ cmd(
         );
       }
 
-      reply("🔍 Searching for the video... 🎥");
+      reply("```🔍 Searching for the video... 🎥```");
 
       // Search for the video using yt-search with rate limiting
       const searchResults = await limiter.schedule(() => yts(searchQuery));
