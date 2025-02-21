@@ -5,9 +5,9 @@
   "depecrated": false,
   "main": "index.js",
   "scripts": {
-    "start": "pm2 start index.js --deep-monitoring --attach --name GARFIELD-WHATSAPP-BOT-v10",
-    "stop": "pm2 stop GARFIELD-WHATSAPP-BOT-v10",
-    "restart": "pm2 restart GARFIELD-WHATSAPP-BOT-v10"
+    "start": "pm2 start index.js --deep-monitoring --attach --name index",
+    "stop": "pm2 stop index",
+    "restart": "pm2 restart index"
   },
   "dependencies": {
     "@adiwajshing/keyed-db": "^0.2.4",
