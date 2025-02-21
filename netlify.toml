@@ -1,8 +1,15 @@
 [build]
-  command = "docker build -t GARFIELD-WHATSAPP-BOT-v10 . && docker run -p 80:3000 GARFIELD-WHATSAPP-BOT-v10"
-  publish = "/usr/src/app"
+  command = "npm run build" # Build command, adjust if you have a different build process  # Directory for Netlify Functions (optional)
+  publish = "dist"          # Directory to publish (adjust if needed)
 
-[[redirects]]
-  from = "/*"
-  to = "/index.js"
-  status = 200
+[build.environment]
+  NODE_VERSION = "20.18.1"     # Specify the Node.js version
+
+
+[dev]
+  command = "npm run start" # Command to start your app locally (adjust if needed)
+# Directory for Netlify Functions (optional)
+
+[[plugins]]
+  package = "@netlify/plugin-functions-install-core"
+
