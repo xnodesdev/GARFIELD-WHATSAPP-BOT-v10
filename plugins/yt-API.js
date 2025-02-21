@@ -57,7 +57,7 @@ cmd({
     const videoBuffer = Buffer.from(videoArrayBuffer);
     fs.writeFileSync(videoFilePath, videoBuffer);
 const { title, duration, views, author, image } = searchResults.videos[0];
-    const ytmsg = `*🎶 Song Name* - ${title}\n*🕜 Duration* - ${duration}\n*📻 Listeners* - ${views}\n*🎙️ Artist* - ${author.name}\n> File Name: ${title}.mp3`;
+    const ytmsg = `*🎬 Video Title* - ${title}\n*🕜 Duration* - ${duration}\n*👁️ Views* - ${views}\n*📺 Channel* - ${author.name}\n> File Name: ${title}.mp4`;
 
 
     await conn.sendMessage(from, {
