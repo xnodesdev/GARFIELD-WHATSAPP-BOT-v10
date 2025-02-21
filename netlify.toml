@@ -9,7 +9,3 @@
 [dev]
   command = "npm run start" # Command to start your app locally (adjust if needed)
 # Directory for Netlify Functions (optional)
-
-[[plugins]]
-  package = "@netlify/plugin-functions-install-core"
-
