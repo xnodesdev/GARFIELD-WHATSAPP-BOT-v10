@@ -1,8 +1,11 @@
+
 const { cmd } = require("../command");
 const { alldl } = require('rahad-all-downloader');
 const yts = require('yt-search');
 const fs = require('fs');
 const path = require('path');
+
+
 
 
 cmd({
@@ -20,7 +23,11 @@ cmd({
     }
 
 
+
+
     reply("```🔍 Searching for the video... 🎥```");
+
+
 
 
     const searchResults = await yts(searchQuery);
@@ -29,8 +36,12 @@ cmd({
     }
 
 
+
+
     const videoUrl = searchResults.videos[0].url;
     const Filename = searchResults.videos[0].title.replace(/[^a-zA-Z0-9]/g, '_');
+
+
 
 
     const result = await alldl(videoUrl);
@@ -38,12 +49,15 @@ cmd({
     const videoFilePath = path.join('./downloads', `${Filename}.mp4`);
 
 
+
+
     const videoResponse = await fetch(videoDownloadUrl);
     const videoArrayBuffer = await videoResponse.arrayBuffer();
     const videoBuffer = Buffer.from(videoArrayBuffer);
     fs.writeFileSync(videoFilePath, videoBuffer);
-const { title, duration, views, author, url: videoUrl, image } = searchResults.videos[0];
+const { title, duration, views, author, image } = searchResults.videos[0];
     const ytmsg = `*🎶 Song Name* - ${title}\n*🕜 Duration* - ${duration}\n*📻 Listeners* - ${views}\n*🎙️ Artist* - ${author.name}\n> File Name: ${title}.mp3`;
+
 
     await conn.sendMessage(from, {
       document: fs.readFileSync(videoFilePath),
@@ -53,6 +67,8 @@ const { title, duration, views, author, url: videoUrl, image } = searchResults.v
     }, { quoted: mek });
 
 
+
+
     // Delete temporary files
       fs.unlinkSync(videoFilePath);
   } catch (error) {
@@ -60,3 +76,4 @@ const { title, duration, views, author, url: videoUrl, image } = searchResults.v
     reply("❌ An error occurred while processing your request. 😢");
   }
 });
+
