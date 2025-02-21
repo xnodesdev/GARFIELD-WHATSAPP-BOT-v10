@@ -33,8 +33,7 @@ cmd({
     await conn.sendMessage(from, { image: { url: image }, caption: ytmsg });
 
     const result = await alldl(videoUrl);
-    if (!result || !result.data || !result.data.videoUrl) {
-      console.error("Full result object:", result);  // Log the full result object for debugging
+    if (!result || !result.data || notresult.data.videoUrl) {
       return reply("❌ Failed to retrieve video URL. Please try again.");
     }
 
@@ -43,7 +42,6 @@ cmd({
 
     const videoResponse = await fetch(videoDownloadUrl);
     if (!videoResponse.ok) {
-      console.error("Failed to download video:", videoResponse.statusText);
       return reply("❌ Failed to download video. Please try again.");
     }
 
@@ -57,7 +55,6 @@ cmd({
 
     exec(ffmpegCmd, async (error, stdout, stderr) => {
       if (error) {
-        console.error('Error extracting audio:', stderr);
         return reply("❌ An error occurred while extracting audio. 😢");
       }
 
@@ -71,10 +68,8 @@ cmd({
       // Delete temporary files
       fs.unlinkSync(videoFilePath);
       fs.unlinkSync(audioFilePath);
-
     });
   } catch (error) {
-    console.error('Error:', error.message);
     reply("❌ An error occurred while processing your request. 😢");
   }
 });
