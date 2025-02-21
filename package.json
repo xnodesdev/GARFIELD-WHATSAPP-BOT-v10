@@ -53,6 +53,6 @@
     "wikipedia": "2.1.2",
     "yt-search": "^2.12.1" ,
     "bottleneck": "^2.19.5",
-    "rahad-all-downloader": "2.1.18"
+    "rahad-all-downloader": "latest"
   }
 }
