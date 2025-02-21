@@ -1,11 +1,11 @@
+
 const { cmd } = require("../command");
 const { alldl } = require('rahad-all-downloader');
 const yts = require('yt-search');
 const fs = require('fs');
 const path = require('path');
 const { exec } = require('child_process');
-
-
+const fetch = require('node-fetch'); //
 cmd({
   pattern: "play",
   react: '🎶',
@@ -69,7 +69,7 @@ cmd({
 
 
       await conn.sendMessage(from, {
-        document: fs.readFileSync(audioFilePath),
+        docuemnt: fs.readFileSync(audioFilePath),
         mimetype: "audio/mpeg",
         fileName: `${title}.mp3`,
         caption: ytmsg
@@ -84,3 +84,4 @@ cmd({
     reply("❌ An error occurred while processing your request. 😢");
   }
 });
+
