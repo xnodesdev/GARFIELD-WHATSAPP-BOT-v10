@@ -4,7 +4,7 @@ const yts = require('yt-search');
 const fs = require('fs');
 const path = require('path');
 const { exec } = require('child_process');
-
+const fetch = require('node-fetch'); //
 cmd({
   pattern: "song",
   react: '🎶',
