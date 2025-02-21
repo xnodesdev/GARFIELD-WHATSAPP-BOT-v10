@@ -1,4 +1,3 @@
-
 [dev]
   command = "npm start" # Command to start your app locally (adjust if needed)
 # Directory for Netlify Functions (optional)
