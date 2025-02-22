@@ -4,6 +4,10 @@ const yts = require('yt-search');
 const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
+const { pipeline } = require('stream');
+const { promisify } = require('util');
+
+const pipe = promisify(pipeline);
 
 cmd({
   pattern: "song",
@@ -44,23 +48,18 @@ cmd({
       headers: { 'User-Agent': 'Mozilla/5.0' } // Add User-Agent header to avoid 403 error
     });
 
-    response.data.pipe(fs.createWriteStream(filePath))
-      .on('finish', async () => {
-        // Send the audio file
-        await conn.sendMessage(from, {
-          audio: fs.readFileSync(filePath),
-          mimetype: "audio/mpeg",
-          filename: fileName
-        }, { quoted: mek });
+    await pipe(response.data, fs.createWriteStream(filePath));
 
-        // Delete the temporary file
-        fs.unlinkSync(filePath);
+    // Send the audio file
+    await conn.sendMessage(from, {
+      audio: fs.readFileSync(filePath),
+      mimetype: "audio/mpeg",
+      filename: fileName
+    }, { quoted: mek });
 
-      })
-      .on('error', (error) => {
-        console.error('Error saving audio file:', error.message);
-        reply("❌ An error occurred while saving the audio file. 😢");
-      });
+    // Delete the temporary file
+    fs.unlinkSync(filePath);
+
   } catch (error) {
     console.error('Error:', error.message);
     if (error.response && error.response.status === 403) {
