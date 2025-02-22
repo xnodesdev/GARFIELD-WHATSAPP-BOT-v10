@@ -26,8 +26,8 @@ cmd({
       return reply(`❌ No results found for "${searchQuery}". 😔`);
     }
 
-const { title, duration, views, author, url: videoUrl, image } = searchResults.videos[0];
-const ytmsg = `*🎶 Song Name* - ${title}\n*🕜 Duration* - ${duration}\n*📻 Listeners* - ${views}\n*🎙️ Artist* - ${author.name}\n> File Name: ${title}.mp3`;
+    const { title, duration, views, author, url: videoUrl, image } = searchResults.videos[0];
+    const ytmsg = `*🎶 Song Name* - ${title}\n*🕜 Duration* - ${duration}\n*📻 Listeners* - ${views}\n*🎙️ Artist* - ${author.name}\n> File Name: ${title}.mp3`;
 
     // Send song details with thumbnail
     await conn.sendMessage(from, { image: { url: image }, caption: ytmsg });
@@ -40,21 +40,18 @@ const ytmsg = `*🎶 Song Name* - ${title}\n*🕜 Duration* - ${duration}\n*📻
     const response = await axios({
       url: audioUrl,
       method: 'GET',
-      responseType: 'stream'
+      responseType: 'stream',
+      headers: { 'User-Agent': 'Mozilla/5.0' } // Add User-Agent header to avoid 403 error
     });
 
     response.data.pipe(fs.createWriteStream(filePath))
       .on('finish', async () => {
-
-
         // Send the audio file
         await conn.sendMessage(from, {
           audio: fs.readFileSync(filePath),
           mimetype: "audio/mpeg",
           filename: fileName
         }, { quoted: mek });
-
-
 
         // Delete the temporary file
         fs.unlinkSync(filePath);
@@ -66,6 +63,10 @@ const ytmsg = `*🎶 Song Name* - ${title}\n*🕜 Duration* - ${duration}\n*📻
       });
   } catch (error) {
     console.error('Error:', error.message);
-    reply("❌ An error occurred while processing your request. 😢");
+    if (error.response && error.response.status === 403) {
+      reply("❌ Access to the media URL was denied (403 Forbidden). Please check if the media URL is valid and accessible. 😢");
+    } else {
+      reply("❌ An error occurred while processing your request. 😢");
+    }
   }
 });
