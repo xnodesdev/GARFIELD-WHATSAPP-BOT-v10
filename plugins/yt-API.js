@@ -29,7 +29,8 @@ cmd({
     const { title, url: videoUrl, image, duration, views, author } = searchResults.videos[0];
     const ytmsg = `*🎬 Video Title* - ${title}\n*🕜 Duration* - ${duration}\n*👁️ Views* - ${views}\n*📺 Channel* - ${author.name}\n> File Name: ${title}.mp4\n> 𝖦Λ𝖱𝖥𝖨Ξ𝖫𝖣 𝖡𝖮Т`;
 
-  
+    // Send video details with thumbnail
+    await conn.sendMessage(from, { image: { url: image }, caption: ytmsg });
 
     const data = await ytmp4(videoUrl);
     const videoUrlDownload = data.video;
@@ -39,7 +40,8 @@ cmd({
     const response = await axios({
       url: videoUrlDownload,
       method: 'GET',
-      responseType: 'stream'
+      responseType: 'stream',
+      headers: { 'User-Agent': 'Mozilla/5.0' } // Add User-Agent header to avoid 403 error
     });
 
     response.data.pipe(fs.createWriteStream(filePath))
@@ -54,8 +56,6 @@ cmd({
           caption: ytmsg
         }, { quoted: mek });
 
-
-
         // Delete the temporary file
         fs.unlinkSync(filePath);
 
@@ -66,6 +66,10 @@ cmd({
       });
   } catch (error) {
     console.error('Error:', error.message);
-    reply("❌ An error occurred while processing your request. 😢");
+    if (error.response && error.response.status === 403) {
+      reply("❌ Access to the media URL was denied (403 Forbidden). Please check if the media URL is valid and accessible. 😢");
+    } else {
+      reply("❌ An error occurred while processing your request. 😢");
+    }
   }
 });
