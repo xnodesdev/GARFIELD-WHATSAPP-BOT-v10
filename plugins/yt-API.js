@@ -4,6 +4,10 @@ const yts = require('yt-search');
 const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
+const { pipeline } = require('stream');
+const { promisify } = require('util');
+
+const pipe = promisify(pipeline);
 
 cmd({
   pattern: "video",
@@ -44,26 +48,21 @@ cmd({
       headers: { 'User-Agent': 'Mozilla/5.0' } // Add User-Agent header to avoid 403 error
     });
 
-    response.data.pipe(fs.createWriteStream(filePath))
-      .on('finish', async () => {
-        console.log(`Video saved to: ${filePath}`);
+    await pipe(response.data, fs.createWriteStream(filePath));
 
-        // Send the video file
-        await conn.sendMessage(from, {
-          document: fs.readFileSync(filePath),
-          mimetype: "video/mp4",
-          filename: `${title}.mp4`,
-          caption: ytmsg
-        }, { quoted: mek });
+    console.log(`Video saved to: ${filePath}`);
 
-        // Delete the temporary file
-        fs.unlinkSync(filePath);
+    // Send the video file
+    await conn.sendMessage(from, {
+      document: fs.readFileSync(filePath),
+      mimetype: "video/mp4",
+      filename: `${title}.mp4`,
+      caption: ytmsg
+    }, { quoted: mek });
 
-      })
-      .on('error', (error) => {
-        console.error('Error saving video file:', error.message);
-        reply("❌ An error occurred while saving the video file. 😢");
-      });
+    // Delete the temporary file
+    fs.unlinkSync(filePath);
+
   } catch (error) {
     console.error('Error:', error.message);
     if (error.response && error.response.status === 403) {
