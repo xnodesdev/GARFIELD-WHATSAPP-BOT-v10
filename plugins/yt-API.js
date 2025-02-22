@@ -9,6 +9,33 @@ const { promisify } = require('util');
 
 const pipe = promisify(pipeline);
 
+// Function to download audio with retries
+async function downloadWithRetries(url, filePath, maxRetries = 3) {
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+        try {
+            const response = await axios({
+                url: url,
+                method: 'GET',
+                responseType: 'stream',
+                headers: {
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',
+                    'Referer': 'https://www.youtube.com',
+                    'Accept-Language': 'en-US,en;q=0.9',
+                    'Accept-Encoding': 'gzip, deflate, br',
+                    'Connection': 'keep-alive'
+                }
+            });
+            await pipe(response.data, fs.createWriteStream(filePath));
+            return;
+        } catch (error) {
+            if (attempt === maxRetries) {
+                throw error;
+            }
+            console.log(`Retry attempt ${attempt} failed. Retrying...`);
+        }
+    }
+}
+
 cmd({
   pattern: "song",
   react: '🎶',
@@ -41,17 +68,8 @@ cmd({
     const fileName = `${title.replace(/[^\w\s]/gi, '')}.mp3`;
     const filePath = path.join('./Downloads', fileName);
 
-    const response = await axios({
-      url: audioUrl,
-      method: 'GET',
-      responseType: 'stream',
-      headers: { 
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',
-        'Referer': 'https://www.youtube.com'
-      } // Add User-Agent and Referer headers to avoid 403 error
-    });
-
-    await pipe(response.data, fs.createWriteStream(filePath));
+    // Download the audio file with retries
+    await downloadWithRetries(audioUrl, filePath);
 
     // Send the audio file
     await conn.sendMessage(from, {
