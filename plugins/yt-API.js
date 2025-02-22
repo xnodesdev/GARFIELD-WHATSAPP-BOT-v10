@@ -1,75 +1,69 @@
 const { cmd } = require("../command");
-const { alldl } = require('rahad-all-downloader');
+const { ytmp4 } = require('ruhend-scraper');
 const yts = require('yt-search');
+const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
-const { exec } = require('child_process');
 
 cmd({
-  pattern: "ytaudio",
-  react: '🎶',
-  desc: "Download YouTube audio by searching for keywords.",
+  pattern: "video",
+  react: '🎥',
+  desc: "Download YouTube video by searching for keywords.",
   category: "main",
-  use: ".ytaudio <song name or keywords>",
+  use: ".ytvideo <video name or keywords>",
   filename: __filename
 }, async (conn, mek, msg, { from, args, reply }) => {
   try {
     const searchQuery = args.join(" ");
     if (!searchQuery) {
-      return reply(`❗️ Please provide a song name or keywords. 📝\nExample: .ytaudio Despacito`);
+      return reply(`❗️ Please provide a video name or keywords. 📝\nExample: .ytvideo Despacito`);
     }
 
-    reply("🔍 Searching for the song... 🎵");
+    reply("```🔍 Searching for the video... 🎥```");
 
     const searchResults = await yts(searchQuery);
     if (!searchResults.videos.length) {
       return reply(`❌ No results found for "${searchQuery}". 😔`);
     }
 
-    const videoUrl = searchResults.videos[0].url;
-    const Filename = searchResults.videos[0].title.replace(/[^a-zA-Z0-9]/g, '_');
+    const { title, url: videoUrl, image, duration, views, author } = searchResults.videos[0];
+    const ytmsg = `*🎬 Video Title* - ${title}\n*🕜 Duration* - ${duration}\n*👁️ Views* - ${views}\n*📺 Channel* - ${author.name}\n> File Name: ${title}.mp4\n> 𝖦Λ𝖱𝖥𝖨Ξ𝖫𝖣 𝖡𝖮Т`;
 
-    const result = await alldl(videoUrl);
-    if (!result || !result.data || !result.data.videoUrl) {
-      console.error("Full result object:", result);  // Log the full result object for debugging
-      return reply("❌ Failed to retrieve video URL. Please try again.");
-    }
+  
 
-    const videoDownloadUrl = result.data.videoUrl;
-    const videoFilePath = path.join('./downloads', `${Filename}.mp4`);
+    const data = await ytmp4(videoUrl);
+    const videoUrlDownload = data.video;
+    const fileName = `${title.replace(/[^\w\s]/gi, '')}.mp4`;
+    const filePath = path.join('./Downloads', fileName);
 
-    const videoResponse = await fetch(videoDownloadUrl);
-    if (!videoResponse.ok) {
-      console.error("Failed to download video:", videoResponse.statusText);
-      return reply("❌ Failed to download video. Please try again.");
-    }
-
-    const videoArrayBuffer = await videoResponse.arrayBuffer();
-    const videoBuffer = Buffer.from(videoArrayBuffer);
-    fs.writeFileSync(videoFilePath, videoBuffer);
-
-    console.log(`Video downloaded successfully: ${videoFilePath}`);
-
-    // Extract audio using direct FFmpeg command
-    const audioFilePath = path.join('./downloads', `${Filename}.mp3`);
-    const ffmpegCmd = `ffmpeg -i "${videoFilePath}" -q:a 0 -map a "${audioFilePath}" -y -loglevel error`;
-
-    exec(ffmpegCmd, async (error, stdout, stderr) => {
-      if (error) {
-        console.error('Error extracting audio:', stderr);
-        return reply("❌ An error occurred while extracting audio. 😢");
-      }
-
-      console.log(`Audio extracted successfully: ${audioFilePath}`);
-
-      await conn.sendMessage(from, {
-        audio: fs.readFileSync(audioFilePath),
-        mimetype: "audio/mpeg",
-        fileName: `${Filename}.mp3`
-      }, { quoted: mek });
-
-      console.log(`Audio sent successfully: ${audioFilePath}`);
+    const response = await axios({
+      url: videoUrlDownload,
+      method: 'GET',
+      responseType: 'stream'
     });
+
+    response.data.pipe(fs.createWriteStream(filePath))
+      .on('finish', async () => {
+        console.log(`Video saved to: ${filePath}`);
+
+        // Send the video file
+        await conn.sendMessage(from, {
+          document: fs.readFileSync(filePath),
+          mimetype: "video/mp4",
+          filename: `${title}.mp4`,
+          caption: ytmsg
+        }, { quoted: mek });
+
+
+
+        // Delete the temporary file
+        fs.unlinkSync(filePath);
+
+      })
+      .on('error', (error) => {
+        console.error('Error saving video file:', error.message);
+        reply("❌ An error occurred while saving the video file. 😢");
+      });
   } catch (error) {
     console.error('Error:', error.message);
     reply("❌ An error occurred while processing your request. 😢");
