@@ -1,5 +1,5 @@
 const { cmd } = require("../command");
-const { ytmp4 } = require('ruhend-scraper');
+const { ytmp3 } = require('ruhend-scraper');
 const yts = require('yt-search');
 const axios = require('axios');
 const fs = require('fs');
@@ -10,54 +10,54 @@ const { promisify } = require('util');
 const pipe = promisify(pipeline);
 
 cmd({
-  pattern: "video",
-  react: '🎥',
-  desc: "Download YouTube video by searching for keywords.",
+  pattern: "song",
+  react: '🎶',
+  desc: "Download YouTube audio by searching for keywords.",
   category: "main",
-  use: ".ytvideo <video name or keywords>",
+  use: ".ytaudio <song name or keywords>",
   filename: __filename
 }, async (conn, mek, msg, { from, args, reply }) => {
   try {
     const searchQuery = args.join(" ");
     if (!searchQuery) {
-      return reply(`❗️ Please provide a video name or keywords. 📝\nExample: .ytvideo Despacito`);
+      return reply(`❗️ Please provide a song name or keywords. 📝\nExample: .ytaudio Despacito`);
     }
 
-    reply("```🔍 Searching for the video... 🎥```");
+    reply("```🔍 Searching for the song... 🎵```");
 
     const searchResults = await yts(searchQuery);
     if (!searchResults.videos.length) {
       return reply(`❌ No results found for "${searchQuery}". 😔`);
     }
 
-    const { title, url: videoUrl, image, duration, views, author } = searchResults.videos[0];
-    const ytmsg = `*🎬 Video Title* - ${title}\n*🕜 Duration* - ${duration}\n*👁️ Views* - ${views}\n*📺 Channel* - ${author.name}\n> File Name: ${title}.mp4\n> 𝖦Λ𝖱𝖥𝖨Ξ𝖫𝖣 𝖡𝖮Т`;
+    const { title, duration, views, author, url: videoUrl, image } = searchResults.videos[0];
+    const ytmsg = `*🎶 Song Name* - ${title}\n*🕜 Duration* - ${duration}\n*📻 Listeners* - ${views}\n*🎙️ Artist* - ${author.name}\n> File Name: ${title}.mp3`;
 
-    // Send video details with thumbnail
+    // Send song details with thumbnail
     await conn.sendMessage(from, { image: { url: image }, caption: ytmsg });
 
-    const data = await ytmp4(videoUrl);
-    const videoUrlDownload = data.video;
-    const fileName = `${title.replace(/[^\w\s]/gi, '')}.mp4`;
+    const data = await ytmp3(videoUrl);
+    const audioUrl = data.audio;
+    const fileName = `${title.replace(/[^\w\s]/gi, '')}.mp3`;
     const filePath = path.join('./Downloads', fileName);
 
     const response = await axios({
-      url: videoUrlDownload,
+      url: audioUrl,
       method: 'GET',
       responseType: 'stream',
-      headers: { 'User-Agent': 'Mozilla/5.0' } // Add User-Agent header to avoid 403 error
+      headers: { 
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',
+        'Referer': 'https://www.youtube.com'
+      } // Add User-Agent and Referer headers to avoid 403 error
     });
 
     await pipe(response.data, fs.createWriteStream(filePath));
 
-    console.log(`Video saved to: ${filePath}`);
-
-    // Send the video file
+    // Send the audio file
     await conn.sendMessage(from, {
-      document: fs.readFileSync(filePath),
-      mimetype: "video/mp4",
-      filename: `${title}.mp4`,
-      caption: ytmsg
+      audio: fs.readFileSync(filePath),
+      mimetype: "audio/mpeg",
+      filename: fileName
     }, { quoted: mek });
 
     // Delete the temporary file
