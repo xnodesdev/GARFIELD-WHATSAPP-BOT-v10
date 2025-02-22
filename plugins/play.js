@@ -31,9 +31,10 @@ cmd({
     }
 
     const { title, duration, views, author, url: videoUrl, image } = searchResults.videos[0];
-    const ytmsg = `*🎶 Song Name* - ${title}\n*🕜 Duration* - ${duration}\n*📻 Listeners* - ${views}\n*🎙️ Artist* - ${author.name}\n> File Name: ${title}.mp3`;
-
+  
     // Send song details with thumbnail
+    await conn.sendMessage(from, { image: { url: image }, caption: ytmsg });
+
     const data = await ytmp3(videoUrl);
     const audioUrl = data.audio;
     const fileName = `${title.replace(/[^\w\s]/gi, '')}.mp3`;
@@ -43,7 +44,10 @@ cmd({
       url: audioUrl,
       method: 'GET',
       responseType: 'stream',
-      headers: { 'User-Agent': 'Mozilla/5.0' } // Add User-Agent header to avoid 403 error
+      headers: { 
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',
+        'Referer': 'https://www.youtube.com'
+      } // Add User-Agent and Referer headers to avoid 403 error
     });
 
     await pipe(response.data, fs.createWriteStream(filePath));
