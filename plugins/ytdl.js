@@ -1,10 +1,10 @@
 const { cmd } = require("../command");
-const { alldl } = require('rahad-all-downloader');
+const { ytmp3 } = require('ruhend-scraper');
 const yts = require('yt-search');
+const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
-const { exec } = require('child_process');
-const fetch = require('node-fetch'); //
+
 cmd({
   pattern: "song",
   react: '🎶',
@@ -26,49 +26,46 @@ cmd({
       return reply(`❌ No results found for "${searchQuery}". 😔`);
     }
 
-    const { title, duration, views, author, url: videoUrl, image } = searchResults.videos[0];
-    const ytmsg = `*🎶 Song Name* - ${title}\n*🕜 Duration* - ${duration}\n*📻 Listeners* - ${views}\n*🎙️ Artist* - ${author.name}\n> File Name: ${title}.mp3`;
+const { title, duration, views, author, url: videoUrl, image } = searchResults.videos[0];
+const ytmsg = `*🎶 Song Name* - ${title}\n*🕜 Duration* - ${duration}\n*📻 Listeners* - ${views}\n*🎙️ Artist* - ${author.name}\n> File Name: ${title}.mp3`;
 
     // Send song details with thumbnail
     await conn.sendMessage(from, { image: { url: image }, caption: ytmsg });
 
-    const result = await alldl(videoUrl);
-    if (!result || !result.data || !result.data.videoUrl) {
-      return reply("❌ Failed to retrieve video URL. Please try again.");
-    }
+    const data = await ytmp3(videoUrl);
+    const audioUrl = data.audio;
+    const fileName = `${title.replace(/[^\w\s]/gi, '')}.mp3`;
+    const filePath = path.join('./Downloads', fileName);
 
-    const videoDownloadUrl = result.data.videoUrl;
-    const videoFilePath = path.join('./downloads', `${title.replace(/[^a-zA-Z0-9]/g, '_')}.mp4`);
-
-    const videoResponse = await fetch(videoDownloadUrl);
-    if (!videoResponse.ok) {
-      return reply("❌ Failed to download video. Please try again.");
-    }
-
-    const videoArrayBuffer = await videoResponse.arrayBuffer();
-    const videoBuffer = Buffer.from(videoArrayBuffer);
-    fs.writeFileSync(videoFilePath, videoBuffer);
-
-    // Extract audio using direct FFmpeg command
-    const audioFilePath = path.join('./downloads', `${title.replace(/[^a-zA-Z0-9]/g, '_')}.mp3`);
-    const ffmpegCmd = `ffmpeg -i "${videoFilePath}" -q:a 0 -map a "${audioFilePath}" -y -loglevel error`;
-
-    exec(ffmpegCmd, async (error, stdout, stderr) => {
-      if (error) {
-        return reply("❌ An error occurred while extracting audio. 😢");
-      }
-
-      await conn.sendMessage(from, {
-        audio: fs.readFileSync(audioFilePath),
-        mimetype: "audio/mpeg",
-        fileName: `${title}.mp3`
-      }, { quoted: mek });
-
-      // Delete temporary files
-      fs.unlinkSync(videoFilePath);
-      fs.unlinkSync(audioFilePath);
+    const response = await axios({
+      url: audioUrl,
+      method: 'GET',
+      responseType: 'stream'
     });
+
+    response.data.pipe(fs.createWriteStream(filePath))
+      .on('finish', async () => {
+
+
+        // Send the audio file
+        await conn.sendMessage(from, {
+          audio: fs.readFileSync(filePath),
+          mimetype: "audio/mpeg",
+          filename: fileName
+        }, { quoted: mek });
+
+
+
+        // Delete the temporary file
+        fs.unlinkSync(filePath);
+
+      })
+      .on('error', (error) => {
+        console.error('Error saving audio file:', error.message);
+        reply("❌ An error occurred while saving the audio file. 😢");
+      });
   } catch (error) {
+    console.error('Error:', error.message);
     reply("❌ An error occurred while processing your request. 😢");
   }
 });
