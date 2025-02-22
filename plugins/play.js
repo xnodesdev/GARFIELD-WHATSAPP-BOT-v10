@@ -10,7 +10,7 @@ const { promisify } = require('util');
 const pipe = promisify(pipeline);
 
 cmd({
-  pattern: "song",
+  pattern: "play",
   react: '🎶',
   desc: "Download YouTube audio by searching for keywords.",
   category: "main",
@@ -52,7 +52,7 @@ cmd({
     await conn.sendMessage(from, {
       document: fs.readFileSync(filePath),
       mimetype: "audio/mpeg",
-      filename: `${title}.mp3`,
+      filename: title,
       caption: ytmsg
     }, { quoted: mek });
 
