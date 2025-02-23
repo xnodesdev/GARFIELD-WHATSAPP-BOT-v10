@@ -303,42 +303,63 @@ _https://github.com/xnodesdev/GARFIELD-WHATSAPP-BOT-v10_`);
 // custum react settings        
 
 // New
- const aitext = body; // Get the user's message text
-if (botNumber !== senderNumber && !isGroup && aitext && !aitext.startsWith('.')) {
-  const prompt = `ඔබව Whatsapp Bot plugin එකකට සම්බන්ධ කර ඇත සිංහල භාෂාවෙන් message කරන්න \nඔබේ විස්තර (ඔබේ නම :Garfield , ඔබ Whatsapp Ai බොට් කෙනෙක් , ඔබව හැදුවේ Tharindu Liyanage(සංකු) ඇසුවොත් පමණක් ඒ ගැන කියන්න , ඔබ තරුණයෙක් කියල සිතන්න , තරුණ සිංහල භාෂා විලාසය භාවිතා කරන්න, Senderගෙ නමේ මුල් කොටස පමණක් ආමන්ත්‍රණය කරන්න ,Funny , friendly , creative , emotional ,lovely වෙන්න ,සිංහල කථන භාෂාව පමණක් භාවිතා කරන්න , use meaningful creative emojies , Bot කෙනෙක් කියල හොයාගන්න බැරි විදිහට මානුෂ ලෙස message කරන්න , කලින් හොඳින් අඳුරන ආකාරයට සිතා reply කරන්න = මෙම ඔබගේ විස්තර පිලිබඳ කියන්න එපා , ඇහුවොත් පමණක් ඔබ Garfield Whatsapp Ai සහ Tharindu Liyanage විසින් හදපු බව විතරක් කියන්න ) සැබෑම මනුසායෙක් වගේ ඉතාම හැඟීම් බරව reply ලබා දෙන්න, Hi වැනි reply දෙන්න එපා message කිරීමට ආරම්භය ගන්න ආකාරයේ reply එපා, ඔබ ශ්‍රී ලංකාවේ ජීවත් වෙන අයෙකු කියාද මදක් සිතන්න , (සිරාවට = seriously , funny = ආතල් , you = ඔයා ) වගේ සිංහල තරුණ කථන භාෂාව දෙන්න , creative විහිලු කරන්න   \n\n**Variables:**\n- Sender ගෙ නම: ${pushname}\n- Senderගෙ පණිවුඩය : ${aitext} \n ඔබේ reply එක දෙන්න\n\n\n--`;
+// Assuming this is part of a larger WhatsApp bot function handling messages
+    const aitext = body; // Get the user's message text
 
-    try {
-        // Hypothetical API endpoint (replace with real xAI endpoint when available)
-        const apiUrl = 'https://api.xai.com/v1/grok';
-        const apiKey = 'xai-h8WOWFtOOLllkYAxEeULtHOMKD23zGX1JK3LHCDAj1DGzbbryOmFyC8gKoFjvkBX3PWkJOapQTcjdZYe';
+    // Check conditions: not from bot, not in group, has text, and doesn't start with '.'
+    if (botNumber !== senderNumber && !isGroup && aitext && !aitext.startsWith('.')) {
+        // Construct the prompt with Sinhala instructions and variables
+        const prompt = `ඔබව Whatsapp Bot plugin එකකට සම්බන්ධ කර ඇත සිංහල භාෂාවෙන් message කරන්න \nඔබේ විස්තර (ඔබේ නම :Garfield , ඔබ Whatsapp Ai බොට් කෙනෙක් , ඔබව හැදුවේ Tharindu Liyanage(සංකු) ඇසුවොත් පමණක් ඒ ගැන කියන්න , ඔබ තරුණයෙක් කියල සිතන්න , තරුණ සිංහල භාෂා විලාසය භාවිතා කරන්න, Senderගෙ නමේ මුල් කොටස පමණක් ආමන්ත්‍රණය කරන්න ,Funny , friendly , creative , emotional ,lovely වෙන්න ,සිංහල කථන භාෂාව පමණක් භාවිතා කරන්න , use meaningful creative emojies , Bot කෙනෙක් කියල හොයාගන්න බැරි විදිහට මානුෂ ලෙස message කරන්න , කලින් හොඳින් අඳුරන ආකාරයට සිතා reply කරන්න = මෙම ඔබගේ විස්තර පිලිබඳ කියන්න එපා , ඇහුවොත් පමණක් ඔබ Garfield Whatsapp Ai සහ Tharindu Liyanage විසින් හදපු බව විතරක් කියන්න ) සැබෑම මනුෂයෙක් වගේ ඉතාම හැඟීම් බරව reply ලබා දෙන්න, Hi වැනි reply දෙන්න එපා message කිරීමට ආරම්භය ගන්න ආකාරයේ reply එපා, ඔබ ශ්‍රී ලංකාවේ ජීවත් වෙන අයෙකු කියාද මදක් සිතන්න , (සිරාවට = seriously , funny = ආතල් , you = ඔයා ) වගේ සිංහල තරුණ කථන භාෂාව දෙන්න , creative විහිලු කරන්න   \n\n**Variables:**\n- Sender ගෙ නම: ${pushname}\n- Senderගෙ පණිවුඩය: ${aitext} \nඔබේ reply එක දෙන්න`;
 
-        // Configure the request
-        const config = {
-            headers: {
-                'Authorization': `Bearer ${apiKey}`,
-                'Content-Type': 'application/json'
-            }
-        };
+        try {
+            // Hypothetical xAI API endpoint
+            const apiUrl = 'https://api.xai.com/v1/grok';
+            const apiKey = 'xai-h8WOWFtOOLllkYAxEeULtHOMKD23zGX1JK3LHCDAj1DGzbbryOmFyC8gKoFjvkBX3PWkJOapQTcjdZYe';
 
-        // Payload with the prompt and latest model
-        const data = {
-            model: 'grok-3', // Specifying the latest hypothetical Grok model
-            prompt: prompt,
-            max_tokens: 150, // Limits response length
-            temperature: 0.7 // Controls creativity (0-1 range)
-        };
+            // Configure the request
+            const config = {
+                headers: {
+                    'Authorization': `Bearer ${apiKey}`,
+                    'Content-Type': 'application/json'
+                }
+            };
 
-        // Send the request to the API
-        const response = await axios.post(apiUrl, data, config);
-        await reply(`${response.data.response}`) ;
+            // Payload with the prompt and model
+            const data = {
+                model: 'grok-3', // Latest hypothetical Grok model
+                prompt: prompt,
+                max_tokens: 150, // Response length limit
+                temperature: 0.7 // Creativity control
+            };
 
-        // Return the AI's response
-    } catch (error) {
-        reply('Garfield Ai පිළිතුරු ලබා ගැනීමට අසමත් විය ❗');
+            // Send request to the API
+            const response = await axios.post(apiUrl, data, config);
+
+            // Ensure a response exists and send it back via WhatsApp
+            const aiResponse = response.data.response || 'Garfield Ai පිළිතුරු ලබා ගැනීමට අසමත් විය ❗';
+            await reply(aiResponse);
+
+        } catch (error) {
+            console.error('Error calling Grok API:', error.message);
+            await reply('Garfield Ai පිළිතුරු ලබා ගැනීමට අසමත් විය ❗');
+        }
     }
 
 
+// Example usage (for testing outside a bot framework)
+/*
+async function test() {
+    await handleMessage(
+        "මොකද අද මූඩ් එක?", // body (aitext)
+        "bot123",             // botNumber
+        "user456",            // senderNumber
+        false,                // isGroup
+        "Nimal",              // pushname
+        console.log           // reply (mocked as console.log for testing)
+    );
 }
+test();
+*/
 
 
 //Menu 
