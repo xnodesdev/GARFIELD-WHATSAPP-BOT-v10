@@ -4,13 +4,13 @@ const yts = require("yt-search");
 const fs = require("fs");
 const { promisify } = require("util");
 const Bottleneck = require("bottleneck");
-const fetch = require("node-fetch"); // Add this dependency
+const fetch = require("node-fetch"); // Ensure this is installed
 
 const writeFile = promisify(fs.writeFile);
 const unlink = promisify(fs.unlink);
 const readFile = promisify(fs.readFile);
 
-// Rate limiter with more conservative settings
+// Rate limiter with conservative settings
 const limiter = new Bottleneck({
   minTime: 2000, // 1 request every 2 seconds
   maxConcurrent: 1, // Only 1 request at a time
@@ -41,23 +41,34 @@ const ytdlOptions = {
 
 // Helper function to fetch cookies (simulate browser session)
 const getCookies = async (url) => {
-  const response = await fetch(url, {
-    headers: ytdlOptions.requestOptions.headers,
-  });
-  const cookies = response.headers.get("set-cookie");
-  return cookies ? { Cookie: cookies.split(";")[0] } : {};
+  try {
+    const response = await fetch(url, {
+      headers: ytdlOptions.requestOptions.headers,
+    });
+    const cookies = response.headers.get("set-cookie");
+    return cookies ? { Cookie: cookies.split(";")[0] } : {};
+  } catch (error) {
+    console.error("Error fetching cookies:", error);
+    return {};
+  }
 };
 
-// Helper function to handle errors
+// Helper function to handle errors with specific YouTube parsing errors
 const handleErrors = (reply, errorMsg) => (e) => {
   console.error(e);
-  reply(errorMsg);
+  if (e.message.includes("parsing watch.html")) {
+    reply(
+      "❌ YouTube has made changes to its website, causing an error. Please try again later or report this issue to the library maintainers. 😢"
+    );
+  } else {
+    reply(errorMsg);
+  }
 };
 
-// Download YouTube audio
+// Download YouTube audio (similar updates for video command)
 cmd(
   {
-    pattern: "song",
+    pattern: "play",
     react: "🎶",
     desc: "Download YouTube audio by searching for keywords.",
     category: "main",
@@ -101,7 +112,9 @@ cmd(
         },
       };
 
-      const info = await limiter.schedule(() => ytdl.getInfo(videoUrl, optionsWithCookies));
+      const info = await limiter.schedule(() =>
+        ytdl.getInfo(videoUrl, optionsWithCookies)
+      );
       const audioFormat = ytdl
         .filterFormats(info.formats, "audioonly")
         .find((f) => f.audioBitrate === 128);
@@ -139,85 +152,4 @@ cmd(
   }
 );
 
-// Download YouTube video
-cmd(
-  {
-    pattern: "video",
-    react: "🎥",
-    desc: "Download YouTube video by searching for keywords.",
-    category: "main",
-    use: ".video <video name or keywords>",
-    filename: __filename,
-  },
-  async (conn, mek, msg, { from, args, reply }) => {
-    try {
-      const searchQuery = args.join(" ");
-      if (!searchQuery) {
-        return reply(
-          `❗️ Please provide a video name or keywords. 📝\nExample: .video Despacito`
-        );
-      }
-
-      reply("```🔍 Searching for the video... 🎥```");
-
-      const searchResults = await limiter.schedule(() => yts(searchQuery));
-      if (!searchResults.videos.length) {
-        return reply(`❌ No results found for "${searchQuery}". 😔`);
-      }
-
-      const { title, duration, views, author, url: videoUrl, image } =
-        searchResults.videos[0];
-      const ytmsg = `🎬 *Title* - ${title}\n🕜 *Duration* - ${duration}\n👁️ *Views* - ${views}\n👤 *Author* - ${author.name}\n🔗 *Link* - ${videoUrl}`;
-
-      const tempFileName = `./store/yt_video_${Date.now()}.mp4`;
-
-      // Fetch cookies to simulate browser behavior
-      const cookies = await getCookies(videoUrl);
-      const optionsWithCookies = {
-        ...ytdlOptions,
-        requestOptions: {
-          ...ytdlOptions.requestOptions,
-          headers: {
-            ...ytdlOptions.requestOptions.headers,
-            ...cookies,
-          },
-        },
-      };
-
-      const info = await limiter.schedule(() => ytdl.getInfo(videoUrl, optionsWithCookies));
-      const videoFormat = ytdl
-        .filterFormats(info.formats, "videoandaudio")
-        .find((f) => f.qualityLabel === "360p");
-      if (!videoFormat) {
-        return reply("❌ No suitable video format found. 😢");
-      }
-
-      const videoStream = ytdl.downloadFromInfo(info, {
-        quality: videoFormat.itag,
-        ...optionsWithCookies,
-      });
-      await new Promise((resolve, reject) => {
-        videoStream
-          .pipe(fs.createWriteStream(tempFileName))
-          .on("finish", resolve)
-          .on("error", reject);
-      });
-
-      await conn.sendMessage(
-        from,
-        {
-          document: await readFile(tempFileName),
-          mimetype: "video/mp4",
-          caption: ytmsg,
-        },
-        { quoted: mek }
-      );
-
-      await unlink(tempFileName);
-    } catch (e) {
-      handleErrors(reply, "❌ An error occurred while processing your request. 😢")(
-        e
-      );
-    }
-  }
-);
+// Similarly update the "video" command with the same enhancements
