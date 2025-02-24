@@ -1,92 +1,155 @@
 const { cmd } = require("../command");
-const { ytmp3 } = require('ruhend-scraper');
-const yts = require('yt-search');
-const axios = require('axios');
-const fs = require('fs');
-const path = require('path');
-const { pipeline } = require('stream');
-const { promisify } = require('util');
+const ytdl = require("@distube/ytdl-core");
+const yts = require("yt-search");
+const fs = require("fs");
+const { promisify } = require("util");
+const Bottleneck = require("bottleneck");
+const fetch = require("node-fetch"); // Ensure this is installed
 
-const pipe = promisify(pipeline);
+const writeFile = promisify(fs.writeFile);
+const unlink = promisify(fs.unlink);
+const readFile = promisify(fs.readFile);
 
-// Function to download audio with retries
-async function downloadWithRetries(url, filePath, maxRetries = 3) {
-    for (let attempt = 1; attempt <= maxRetries; attempt++) {
-        try {
-            const response = await axios({
-                url: url,
-                method: 'GET',
-                responseType: 'stream',
-                headers: {
-                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',
-                    'Referer': 'https://www.youtube.com',
-                    'Accept-Language': 'en-US,en;q=0.9',
-                    'Accept-Encoding': 'gzip, deflate, br',
-                    'Connection': 'keep-alive'
-                }
-            });
-            await pipe(response.data, fs.createWriteStream(filePath));
-            return;
-        } catch (error) {
-            if (attempt === maxRetries) {
-                throw error;
-            }
-            console.log(`Retry attempt ${attempt} failed. Retrying...`);
-        }
-    }
-}
+// Rate limiter with conservative settings
+const limiter = new Bottleneck({
+  minTime: 2000, // 1 request every 2 seconds
+  maxConcurrent: 1, // Only 1 request at a time
+});
 
-cmd({
-  pattern: "ddd",
-  react: '🎶',
-  desc: "Download YouTube audio by searching for keywords.",
-  category: "main",
-  use: ".ytaudio <song name or keywords>",
-  filename: __filename
-}, async (conn, mek, msg, { from, args, reply }) => {
+// Enhanced browser-like headers with randomization
+const getRandomUserAgent = () => {
+  const userAgents = [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36",
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.101 Safari/537.36",
+  ];
+  return userAgents[Math.floor(Math.random() * userAgents.length)];
+};
+
+const ytdlOptions = {
+  requestOptions: {
+    headers: {
+      "User-Agent": getRandomUserAgent(),
+      Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
+      "Accept-Language": "en-US,en;q=0.9",
+      "Accept-Encoding": "gzip, deflate, br",
+      Connection: "keep-alive",
+      "Upgrade-Insecure-Requests": "1",
+    },
+  },
+};
+
+// Helper function to fetch cookies (simulate browser session)
+const getCookies = async (url) => {
   try {
-    const searchQuery = args.join(" ");
-    if (!searchQuery) {
-      return reply(`❗️ Please provide a song name or keywords. 📝\nExample: .ytaudio Despacito`);
-    }
-
-    reply("```🔍 Searching for the song... 🎵```");
-
-    const searchResults = await yts(searchQuery);
-    if (!searchResults.videos.length) {
-      return reply(`❌ No results found for "${searchQuery}". 😔`);
-    }
-
-    const { title, duration, views, author, url: videoUrl, image } = searchResults.videos[0];
-    const ytmsg = `*🎶 Song Name* - ${title}\n*🕜 Duration* - ${duration}\n*📻 Listeners* - ${views}\n*🎙️ Artist* - ${author.name}\n> File Name: ${title}.mp3`;
-
-    // Send song details with thumbnail
-    await conn.sendMessage(from, { image: { url: image }, caption: ytmsg });
-
-    const data = await ytmp3(videoUrl);
-    const audioUrl = data.audio;
-    const fileName = `${title.replace(/[^\w\s]/gi, '')}.mp3`;
-    const filePath = path.join('./Downloads', fileName);
-
-    // Download the audio file with retries
-    await downloadWithRetries(audioUrl, filePath);
-
-    // Send the audio file
-    await conn.sendMessage(from, {
-      audio: fs.readFileSync(filePath),
-      mimetype: "audio/mpeg",
-      filename: fileName
-    }, { quoted: mek });
-
-    // Delete the temporary file
-    fs.unlinkSync(filePath);
-
+    const response = await fetch(url, {
+      headers: ytdlOptions.requestOptions.headers,
+    });
+    const cookies = response.headers.get("set-cookie");
+    return cookies ? { Cookie: cookies.split(";")[0] } : {};
   } catch (error) {
-    console.error('Error:', error.message);
-    if (error.response && error.response.status === 403) {
-      reply("❌ Access to the media URL was denied (403 Forbidden). Please check if the media URL is valid and accessible. 😢");
-    } else {
-      reply("❌ An error occurred while processing your request. 😢");
+    console.error("Error fetching cookies:", error);
+    return {};
+  }
+};
+
+// Helper function to handle errors with specific YouTube parsing errors
+const handleErrors = (reply, errorMsg) => (e) => {
+  console.error(e);
+  if (e.message.includes("parsing watch.html")) {
+    reply(
+      "❌ YouTube has made changes to its website, causing an error. Please try again later or report this issue to the library maintainers. 😢"
+    );
+  } else {
+    reply(errorMsg);
+  }
+};
+
+// Download YouTube audio (similar updates for video command)
+cmd(
+  {
+    pattern: "song",
+    react: "🎶",
+    desc: "Download YouTube audio by searching for keywords.",
+    category: "main",
+    use: ".audio <song name or keywords>",
+    filename: __filename,
+  },
+  async (conn, mek, msg, { from, args, reply }) => {
+    try {
+      const searchQuery = args.join(" ");
+      if (!searchQuery) {
+        return reply(
+          `❗️ Please provide a song name or keywords. 📝\nExample: .audio Despacito`
+        );
+      }
+
+      reply("```🔍 Searching for the song... 🎵```");
+
+      const searchResults = await limiter.schedule(() => yts(searchQuery));
+      if (!searchResults.videos.length) {
+        return reply(`❌ No results found for "${searchQuery}". 😔`);
+      }
+
+      const { title, duration, views, author, url: videoUrl, image } =
+        searchResults.videos[0];
+      const ytmsg = `*🎶 Song Name* - ${title}\n*🕜 Duration* - ${duration}\n*📻 Listeners* - ${views}\n*🎙️ Artist* - ${author.name}\n> File Name ${title}.mp3`;
+
+      await conn.sendMessage(from, { image: { url: image }, caption: ytmsg });
+
+      const tempFileName = `./store/yt_audio_${Date.now()}.mp3`;
+
+      // Fetch cookies to simulate browser behavior
+      const cookies = await getCookies(videoUrl);
+      const optionsWithCookies = {
+        ...ytdlOptions,
+        requestOptions: {
+          ...ytdlOptions.requestOptions,
+          headers: {
+            ...ytdlOptions.requestOptions.headers,
+            ...cookies,
+          },
+        },
+      };
+
+      const info = await limiter.schedule(() =>
+        ytdl.getInfo(videoUrl, optionsWithCookies)
+      );
+      const audioFormat = ytdl
+        .filterFormats(info.formats, "audioonly")
+        .find((f) => f.audioBitrate === 128);
+      if (!audioFormat) {
+        return reply("❌ No suitable audio format found. 😢");
+      }
+
+      const audioStream = ytdl.downloadFromInfo(info, {
+        quality: audioFormat.itag,
+        ...optionsWithCookies,
+      });
+      await new Promise((resolve, reject) => {
+        audioStream
+          .pipe(fs.createWriteStream(tempFileName))
+          .on("finish", resolve)
+          .on("error", reject);
+      });
+
+      await conn.sendMessage(
+        from,
+        {
+          audio: await readFile(tempFileName),
+          mimetype: "audio/mpeg",
+          fileName: `${title}.mp3`,
+        },
+        { quoted: mek }
+      );
+
+      await unlink(tempFileName);
+    } catch (e) {
+      handleErrors(reply, "❌ An error occurred while processing your request. 😢")(
+        e
+      );
     }
   }
-});
+);
+
+// Similarly update the "video" command with the same enhancements
