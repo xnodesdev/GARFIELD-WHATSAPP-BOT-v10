@@ -37,7 +37,7 @@ async function downloadWithRetries(url, filePath, maxRetries = 3) {
 }
 
 cmd({
-  pattern: "song",
+  pattern: "ddd",
   react: '🎶',
   desc: "Download YouTube audio by searching for keywords.",
   category: "main",
