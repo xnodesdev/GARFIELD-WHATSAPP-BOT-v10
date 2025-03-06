@@ -21,7 +21,7 @@
     "@mrnima/facebook-downloader": "1.0.0",
     "@mrnima/tiktok-downloader": "1.0.0",
     "@vitalets/google-translate-api": "^9.2.0",
-    "@whiskeysockets/baileys": "6.6.0",
+    "@whiskeysockets/baileys": "latest",
     "another-fb-video-downloader": "1.0.6",
     "api-dylux": "1.8.5",
     "axios": "^1.2.5",
