@@ -45,6 +45,7 @@
     "path": "^0.12.7",
     "pino": "^7.0.5",
     "pm2": "^5.2.0", 
+    "hybrid-ytdl":"latest",
     "moment-timezone": "latest",
     "qrcode-terminal": "^0.12.0",
     "ruhend-scraper": "8.1.0",
