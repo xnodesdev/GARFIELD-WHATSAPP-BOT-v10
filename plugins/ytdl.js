@@ -5,13 +5,11 @@ const fs = require("fs");
 const { promisify } = require("util");
 const Bottleneck = require("bottleneck");
 const path = require("path");
-const stream = require("stream");
 const { pipeline } = require("stream/promises");
 
 // Promisified functions
-const writeFile = promisify(fs.writeFile);
-const unlink = promisify(fs.unlink);
 const readFile = promisify(fs.readFile);
+const unlink = promisify(fs.unlink);
 const mkdir = promisify(fs.mkdir);
 
 // Ensure store directory exists
@@ -27,19 +25,19 @@ const mkdir = promisify(fs.mkdir);
   }
 })();
 
-// Rate limiter to control API requests
+// Rate limiter with optimized settings
 const limiter = new Bottleneck({
-  minTime: 2000,        // More conservative: 2 seconds between requests
-  maxConcurrent: 1,     // Only one request at a time
-  reservoir: 10,        // Start with 10 tokens
-  reservoirRefreshAmount: 10,
+  minTime: 1500,        // 1.5 seconds between requests (faster but still safe)
+  maxConcurrent: 2,     // Allow 2 concurrent requests
+  reservoir: 15,        // Start with 15 tokens
+  reservoirRefreshAmount: 15,
   reservoirRefreshInterval: 60 * 1000, // Refill every minute
 });
 
-// Enhanced YouTube headers to avoid human verification challenges
+// Enhanced YouTube headers to avoid verification challenges
 const ytdlOptions = {
   headers: {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
     "Accept-Language": "en-US,en;q=0.9",
     "Accept-Encoding": "gzip, deflate, br",
@@ -49,16 +47,18 @@ const ytdlOptions = {
     "Sec-Fetch-Mode": "navigate",
     "Sec-Fetch-Site": "none",
     "Sec-Fetch-User": "?1",
-    "Sec-CH-UA": "\"Chromium\";v=\"116\", \"Not)A;Brand\";v=\"24\", \"Google Chrome\";v=\"116\"",
+    "Sec-CH-UA": "\"Chromium\";v=\"120\", \"Google Chrome\";v=\"120\"",
     "Sec-CH-UA-Mobile": "?0",
     "Sec-CH-UA-Platform": "\"Windows\"",
+    "Cache-Control": "max-age=0",
     "Priority": "u=0, i"
   },
   cookieJar: new (require('tough-cookie')).CookieJar(),
+  highWaterMark: 1024 * 1024 * 3, // 3MB buffer for faster downloads
 };
 
-// Retry mechanism for failed requests
-const retry = async (fn, maxRetries = 3, delay = 2000) => {
+// Better retry mechanism with exponential backoff
+const retry = async (fn, maxRetries = 5, initialDelay = 1000) => {
   let lastError;
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
@@ -66,15 +66,26 @@ const retry = async (fn, maxRetries = 3, delay = 2000) => {
     } catch (err) {
       lastError = err;
       console.warn(`Attempt ${attempt}/${maxRetries} failed:`, err.message);
+      
+      // Check for specific errors to avoid unnecessary retries
+      if (err.message.includes('Video unavailable') || 
+          err.message.includes('This video is not available') ||
+          err.message.includes('Video ID') ||
+          err.message.includes('is invalid')) {
+        throw err; // Don't retry for these errors
+      }
+      
       if (attempt < maxRetries) {
-        await new Promise(resolve => setTimeout(resolve, delay * attempt)); // Exponential backoff
+        // Exponential backoff with jitter
+        const delay = initialDelay * Math.pow(1.5, attempt - 1) * (0.9 + 0.2 * Math.random());
+        await new Promise(resolve => setTimeout(resolve, delay));
       }
     }
   }
   throw lastError;
 };
 
-// Enhanced error handler with detailed logging
+// Enhanced error handler with proper duration handling
 const handleErrors = (reply, errorMsg) => (e) => {
   const errorDetails = {
     message: e.message,
@@ -85,8 +96,43 @@ const handleErrors = (reply, errorMsg) => (e) => {
   // Log detailed error for debugging
   console.error('ERROR DETAILS:', JSON.stringify(errorDetails, null, 2));
   
+  // Identify specific error types
+  let errorCode = 'DOWNLOAD_FAILED';
+  if (e.message.includes('confirm you are human')) {
+    errorCode = 'HUMAN_VERIFICATION_REQUIRED';
+  } else if (e.message.includes('duration')) {
+    errorCode = 'DURATION_PARSE_ERROR';
+  } else if (e.message.includes('status code')) {
+    errorCode = 'SERVER_ERROR';
+  }
+  
   // Send user-friendly message
-  reply(`${errorMsg}\n\nError code: ${e.message.includes('confirm you are human') ? 'HUMAN_VERIFICATION_REQUIRED' : 'DOWNLOAD_FAILED'}`);
+  reply(`${errorMsg}\n\nError code: ${errorCode}`);
+};
+
+// Parse duration string to seconds safely
+const parseDuration = (durationStr) => {
+  try {
+    // Handle various duration formats
+    if (!durationStr) return 0; // Default to 0 if no duration
+    
+    const parts = durationStr.split(':').map(p => parseInt(p.trim(), 10));
+    
+    if (parts.length === 3) {
+      // Format: HH:MM:SS
+      return parts[0] * 3600 + parts[1] * 60 + parts[2];
+    } else if (parts.length === 2) {
+      // Format: MM:SS
+      return parts[0] * 60 + parts[1];
+    } else if (parts.length === 1 && !isNaN(parts[0])) {
+      // Format: SS
+      return parts[0];
+    }
+    return 0; // Default to 0 if format is unrecognized
+  } catch (e) {
+    console.error('Duration parsing error:', e);
+    return 0; // Default to 0 if parsing fails
+  }
 };
 
 // Helper function to sanitize filenames
@@ -95,6 +141,40 @@ const sanitizeFilename = (filename) => {
     .replace(/[\\/:*?"<>|]/g, '_') // Replace invalid file characters
     .replace(/\s+/g, '_')          // Replace spaces with underscores
     .substring(0, 200);            // Limit filename length
+};
+
+// Helper function to get the best format
+const getBestFormat = (formats, type, preferredQuality = null) => {
+  if (!formats || formats.length === 0) return null;
+  
+  let filteredFormats = ytdl.filterFormats(formats, type);
+  
+  if (filteredFormats.length === 0) return null;
+  
+  // For video, try to match preferred quality
+  if (type === 'videoandaudio' && preferredQuality) {
+    const matchedFormat = filteredFormats.find(f => f.qualityLabel === preferredQuality);
+    if (matchedFormat) return matchedFormat;
+  }
+  
+  // For audio, sort by bitrate
+  if (type === 'audioonly') {
+    filteredFormats.sort((a, b) => (b.audioBitrate || 0) - (a.audioBitrate || 0));
+    return filteredFormats[0];
+  }
+  
+  // For video, prefer formats with both audio and video, sorted by resolution
+  filteredFormats.sort((a, b) => {
+    // First prioritize having both audio and video
+    const aHasBoth = a.hasAudio && a.hasVideo ? 1 : 0;
+    const bHasBoth = b.hasAudio && b.hasVideo ? 1 : 0;
+    if (aHasBoth !== bHasBoth) return bHasBoth - aHasBoth;
+    
+    // Then sort by resolution (height)
+    return (b.height || 0) - (a.height || 0);
+  });
+  
+  return filteredFormats[0];
 };
 
 // Main song download command
@@ -119,23 +199,21 @@ cmd(
       reply("```🔍 Searching for the song... 🎵```");
       
       // Search with retry mechanism and rate limiting
-      const searchResults = await retry(() => 
-        limiter.schedule(() => yts(searchQuery))
+      const searchResults = await retry(() =>
+         limiter.schedule(() => yts(searchQuery))
       );
       
-      if (!searchResults.videos.length) {
+      if (!searchResults.videos || !searchResults.videos.length) {
         return reply(`❌ No results found for "${searchQuery}". 😔`);
       }
       
-      const { title, duration, views, author, url: videoUrl, image } =
-        searchResults.videos[0];
-        
+      const video = searchResults.videos[0];
+      const { title, duration, views, author, url: videoUrl, image, thumbnail } = video;
+      
+      // Safely parse duration
+      const durationInSeconds = parseDuration(duration);
+      
       // Check if the duration is too long (prevent large downloads)
-      const durationParts = duration.split(':').map(Number);
-      const durationInSeconds = durationParts.length === 3 
-        ? durationParts[0] * 3600 + durationParts[1] * 60 + durationParts[2]
-        : durationParts[0] * 60 + durationParts[1];
-        
       if (durationInSeconds > 600) { // 10 minutes max
         return reply(`❌ Song is too long (${duration}). Please choose songs under 10 minutes. 😊`);
       }
@@ -143,29 +221,25 @@ cmd(
       const ytmsg = `*🎶 Song Found!*\n\n*📌 Title:* ${title}\n*⏱️ Duration:* ${duration}\n*👀 Views:* ${views}\n*🎤 Artist:* ${author.name}\n\n_Downloading... Please wait_ ⏳`;
       
       // Send song details with thumbnail
-      await conn.sendMessage(from, { image: { url: image }, caption: ytmsg });
+      await conn.sendMessage(from, { image: { url: thumbnail || image }, caption: ytmsg });
       
       // Create safe filename
       const safeTitle = sanitizeFilename(title);
       const tempFileName = path.join('./store', `yt_audio_${safeTitle}_${Date.now()}.mp3`);
       
       // Get video info with retry mechanism
-      const info = await retry(() => 
-        limiter.schedule(() => ytdl.getInfo(videoUrl, ytdlOptions))
+      const info = await retry(() =>
+         limiter.schedule(() => ytdl.getInfo(videoUrl, ytdlOptions))
       );
       
-      // Get the best audio format (prioritize higher quality)
-      const audioFormats = ytdl.filterFormats(info.formats, 'audioonly');
-      
-      // Sort by audio quality and select the best one
-      audioFormats.sort((a, b) => (b.audioBitrate || 0) - (a.audioBitrate || 0));
-      const audioFormat = audioFormats[0];
+      // Get the best audio format
+      const audioFormat = getBestFormat(info.formats, 'audioonly');
       
       if (!audioFormat) {
         return reply("❌ No suitable audio format found. 😢");
       }
       
-      // Download with error handling and progress tracking
+      // Download with error handling
       try {
         const audioStream = ytdl.downloadFromInfo(info, {
           quality: audioFormat.itag,
@@ -193,15 +267,24 @@ cmd(
         );
         
         // Delete the temporary file
-        await unlink(tempFileName);
+        await unlink(tempFileName).catch(err => console.error("Error deleting temp file:", err));
       } catch (downloadError) {
+        console.error("Primary download failed:", downloadError);
+        
         // If stream download fails, try alternative method
         reply(`⚠️ Primary download method failed. Trying alternative method...`);
         
-        const fallbackFormat = audioFormats.find(f => f.itag !== audioFormat.itag);
-        if (!fallbackFormat) {
+        // Get alternative format
+        const alternativeFormats = ytdl.filterFormats(info.formats, 'audioonly')
+          .filter(f => f.itag !== audioFormat.itag);
+        
+        if (!alternativeFormats.length) {
           throw new Error("No alternative audio format available");
         }
+        
+        // Sort by audio quality
+        alternativeFormats.sort((a, b) => (b.audioBitrate || 0) - (a.audioBitrate || 0));
+        const fallbackFormat = alternativeFormats[0];
         
         const fallbackStream = ytdl.downloadFromInfo(info, {
           quality: fallbackFormat.itag,
@@ -225,7 +308,7 @@ cmd(
         );
         
         // Delete the temporary file
-        await unlink(tempFileName);
+        await unlink(tempFileName).catch(err => console.error("Error deleting temp file:", err));
       }
     } catch (e) {
       handleErrors(reply, "❌ An error occurred while processing your request. 😢")(e);
@@ -255,23 +338,21 @@ cmd(
       reply("```🔍 Searching for the video... 🎥```");
       
       // Search with retry mechanism
-      const searchResults = await retry(() => 
-        limiter.schedule(() => yts(searchQuery))
+      const searchResults = await retry(() =>
+         limiter.schedule(() => yts(searchQuery))
       );
       
-      if (!searchResults.videos.length) {
+      if (!searchResults.videos || !searchResults.videos.length) {
         return reply(`❌ No results found for "${searchQuery}". 😔`);
       }
       
-      const { title, duration, views, author, url: videoUrl, image } =
-        searchResults.videos[0];
-        
+      const video = searchResults.videos[0];
+      const { title, duration, views, author, url: videoUrl, image, thumbnail } = video;
+      
+      // Safely parse duration
+      const durationInSeconds = parseDuration(duration);
+      
       // Check duration to avoid large files
-      const durationParts = duration.split(':').map(Number);
-      const durationInSeconds = durationParts.length === 3 
-        ? durationParts[0] * 3600 + durationParts[1] * 60 + durationParts[2]
-        : durationParts[0] * 60 + durationParts[1];
-        
       if (durationInSeconds > 300) { // 5 minutes max for videos
         return reply(`❌ Video is too long (${duration}). Please choose videos under 5 minutes. 😊`);
       }
@@ -279,26 +360,29 @@ cmd(
       const ytmsg = `🎬 *Video Found!*\n\n*📌 Title:* ${title}\n*⏱️ Duration:* ${duration}\n*👁️ Views:* ${views}\n*👤 Channel:* ${author.name}\n\n_Downloading... Please wait_ ⏳`;
       
       // Send video details with thumbnail
-      await conn.sendMessage(from, { image: { url: image }, caption: ytmsg });
+      await conn.sendMessage(from, { image: { url: thumbnail || image }, caption: ytmsg });
       
       // Create safe filename
       const safeTitle = sanitizeFilename(title);
       const tempFileName = path.join('./store', `yt_video_${safeTitle}_${Date.now()}.mp4`);
       
       // Get video info with retry
-      const info = await retry(() => 
-        limiter.schedule(() => ytdl.getInfo(videoUrl, ytdlOptions))
+      const info = await retry(() =>
+         limiter.schedule(() => ytdl.getInfo(videoUrl, ytdlOptions))
       );
       
-      // Get available video formats
-      const videoFormats = ytdl.filterFormats(info.formats, 'videoandaudio');
+      // Try to get 360p first, then fallback
+      const preferredQualities = ['360p', '480p', '240p', '720p'];
+      let videoFormat = null;
       
-      // Quality selection - prefer 360p first, fall back to other qualities if not available
-      let videoFormat = videoFormats.find(f => f.qualityLabel === '360p');
+      for (const quality of preferredQualities) {
+        videoFormat = getBestFormat(info.formats, 'videoandaudio', quality);
+        if (videoFormat) break;
+      }
+      
+      // If no preferred quality found, get best available
       if (!videoFormat) {
-        videoFormat = videoFormats.find(f => f.qualityLabel === '240p') || 
-                      videoFormats.find(f => f.qualityLabel === '480p') ||
-                      videoFormats[0]; // Default to first available format
+        videoFormat = getBestFormat(info.formats, 'videoandaudio');
       }
       
       if (!videoFormat) {
@@ -306,7 +390,7 @@ cmd(
       }
       
       // Update user on progress
-      reply(`📥 Found format: ${videoFormat.qualityLabel}. Starting download...`);
+      reply(`📥 Found format: ${videoFormat.qualityLabel || 'Best available'}. Starting download...`);
       
       try {
         // Download with proper error handling
@@ -326,7 +410,7 @@ cmd(
         const fileSizeInMB = stats.size / (1024 * 1024);
         
         if (fileSizeInMB > 50) {
-          await unlink(tempFileName);
+          await unlink(tempFileName).catch(err => console.error("Error deleting large file:", err));
           return reply(`❌ Video file is too large (${fileSizeInMB.toFixed(2)}MB). Please try a shorter video. 😢`);
         }
         
@@ -345,12 +429,24 @@ cmd(
         );
         
         // Delete the temporary file
-        await unlink(tempFileName);
+        await unlink(tempFileName).catch(err => console.error("Error deleting temp file:", err));
       } catch (downloadError) {
+        console.error("Primary video download failed:", downloadError);
+        
         // If standard download fails, try alternative method
         reply(`⚠️ Primary download method failed. Trying alternative method...`);
         
-        const fallbackFormat = videoFormats.find(f => f.itag !== videoFormat.itag) || videoFormat;
+        // Get available formats excluding the one that failed
+        const alternativeFormats = ytdl.filterFormats(info.formats, 'videoandaudio')
+          .filter(f => f.itag !== videoFormat.itag);
+        
+        if (!alternativeFormats.length) {
+          throw new Error("No alternative video formats available");
+        }
+        
+        // Sort by resolution
+        alternativeFormats.sort((a, b) => (b.height || 0) - (a.height || 0));
+        const fallbackFormat = alternativeFormats[0];
         
         const fallbackStream = ytdl.downloadFromInfo(info, {
           quality: fallbackFormat.itag,
@@ -361,6 +457,15 @@ cmd(
           fallbackStream,
           fs.createWriteStream(tempFileName)
         );
+        
+        // Check file size again
+        const stats = await fs.promises.stat(tempFileName);
+        const fileSizeInMB = stats.size / (1024 * 1024);
+        
+        if (fileSizeInMB > 50) {
+          await unlink(tempFileName).catch(err => console.error("Error deleting large file:", err));
+          return reply(`❌ Video file is too large (${fileSizeInMB.toFixed(2)}MB). Please try a shorter video. 😢`);
+        }
         
         // Send the video file
         await conn.sendMessage(
@@ -374,7 +479,7 @@ cmd(
         );
         
         // Delete the temporary file
-        await unlink(tempFileName);
+        await unlink(tempFileName).catch(err => console.error("Error deleting temp file:", err));
       }
     } catch (e) {
       handleErrors(reply, "❌ An error occurred while processing your request. 😢")(e);
@@ -382,7 +487,7 @@ cmd(
   }
 );
 
-// Add a new command for audio-only version with higher quality
+// High quality audio command
 cmd(
   {
     pattern: "audio",
@@ -404,25 +509,24 @@ cmd(
       // Search with retry
       const searchResults = await retry(() => limiter.schedule(() => yts(searchQuery)));
       
-      if (!searchResults.videos.length) {
+      if (!searchResults.videos || !searchResults.videos.length) {
         return reply(`❌ No results found for "${searchQuery}". 😔`);
       }
       
-      const { title, duration, views, author, url: videoUrl, image } = searchResults.videos[0];
+      const video = searchResults.videos[0];
+      const { title, duration, views, author, url: videoUrl, image, thumbnail } = video;
+      
+      // Safely parse duration
+      const durationInSeconds = parseDuration(duration);
       
       // Check duration
-      const durationParts = duration.split(':').map(Number);
-      const durationInSeconds = durationParts.length === 3 
-        ? durationParts[0] * 3600 + durationParts[1] * 60 + durationParts[2]
-        : durationParts[0] * 60 + durationParts[1];
-        
       if (durationInSeconds > 900) { // 15 minutes max
         return reply(`❌ Audio is too long (${duration}). Please choose audio under 15 minutes. 😊`);
       }
       
       const ytmsg = `*🎧 High Quality Audio*\n\n*📌 Title:* ${title}\n*⏱️ Duration:* ${duration}\n*👀 Views:* ${views}\n*🎤 Artist:* ${author.name}\n\n_Preparing HQ audio... Please wait_ ⏳`;
       
-      await conn.sendMessage(from, { image: { url: image }, caption: ytmsg });
+      await conn.sendMessage(from, { image: { url: thumbnail || image }, caption: ytmsg });
       
       // Create safe filename
       const safeTitle = sanitizeFilename(title);
@@ -440,7 +544,7 @@ cmd(
         return reply("❌ No suitable audio format found. 😢");
       }
       
-      reply(`🎵 Found high quality audio format (${audioFormat.audioBitrate}kbps). Downloading...`);
+      reply(`🎵 Found high quality audio format (${audioFormat.audioBitrate || "unknown"}kbps). Downloading...`);
       
       // Download with error handling
       try {
@@ -463,13 +567,19 @@ cmd(
         );
         
         // Delete the temporary file
-        await unlink(tempFileName);
+        await unlink(tempFileName).catch(err => console.error("Error deleting temp file:", err));
       } catch (downloadError) {
         console.error("Primary audio download failed:", downloadError);
         reply(`⚠️ Primary download method failed. Trying alternative method...`);
         
         // Try next best format
-        const fallbackFormat = audioFormats[1] || audioFormats[0];
+        const alternativeFormats = audioFormats.filter(f => f.itag !== audioFormat.itag);
+        
+        if (!alternativeFormats.length) {
+          throw new Error("No alternative audio formats available");
+        }
+        
+        const fallbackFormat = alternativeFormats[0];
         
         const fallbackStream = ytdl.downloadFromInfo(info, {
           quality: fallbackFormat.itag,
@@ -488,7 +598,7 @@ cmd(
           { quoted: mek }
         );
         
-        await unlink(tempFileName);
+        await unlink(tempFileName).catch(err => console.error("Error deleting temp file:", err));
       }
     } catch (e) {
       handleErrors(reply, "❌ An error occurred while processing your request. 😢")(e);
@@ -496,7 +606,7 @@ cmd(
   }
 );
 
-// Add a search command to list multiple results
+// Search command to list multiple results
 cmd(
   {
     pattern: "ytsearch",
@@ -518,7 +628,7 @@ cmd(
       // Search with rate limiting
       const searchResults = await limiter.schedule(() => yts(searchQuery));
       
-      if (!searchResults.videos.length) {
+      if (!searchResults.videos || !searchResults.videos.length) {
         return reply(`❌ No results found for "${searchQuery}". 😔`);
       }
       
@@ -529,15 +639,18 @@ cmd(
       
       videos.forEach((video, index) => {
         resultMessage += `*${index + 1}. ${video.title}*\n`;
-        resultMessage += `⏱️ Duration: ${video.duration}\n`;
-        resultMessage += `👁️ Views: ${video.views}\n`;
-        resultMessage += `👤 Channel: ${video.author.name}\n`;
+        resultMessage += `⏱️ Duration: ${video.duration || 'Unknown'}\n`;
+        resultMessage += `👁️ Views: ${video.views || 'Unknown'}\n`;
+        resultMessage += `👤 Channel: ${video.author?.name || 'Unknown'}\n`;
         resultMessage += `🔗 URL: ${video.url}\n\n`;
       });
       
-      resultMessage += `To download, use:\n.song <title> - for audio\n.video <title> - for video`;
+      resultMessage += `To download, use:\n.song <title> - for audio\n.video <title> - for video\n.audio <title> - for high quality audio`;
       
-      await conn.sendMessage(from, { image: { url: videos[0].thumbnail }, caption: resultMessage });
+      await conn.sendMessage(from, { 
+        image: { url: videos[0].thumbnail || videos[0].image }, 
+        caption: resultMessage 
+      });
       
     } catch (e) {
       handleErrors(reply, "❌ An error occurred while searching. 😢")(e);
